@@ -1,142 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agenda de Prospectos</title>
-<link rel="stylesheet" href="styles.css">
-<script src="script.js" defer></script>
-</head>
-<body>
-<div class="app">
-
-  <div class="header">
-    <div class="header-icon">
-      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-    </div>
-    <div>
-      <h1>Agenda de prospectos</h1>
-      <p>Tarjetas de crédito</p>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="cambiarTab('nuevo', this)">+ Nuevo prospecto</button>
-    <button class="tab" onclick="cambiarTab('lista', this)">Mis prospectos</button>
-    <button class="tab" onclick="cambiarTab('config', this)">⚙ Configuración</button>
-  </div>
-
-  <!-- NUEVO PROSPECTO -->
-  <div id="panel-nuevo" class="panel active">
-    <div class="card">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Nombre completo *</label>
-          <input type="text" id="f-nombre" placeholder="Ej. María López García" autocomplete="off">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agenda de Prospectos</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    
+    <div class="app">
+      
+      <div class="header">
+        
+        <div class="header-icon">
+          
+          <svg viewBox="0 0 24 24">
+            <rect x="2" y="3" width="20" height="18" rx="2" />
+            <path d="M8 7h8M8 11h8M8 15h5" />
+          </svg>
         </div>
-        <div class="form-group">
-          <label>Teléfono *</label>
-          <input type="tel" id="f-tel" placeholder="Ej. 33 1234 5678">
+        <div>
+          <h1>Agenda de prospectos</h1>
+          <p>Tarjetas de crédito</p>
         </div>
-        <div class="form-group">
-          <label>Tipo de tarjeta / producto</label>
-          <select id="f-tipo">
-            <option value="">Selecciona un producto</option>
-            <option>Clásica</option>
-            <option>Oro</option>
-            <option>Platinum</option>
-            <option>Empresarial</option>
-            <option>Sin anualidad</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Estatus</label>
-          <select id="f-estatus">
-            <option value="Interesado">Interesado</option>
-            <option value="En proceso">En proceso</option>
-            <option value="Cerrado">Cerrado</option>
-            <option value="Perdido">Perdido</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Fecha de seguimiento</label>
-          <input type="date" id="f-fecha">
-        </div>
-        <div class="form-group full">
-          <label>Notas</label>
-          <textarea id="f-notas" placeholder="Observaciones, intereses del cliente, recordatorios..."></textarea>
-        </div>
+        <button
+    class="btn btn-sm"
+    onclick="toggleTheme()">
+    🌙
+  </button>
       </div>
-      <div class="form-actions">
-        <button class="btn btn-sm" onclick="limpiarForm()">Limpiar</button>
-        <button class="btn btn-primary" id="btn-guardar" onclick="guardarProspecto()">
-          <span id="btn-text">Guardar prospecto</span>
+
+      <div class="tabs">
+        <button class="tab active" onclick="cambiarTab('nuevo', this)">
+          + Nuevo prospecto
+        </button>
+        <button class="tab" onclick="cambiarTab('lista', this)">
+
+          Mis prospectos
+        </button>
+        <button class="tab" onclick="cambiarTab('config', this)">
+          ⚙ Configuración
         </button>
       </div>
-    </div>
-  </div>
 
-  <!-- LISTA -->
-  <div id="panel-lista" class="panel">
-    <div class="search-bar">
-      <input type="text" id="buscador" placeholder="Buscar nombre o teléfono..." oninput="filtrar()">
-      <select id="filtro-estatus" onchange="filtrar()">
-        <option value="">Todos los estatus</option>
-        <option>Interesado</option>
-        <option>En proceso</option>
-        <option>Cerrado</option>
-        <option>Perdido</option>
-      </select>
-      <button class="btn btn-sm" onclick="cargarLista()">↻ Actualizar</button>
-    </div>
-    <div class="card" style="padding:0;overflow:hidden">
-      <div id="tabla-wrap">
-        <div class="empty">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-          <p>Sin datos todavía</p>
-          <small>Configura tu Google Sheet y agrega el primer prospecto.</small>
+      <!-- NUEVO PROSPECTO -->
+      <div id="panel-nuevo" class="panel active">
+        <div class="card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre completo *</label>
+              <input
+                type="text"
+                id="f-nombre"
+                placeholder="Ej. María López García"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label>Teléfono *</label>
+              <input type="tel" id="f-tel" placeholder="Ej. 33 1234 5678" />
+            </div>
+            <div class="form-group">
+              <label>Tipo de tarjeta / producto</label>
+              <select id="f-tipo">
+                <option value="">Selecciona un producto</option>
+                <option>Joy</option>
+                <option>Teleton</option>
+                <option>Clasica</option>
+                <option>Oro</option>
+                <option>Descubre</option>
+                <option>Platinum</option>
+                <option>Explora</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Estatus</label>
+              <select id="f-estatus">
+                <option value="Interesado">Interesado</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Cerrado">Cerrado</option>
+                <option value="Perdido">Perdido</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Fecha de seguimiento</label>
+              <input type="date" id="f-fecha" />
+            </div>
+            <div class="form-group full">
+              <label>Notas</label>
+              <textarea
+                id="f-notas"
+                placeholder="Observaciones, intereses del cliente, recordatorios..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-sm" onclick="limpiarForm()">Limpiar</button>
+
+            <button
+              class="btn btn-sm"
+              id="btn-cancelar"
+              onclick="limpiarForm()"
+              style="display: none"
+            >
+              Cancelar edición
+            </button>
+
+            <button
+              class="btn btn-primary"
+              id="btn-guardar"
+              onclick="guardarProspecto()"
+            >
+              <span id="btn-text"> Guardar prospecto </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTA -->
+      <div id="panel-lista" class="panel">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="buscador"
+            placeholder="Buscar nombre o teléfono..."
+            oninput="filtrar()"
+          />
+          <select id="filtro-estatus" onchange="filtrar()">
+            <option value="">Todos los estatus</option>
+            <option>Interesado</option>
+            <option>En proceso</option>
+            <option>Cerrado</option>
+            <option>Perdido</option>
+          </select>
+          <button class="btn btn-sm" onclick="cargarLista()">
+            ↻ Actualizar
+          </button>
+        </div>
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div id="tabla-wrap">
+            <div class="empty">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 3" />
+              </svg>
+              <p>Sin datos todavía</p>
+              <small
+                >Configura tu Google Sheet y agrega el primer prospecto.</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div id="panel-config" class="panel">
+        <!-- <div class="card">
+          <p style="font-weight: 600; font-size: 15px; margin-bottom: 1.25rem">
+            Conectar con Google Sheets
+          </p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <p>
+                Ve a <strong>Google Sheets</strong>, crea una hoja nueva. En el
+                menú abre <strong>Extensiones → Apps Script</strong>.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <p>
+                Borra el contenido del editor, pega el código de abajo y guarda
+                con <code>Ctrl+S</code>.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <p>
+                Haz clic en <strong>Implementar → Nueva implementación</strong>.
+                Tipo: <code>Aplicación web</code>. Acceso:
+                <code>Cualquier usuario</code>. Autoriza y copia la URL.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <p>
+                Pega la URL aquí abajo y presiona
+                <strong>Probar conexión</strong>.
+              </p>
+            </div>
+          </div> -->
+
+          <div class="form-group" style="margin-bottom: 1rem">
+            <label>URL de tu Apps Script</label>
+            <div class="input-row">
+              <input
+                type="url"
+                id="cfg-url"
+                placeholder="https://script.google.com/macros/s/..."
+                oninput="guardarCfg()"
+              />
+              <button class="btn btn-sm" onclick="probar()">
+                Probar conexión
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="form-group"
+            style="margin-bottom: 1.5rem; max-width: 240px"
+          >
+            <label>Nombre de la pestaña en el Sheet</label>
+            <input
+              type="text"
+              id="cfg-sheet"
+              placeholder="Prospectos"
+              oninput="guardarCfg()"
+            />
+          </div>
+
+          <details>
+            <summary>Ver código para Apps Script</summary>
+            <pre id="code-block"></pre>
+            <button
+              class="btn btn-sm"
+              style="margin-top: 8px"
+              onclick="copiarCodigo()"
+            >
+              Copiar código
+            </button>
+          </details>
         </div>
       </div>
     </div>
-  </div>
+    <!-- Modal de notas -->
+<div id="modal-nota" class="modal">
 
-  <!-- CONFIG -->
-  <div id="panel-config" class="panel">
-    <div class="card">
-      <p style="font-weight:600;font-size:15px;margin-bottom:1.25rem">Conectar con Google Sheets</p>
+  <div class="modal-content">
 
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><p>Ve a <strong>Google Sheets</strong>, crea una hoja nueva. En el menú abre <strong>Extensiones → Apps Script</strong>.</p></div>
-        <div class="step"><div class="step-num">2</div><p>Borra el contenido del editor, pega el código de abajo y guarda con <code>Ctrl+S</code>.</p></div>
-        <div class="step"><div class="step-num">3</div><p>Haz clic en <strong>Implementar → Nueva implementación</strong>. Tipo: <code>Aplicación web</code>. Acceso: <code>Cualquier usuario</code>. Autoriza y copia la URL.</p></div>
-        <div class="step"><div class="step-num">4</div><p>Pega la URL aquí abajo y presiona <strong>Probar conexión</strong>.</p></div>
-      </div>
+    <div class="modal-header">
 
-      <div class="form-group" style="margin-bottom:1rem">
-        <label>URL de tu Apps Script</label>
-        <div class="input-row">
-          <input type="url" id="cfg-url" placeholder="https://script.google.com/macros/s/..." oninput="guardarCfg()">
-          <button class="btn btn-sm" onclick="probar()">Probar conexión</button>
-        </div>
-      </div>
+      <h3 id="titulo-nota">📝 Nota del prospecto</h3>
 
-      <div class="form-group" style="margin-bottom:1.5rem;max-width:240px">
-        <label>Nombre de la pestaña en el Sheet</label>
-        <input type="text" id="cfg-sheet" placeholder="Prospectos" oninput="guardarCfg()">
-      </div>
+      <button
+        class="modal-close"
+        onclick="cerrarNota()">
+        ✕
+      </button>
 
-      <details>
-        <summary>Ver código para Apps Script</summary>
-        <pre id="code-block"></pre>
-        <button class="btn btn-sm" style="margin-top:8px" onclick="copiarCodigo()">Copiar código</button>
-      </details>
     </div>
+
+    <div id="modal-texto" class="modal-body"></div>
+
   </div>
+
 </div>
-
-<div id="toast"></div>
-
-
-</body>
+    <div id="toast"></div>
+  </body>
 </html>
