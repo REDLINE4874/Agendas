@@ -319,32 +319,69 @@ let prospectos = [];
 let editandoId = null;
 
 async function cargarLista() {
+
   if (!cfg.url) {
     renderTabla([]);
     return;
   }
-  document.getElementById("tabla-wrap").innerHTML =
-    '<div class="empty"><p>Cargando...</p></div>';
+
   try {
-    prospectos = await jsonp(cfg.url, { accion: "listar" });
+
+    const respuesta = await jsonp(
+      cfg.url,
+      { accion: "listar" }
+    );
+
+    console.log("LISTAR:", respuesta);
+
+    prospectos = respuesta;
+
     filtrar();
+
   } catch (e) {
-    toast("No se pudo cargar la lista. Verifica la URL.", "err");
+
+    console.error(e);
+
     renderTabla([]);
+
   }
+
 }
 
 function filtrar() {
-  const q = (document.getElementById("buscador").value || "").toLowerCase();
-  const est = document.getElementById("filtro-estatus").value;
+
+  if (!Array.isArray(prospectos)) {
+
+    console.error(
+      "prospectos no es un arreglo:",
+      prospectos
+    );
+
+    renderTabla([]);
+
+    return;
+  }
+
+  const q =
+    (document.getElementById("buscador").value || "")
+      .toLowerCase();
+
+  const est =
+    document.getElementById("filtro-estatus").value;
+
   const r = prospectos.filter(
     (p) =>
       (!q ||
-        (p.nombre || "").toLowerCase().includes(q) ||
-        (p.tel || "").includes(q)) &&
-      (!est || p.estatus === est),
+        (p.nombre || "")
+          .toLowerCase()
+          .includes(q) ||
+        (p.tel || "")
+          .includes(q)) &&
+      (!est || p.estatus === est)
   );
+
   renderTabla(r);
+
 }
 
 function badgeClass(e) {
