@@ -359,12 +359,36 @@ function badgeClass(e) {
 }
 
 function renderTabla(rows) {
+  console.log("renderTabla:", rows);
+
   const w = document.getElementById("tabla-wrap");
+
+  if (!Array.isArray(rows)) {
+
+    console.error("renderTabla recibió:", rows);
+
+    w.innerHTML = `
+      <div class="empty">
+        <p>Error al cargar prospectos</p>
+      </div>
+    `;
+
+    return;
+  }
+
   if (!rows.length) {
-    w.innerHTML = `<div class="empty">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
-      <p>Sin resultados</p><small>Prueba con otros filtros o agrega un nuevo prospecto.</small>
-    </div>`;
+
+    w.innerHTML = `
+      <div class="empty">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M8 12h8M12 8v8"/>
+        </svg>
+        <p>Sin resultados</p>
+        <small>Prueba con otros filtros o agrega un nuevo prospecto.</small>
+      </div>
+    `;
+
     return;
   }
   w.innerHTML = `<div class="table-wrap"><table>
