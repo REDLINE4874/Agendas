@@ -538,7 +538,18 @@ function editarProspecto(id) {
   document.getElementById("f-tel").value = p.tel;
   document.getElementById("f-tipo").value = p.tipo;
   document.getElementById("f-estatus").value = p.estatus;
-  document.getElementById("f-fecha").value = p.fecha;
+ if (p.fecha) {
+
+  const partes = p.fecha.split("/");
+
+  if (partes.length === 3) {
+
+    document.getElementById("f-fecha").value =
+      `${partes[2]}-${partes[1]}-${partes[0]}`;
+
+  }
+
+}
   document.getElementById("f-notas").value = p.notas;
 
   editandoId = p.id;
