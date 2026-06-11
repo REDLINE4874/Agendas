@@ -144,6 +144,7 @@ async function guardarProspecto() {
 
 // ─── Lista ───────────────────────────────────────────────────────────────────
 let prospectos = [];
+let prospectosBase = [];
 let editandoId = null;
 
 async function cargarLista() {
@@ -162,7 +163,8 @@ async function cargarLista() {
 
     console.log("LISTAR:", respuesta);
 
-    prospectos = respuesta;
+    prospectos = Array.isArray(respuesta) ? respuesta : [];
+    prospectosBase = [...prospectos];
 
     filtrar();
 
@@ -192,21 +194,28 @@ function filtrar() {
 
   const q =
     (document.getElementById("buscador").value || "")
+      .trim()
       .toLowerCase();
 
-  const est =
-    document.getElementById("filtro-estatus").value;
+  const est = document.getElementById("filtro-estatus").value;
 
-  const r = prospectos.filter(
-    (p) =>
-      (!q ||
-        (p.nombre || "")
-          .toLowerCase()
-          .includes(q) ||
-        (p.tel || "")
-          .includes(q)) &&
-      (!est || p.estatus === est)
-  );
+  const r = prospectosBase.filter((p) => {
+    const nombre = String(p.nombre || "").toLowerCase();
+    const telefono = String(p.tel || "").toLowerCase();
+    const producto = String(p.tipo || "").toLowerCase();
+
+    const coincideTexto =
+      !q ||
+      nombre.includes(q) ||
+      telefono.includes(q) ||
+      producto.includes(q);
+
+    const coincideEstatus = !est || p.estatus === est;
+
+    return coincideTexto && coincideEstatus;
+  });
+
+  prospectos = r;
 
   renderTabla(r);
 
@@ -221,6 +230,42 @@ function badgeClass(e) {
       Perdido: "badge-perdido",
     }[e] || ""
   );
+}
+
+function mesKeyDeRegistro(p) {
+  const fecha = p.registro || p.fecha || "";
+  const partes = fecha.split("/");
+
+  if (partes.length !== 3) return "sin-fecha";
+
+  return `${partes[2]}-${partes[1].padStart(2, "0")}`;
+}
+
+function etiquetaMes(fecha) {
+  const partes = (fecha || "").split("/");
+
+  if (partes.length !== 3) return "Sin fecha de registro";
+
+  const [dia, mes, anio] = partes.map(Number);
+  const fechaObj = new Date(anio, mes - 1, dia);
+
+  return fechaObj.toLocaleDateString("es-MX", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function agruparPorMes(rows) {
+  return Object.entries(
+    rows.reduce((acc, p) => {
+      const key = mesKeyDeRegistro(p);
+      const label = etiquetaMes(p.registro || p.fecha || "");
+
+      if (!acc[key]) acc[key] = { label, items: [] };
+      acc[key].items.push(p);
+      return acc;
+    }, {}),
+  ).sort((a, b) => b[0].localeCompare(a[0]));
 }
 
 function renderTabla(rows) {
@@ -256,68 +301,55 @@ function renderTabla(rows) {
 
     return;
   }
-  w.innerHTML = `<div class="table-wrap"><table>
-    <thead><tr>
-  <th>Nombre</th>
-  <th>Teléfono</th>
-  <th>Producto</th>
-  <th>Estatus</th>
-  <th>Seguimiento</th>
-  <th>Registro</th>
-  <th>Notas</th>
-  <th>Acciones</th>
-</tr></thead>
-    <tbody>${rows
-      .map(
-        (p) => `<tr>
-      <td class="td-nombre">${esc(p.nombre)}</td>
-      <td>${esc(p.tel)}</td>
-      <td>${esc(p.tipo) || "—"}</td>
-      <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
-      <td>${esc(p.fecha) || "—"}</td>
 
-<td style="color:#6b6b67">
-  ${esc(p.registro) || "—"}
-</td>
+  const grupos = agruparPorMes(rows);
 
-<td>
-
-  ${
-    p.notas
-      ? `
-      <button
-        class="btn btn-sm"
-        onclick="verNota(
-  '${encodeURIComponent(p.nombre)}',
-  '${encodeURIComponent(p.notas)}'
-)">
-
-        Ver nota
-
-      </button>
-      `
-      : "—"
-  }
-
-</td>
-
-<td>
-  <button
-    class="btn btn-sm"
-    onclick="editarProspecto('${p.id}')">
-    ✏️
-  </button>
-
-  <button
-    class="btn btn-sm"
-    onclick="eliminarProspecto('${p.id}')">
-    🗑️
-  </button>
-</td>
-    </tr>`,
-      )
-      .join("")}</tbody>
-  </table></div>`;
+  w.innerHTML = `<div class="table-wrap">${grupos
+    .map(
+      ([key, grupo]) => `
+      <section class="mes-group">
+        <div class="mes-header">
+          <h3>${esc(grupo.label)}</h3>
+          <span>${grupo.items.length} prospecto${grupo.items.length === 1 ? "" : "s"}</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Producto</th>
+              <th>Estatus</th>
+              <th>Seguimiento</th>
+              <th>Registro</th>
+              <th>Notas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>${grupo.items
+            .map(
+              (p) => `<tr>
+                <td class="td-nombre">${esc(p.nombre)}</td>
+                <td>${esc(p.tel)}</td>
+                <td>${esc(p.tipo) || "—"}</td>
+                <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
+                <td>${esc(p.fecha) || "—"}</td>
+                <td style="color:#6b6b67">${esc(p.registro) || "—"}</td>
+                <td>${
+                  p.notas
+                    ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')">Ver nota</button>`
+                    : "—"
+                }</td>
+                <td>
+                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')">✏️</button>
+                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')">🗑️</button>
+                </td>
+              </tr>`,
+            )
+            .join("")}</tbody>
+        </table>
+      </section>`,
+    )
+    .join("")}</div>`;
 }
 
 function esc(s) {
