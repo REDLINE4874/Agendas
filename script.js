@@ -460,7 +460,8 @@ function toggleTheme() {
   }
 })();
 // ─── modal notas ─────────────────────────────────────────────────────────────────────
-function verNota(nombre, nota){
+function verNota(nombre, nota) {
+  document.body.classList.add("modal-open");
 
   document.getElementById("titulo-nota").textContent =
     "📝 " + decodeURIComponent(nombre);
@@ -468,14 +469,17 @@ function verNota(nombre, nota){
   document.getElementById("modal-texto").textContent =
     decodeURIComponent(nota);
 
-  document
-    .getElementById("modal-nota")
-    .classList.add("active");
+  document.getElementById("modal-nota").classList.add("active");
 }
 
 function cerrarNota() {
+  document.body.classList.remove("modal-open");
   document.getElementById("modal-nota").classList.remove("active");
 }
+
+document.getElementById("modal-nota").addEventListener("click", (event) => {
+  if (event.target.id === "modal-nota") cerrarNota();
+});
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 cargarCfg();
