@@ -333,7 +333,7 @@ function renderTabla(rows) {
                 <td>${esc(p.tipo) || "—"}</td>
                 <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
                 <td>${esc(p.fecha) || "—"}</td>
-                <td style="color:#6b6b67">${esc(p.registro) || "—"}</td>
+                <td class="td-registro">${esc(p.registro) || "—"}</td>
                 <td>${
                   p.notas
                     ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')">Ver nota</button>`
