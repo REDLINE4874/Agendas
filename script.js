@@ -3,29 +3,138 @@
 const APPS_SCRIPT_CODE = `
 `;
 
-document.getElementById("code-block").textContent = APPS_SCRIPT_CODE;
+const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUfxgup-tQwpIHLvRrrZGjjnpdgiUvkDe9ki1qV1lIoohxmmruHXaPzpbeXe1phg/exec";
+const DEFAULT_SHEET_NAME = "Prospectos";
+
+const codeBlock = document.getElementById("code-block");
+if (codeBlock) {
+  codeBlock.textContent = APPS_SCRIPT_CODE;
+}
+
+let prospectos = [];
+let prospectosBase = [];
+let editandoId = null;
+
+function obtenerCfg() {
+  if (!window.agendaCfg) {
+    window.agendaCfg = { url: DEFAULT_SCRIPT_URL, sheet: DEFAULT_SHEET_NAME };
+  }
+  return window.agendaCfg;
+}
+
+function setupCustomSelects() {
+  document.querySelectorAll('.custom-select-wrap').forEach((wrap) => {
+    const button = wrap.querySelector('.custom-select');
+    const input = wrap.querySelector('input[type="hidden"]');
+    const menu = wrap.querySelector('.custom-select__menu');
+    const options = wrap.querySelectorAll('.custom-option');
+    const valueSpan = button?.querySelector('.custom-select__value');
+
+    if (!button || !input || !menu || !valueSpan) return;
+
+    if (!document.__customSelectGlobalBound) {
+      document.__customSelectGlobalBound = true;
+      document.addEventListener('click', (event) => {
+        document.querySelectorAll('.custom-select-wrap.active').forEach((activeWrap) => {
+          if (!activeWrap.contains(event.target)) {
+            activeWrap.classList.remove('active');
+            const aBtn = activeWrap.querySelector('.custom-select');
+            if (aBtn) aBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      });
+    }
+
+    const updateSelection = () => {
+      const current = input.value || '';
+      let label = button.getAttribute('data-placeholder') || '';
+      options.forEach((opt) => {
+        opt.classList.toggle('is-selected', opt.getAttribute('data-value') === current);
+        if (opt.getAttribute('data-value') === current) label = opt.textContent;
+      });
+      valueSpan.textContent = label || button.getAttribute('data-placeholder') || '';
+      button.setAttribute('aria-expanded', 'false');
+      wrap.classList.remove('active');
+    };
+
+    if (!wrap.dataset.selectBound) {
+      wrap.dataset.selectBound = 'true';
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelectorAll('.custom-select-wrap.active').forEach((activeWrap) => {
+          if (activeWrap !== wrap) {
+            activeWrap.classList.remove('active');
+            const aBtn = activeWrap.querySelector('.custom-select');
+            if (aBtn) aBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+        const isOpen = wrap.classList.toggle('active');
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
+
+    options.forEach((opt) => {
+      if (opt.dataset.bound === 'true') return;
+      opt.dataset.bound = 'true';
+      opt.addEventListener('click', () => {
+        const value = opt.getAttribute('data-value') || '';
+        input.value = value;
+        updateSelection();
+        if (input.id === 'filtro-estatus' || input.id === 'filtro-mes') {
+          filtrar();
+        }
+      });
+    });
+
+    updateSelection();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', setupCustomSelects);
 
 // ─── Config (localStorage) ────────────────────────────────────────────────────
-let cfg = { url: "", sheet: "Prospectos" };
 function cargarCfg() {
+  const cfg = obtenerCfg();
   try {
     const s = localStorage.getItem("agenda_cfg");
-    if (s) cfg = JSON.parse(s);
+    if (s) {
+      const parsed = JSON.parse(s);
+      Object.assign(cfg, parsed);
+    }
   } catch (e) {}
-  document.getElementById("cfg-url").value = cfg.url || "";
-  document.getElementById("cfg-sheet").value = cfg.sheet || "Prospectos";
-}
-function guardarCfg() {
-  cfg.url = document.getElementById("cfg-url").value.trim();
-  cfg.sheet = document.getElementById("cfg-sheet").value.trim() || "Prospectos";
+
+  if (!cfg.url) cfg.url = DEFAULT_SCRIPT_URL;
+  if (!cfg.sheet) cfg.sheet = DEFAULT_SHEET_NAME;
+
+  const urlInput = document.getElementById("cfg-url");
+  const sheetInput = document.getElementById("cfg-sheet");
+  if (urlInput) {
+    urlInput.value = cfg.url || DEFAULT_SCRIPT_URL;
+  }
+  if (sheetInput) {
+    sheetInput.value = cfg.sheet || DEFAULT_SHEET_NAME;
+  }
+
   try {
     localStorage.setItem("agenda_cfg", JSON.stringify(cfg));
   } catch (e) {}
+}
+function guardarCfg() {
+  const cfg = obtenerCfg();
+  const urlInput = document.getElementById("cfg-url");
+  const sheetInput = document.getElementById("cfg-sheet");
+  if (urlInput) cfg.url = urlInput.value.trim();
+  if (sheetInput) cfg.sheet = sheetInput.value.trim() || "Prospectos";
+  try {
+    localStorage.setItem("agenda_cfg", JSON.stringify(cfg));
+  } catch (e) {}
+  return cfg;
 }
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function toast(msg, tipo) {
   const t = document.getElementById("toast");
+  if (!t) return;
   t.textContent = msg;
   t.className = tipo === "ok" ? "ok" : "err";
   t.style.display = "block";
@@ -92,6 +201,7 @@ function jsonp(url, params) {
 }
 
 async function guardarProspecto() {
+  const cfg = obtenerCfg();
   const nombre = document.getElementById("f-nombre").value.trim();
   const tel = document.getElementById("f-tel").value.trim();
   if (!nombre || !tel) {
@@ -143,11 +253,8 @@ async function guardarProspecto() {
 }
 
 // ─── Lista ───────────────────────────────────────────────────────────────────
-let prospectos = [];
-let prospectosBase = [];
-let editandoId = null;
-
 async function cargarLista() {
+  const cfg = obtenerCfg();
 
   if (!cfg.url) {
     renderTabla([]);
@@ -165,7 +272,7 @@ async function cargarLista() {
 
     prospectos = Array.isArray(respuesta) ? respuesta : [];
     prospectosBase = [...prospectos];
-
+    actualizarFiltroMes(prospectosBase);
     filtrar();
 
   } catch (e) {
@@ -178,13 +285,51 @@ async function cargarLista() {
 
 }
 
+function mesLabel(key) {
+  if (!key || key === "sin-fecha") return "Sin fecha";
+  const [anio, mes] = key.split("-").map(Number);
+  if (!anio || !mes) return key;
+  const fecha = new Date(anio, mes - 1, 1);
+  return fecha.toLocaleDateString("es-MX", { month: "long", year: "numeric" });
+}
+
+function actualizarFiltroMes(rows) {
+  const wrap = document.querySelector('.custom-select-wrap[data-filter="mes"]');
+  if (!wrap) return;
+  const input = wrap.querySelector('input[type="hidden"]');
+  const menu = wrap.querySelector('.custom-select__menu');
+  const button = wrap.querySelector('.custom-select');
+  const valueSpan = button?.querySelector('.custom-select__value');
+
+  if (!input || !menu || !button || !valueSpan) return;
+
+  const meses = Array.from(new Set((rows || []).map((p) => mesKeyDeRegistro(p)).filter(Boolean))).sort((a, b) => b.localeCompare(a));
+  menu.querySelectorAll('.custom-option').forEach((opt) => opt.remove());
+
+  const opciones = [{ value: "", label: "Todos los meses" }, ...meses.map((key) => ({ value: key, label: mesLabel(key) }))];
+  opciones.forEach(({ value, label }) => {
+    const opt = document.createElement('button');
+    opt.type = 'button';
+    opt.className = 'custom-option';
+    opt.setAttribute('data-value', value);
+    opt.textContent = label;
+    menu.appendChild(opt);
+  });
+
+  const current = input.value || '';
+  const chosen = opciones.find((opt) => opt.value === current);
+  valueSpan.textContent = chosen ? chosen.label : 'Todos los meses';
+  if (!chosen) input.value = '';
+  setupCustomSelects();
+}
+
 function filtrar() {
 
-  if (!Array.isArray(prospectos)) {
+  if (!Array.isArray(prospectosBase)) {
 
     console.error(
-      "prospectos no es un arreglo:",
-      prospectos
+      "prospectosBase no es un arreglo:",
+      prospectosBase
     );
 
     renderTabla([]);
@@ -198,11 +343,13 @@ function filtrar() {
       .toLowerCase();
 
   const est = document.getElementById("filtro-estatus").value;
+  const mes = document.getElementById("filtro-mes").value;
 
   const r = prospectosBase.filter((p) => {
     const nombre = String(p.nombre || "").toLowerCase();
     const telefono = String(p.tel || "").toLowerCase();
     const producto = String(p.tipo || "").toLowerCase();
+    const keyMes = mesKeyDeRegistro(p);
 
     const coincideTexto =
       !q ||
@@ -211,8 +358,9 @@ function filtrar() {
       producto.includes(q);
 
     const coincideEstatus = !est || p.estatus === est;
+    const coincideMes = !mes || keyMes === mes;
 
-    return coincideTexto && coincideEstatus;
+    return coincideTexto && coincideEstatus && coincideMes;
   });
 
   prospectos = r;
@@ -362,7 +510,7 @@ function esc(s) {
 
 // ─── Probar conexión ──────────────────────────────────────────────────────────
 async function probar() {
-  guardarCfg();
+  const cfg = guardarCfg();
   if (!cfg.url) {
     toast("Ingresa primero la URL del script", "err");
     return;
@@ -421,6 +569,7 @@ function editarProspecto(id) {
 }
 // ─── eliminar ────────────────────────────────────────────────────────────
 async function eliminarProspecto(id) {
+  const cfg = obtenerCfg();
   if (!confirm("¿Deseas eliminar este prospecto?")) {
     return;
   }

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agenda de Prospectos</title>
-    <link rel="stylesheet" href="styles.css?v=2" />
-    <script src="script.js?v=2" defer></script>
+    <link rel="stylesheet" href="styles.css?v=3" />
+    <script src="script.js?v=3" defer></script>
   </head>
   <body>
     
@@ -83,29 +83,39 @@
               </div>
             </div>
             <div class="form-group">
-              <div class="input-container">
-                <select id="f-tipo">
-                  <option value="">Selecciona un producto</option>
-                  <option>Joy</option>
-                  <option>Teleton</option>
-                  <option>Clasica</option>
-                  <option>Oro</option>
-                  <option>Descubre</option>
-                  <option>Platinum</option>
-                  <option>Explora</option>
-                </select>
-                <label for="f-tipo">Tipo de tarjeta / producto</label>
+              <div class="input-container custom-select-wrap">
+                <input type="hidden" id="f-tipo" value="" />
+                <button type="button" class="custom-select" data-target="f-tipo" data-placeholder="Selecciona un producto" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="custom-select__value">Selecciona un producto</span>
+                  <span class="custom-select__arrow">▾</span>
+                </button>
+                <div class="custom-select__menu" role="listbox">
+                  <button type="button" class="custom-option" data-value="">Selecciona un producto</button>
+                  <button type="button" class="custom-option" data-value="Joy">Joy</button>
+                  <button type="button" class="custom-option" data-value="Teleton">Teleton</button>
+                  <button type="button" class="custom-option" data-value="Clasica">Clasica</button>
+                  <button type="button" class="custom-option" data-value="Oro">Oro</button>
+                  <button type="button" class="custom-option" data-value="Descubre">Descubre</button>
+                  <button type="button" class="custom-option" data-value="Platinum">Platinum</button>
+                  <button type="button" class="custom-option" data-value="Explora">Explora</button>
+                </div>
+                <label class="custom-select-label" for="f-tipo">Tipo de tarjeta / producto</label>
               </div>
             </div>
             <div class="form-group">
-              <div class="input-container">
-                <select id="f-estatus">
-                  <option value="Interesado">Interesado</option>
-                  <option value="En proceso">En proceso</option>
-                  <option value="Cerrado">Cerrado</option>
-                  <option value="Perdido">Perdido</option>
-                </select>
-                <label for="f-estatus">Estatus</label>
+              <div class="input-container custom-select-wrap">
+                <input type="hidden" id="f-estatus" value="Interesado" />
+                <button type="button" class="custom-select" data-target="f-estatus" data-placeholder="Interesado" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="custom-select__value">Interesado</span>
+                  <span class="custom-select__arrow">▾</span>
+                </button>
+                <div class="custom-select__menu" role="listbox">
+                  <button type="button" class="custom-option" data-value="Interesado">Interesado</button>
+                  <button type="button" class="custom-option" data-value="En proceso">En proceso</button>
+                  <button type="button" class="custom-option" data-value="Cerrado">Cerrado</button>
+                  <button type="button" class="custom-option" data-value="Perdido">Perdido</button>
+                </div>
+                <label class="custom-select-label" for="f-estatus">Estatus</label>
               </div>
             </div>
             <div class="form-group">
@@ -172,15 +182,31 @@
             />
             <label for="buscador">Buscar</label>
           </div>
-          <div class="input-container" style="min-width:140px; max-width:200px;">
-            <select id="filtro-estatus" onchange="filtrar()">
-              <option value="">Todos los estatus</option>
-              <option>Interesado</option>
-              <option>En proceso</option>
-              <option>Cerrado</option>
-              <option>Perdido</option>
-            </select>
-            <label for="filtro-estatus">Estatus</label>
+          <div class="input-container custom-select-wrap" style="min-width:140px; max-width:200px;">
+            <input type="hidden" id="filtro-estatus" value="" />
+            <button type="button" class="custom-select" data-target="filtro-estatus" data-placeholder="Todos los estatus" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select__value">Todos los estatus</span>
+              <span class="custom-select__arrow">▾</span>
+            </button>
+            <div class="custom-select__menu" role="listbox">
+              <button type="button" class="custom-option" data-value="">Todos los estatus</button>
+              <button type="button" class="custom-option" data-value="Interesado">Interesado</button>
+              <button type="button" class="custom-option" data-value="En proceso">En proceso</button>
+              <button type="button" class="custom-option" data-value="Cerrado">Cerrado</button>
+              <button type="button" class="custom-option" data-value="Perdido">Perdido</button>
+            </div>
+            <label class="custom-select-label" for="filtro-estatus">Estatus</label>
+          </div>
+          <div class="input-container custom-select-wrap" data-filter="mes" style="min-width:160px; max-width:220px;">
+            <input type="hidden" id="filtro-mes" value="" />
+            <button type="button" class="custom-select" data-target="filtro-mes" data-placeholder="Todos los meses" aria-haspopup="listbox" aria-expanded="false">
+              <span class="custom-select__value">Todos los meses</span>
+              <span class="custom-select__arrow">▾</span>
+            </button>
+            <div class="custom-select__menu" role="listbox">
+              <button type="button" class="custom-option" data-value="">Todos los meses</button>
+            </div>
+            <label class="custom-select-label" for="filtro-mes">Mes</label>
           </div>
           <button class="btn btn-sm" onclick="cargarLista()">
             ↻ Actualizar
@@ -247,6 +273,7 @@
                 <input
                   type="url"
                   id="cfg-url"
+                  value="https://script.google.com/macros/s/AKfycbwUfxgup-tQwpIHLvRrrZGjjnpdgiUvkDe9ki1qV1lIoohxmmruHXaPzpbeXe1phg/exec"
                   placeholder="https://script.google.com/macros/s/..."
                   oninput="guardarCfg()"
                 />
@@ -266,6 +293,7 @@
               <input
                 type="text"
                 id="cfg-sheet"
+                value="Prospectos"
                 placeholder="Prospectos"
                 oninput="guardarCfg()"
               />
@@ -273,17 +301,6 @@
             </div>
           </div>
 
-          <details>
-            <summary>Ver código para Apps Script</summary>
-            <pre id="code-block"></pre>
-            <button
-              class="btn btn-sm"
-              style="margin-top: 8px"
-              onclick="copiarCodigo()"
-            >
-              Copiar código
-            </button>
-          </details>
         </div>
       </div>
     </div>
