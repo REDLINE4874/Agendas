@@ -317,9 +317,16 @@ function actualizarFiltroMes(rows) {
   });
 
   const current = input.value || '';
-  const chosen = opciones.find((opt) => opt.value === current);
+  const today = new Date();
+  const currentMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+  const hasCurrentMonth = meses.includes(currentMonthKey);
+  const chosen = opciones.find((opt) => opt.value === (current || (hasCurrentMonth ? currentMonthKey : "")));
   valueSpan.textContent = chosen ? chosen.label : 'Todos los meses';
-  if (!chosen) input.value = '';
+  if (!chosen) {
+    input.value = '';
+  } else {
+    input.value = chosen.value;
+  }
   setupCustomSelects();
 }
 
