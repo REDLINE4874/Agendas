@@ -3,7 +3,7 @@
 const APPS_SCRIPT_CODE = `
 `;
 
-const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUfxgup-tQwpIHLvRrrZGjjnpdgiUvkDe9ki1qV1lIoohxmmruHXaPzpbeXe1phg/exec";
+const DEFAULT_SCRIPT_URL = "";
 const DEFAULT_SHEET_NAME = "Prospectos";
 
 const codeBlock = document.getElementById("code-block");
