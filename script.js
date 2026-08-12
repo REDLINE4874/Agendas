@@ -152,7 +152,7 @@ function cambiarTab(id, btn) {
     .forEach((p) => p.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("panel-" + id).classList.add("active");
-  if (id === "lista") cargarLista();
+  if (id === "lista" || id === "hoy") cargarLista();
 }
 
 // ─── Formulario ──────────────────────────────────────────────────────────────
@@ -274,6 +274,7 @@ async function cargarLista() {
     prospectosBase = [...prospectos];
     actualizarFiltroMes(prospectosBase);
     filtrar();
+    renderHoy();
 
   } catch (e) {
 
@@ -421,6 +422,116 @@ function agruparPorMes(rows) {
       return acc;
     }, {}),
   ).sort((a, b) => b[0].localeCompare(a[0]));
+}
+
+// ─── Seguimiento hoy ──────────────────────────────────────────────────────────
+function parseFechaProspecto(fechaStr) {
+  // fecha viene como DD/MM/YYYY desde el backend
+  const partes = String(fechaStr || "").split("/");
+  if (partes.length !== 3) return null;
+  const [dia, mes, anio] = partes.map(Number);
+  if (!dia || !mes || !anio) return null;
+  const d = new Date(anio, mes - 1, dia);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function inicioDeHoy() {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  return hoy;
+}
+
+function esHoy(p) {
+  const f = parseFechaProspecto(p.fecha);
+  if (!f) return false;
+  return f.getTime() === inicioDeHoy().getTime();
+}
+
+function actualizarBadgeHoy(cantidad) {
+  const badge = document.getElementById("badge-hoy");
+  if (!badge) return;
+  if (cantidad > 0) {
+    badge.textContent = cantidad > 99 ? "99+" : String(cantidad);
+    badge.style.display = "inline-flex";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+function renderHoy() {
+  const w = document.getElementById("tabla-hoy-wrap");
+  const label = document.getElementById("hoy-fecha-label");
+  if (!w) return;
+
+  const base = Array.isArray(prospectosBase) ? prospectosBase : [];
+  // Únicamente prospectos cuya fecha de seguimiento es exactamente hoy.
+  // "Mis prospectos" sigue siendo la base completa con todos los estatus.
+  const deHoy = base.filter((p) => esHoy(p));
+
+  if (label) {
+    const hoyTxt = inicioDeHoy().toLocaleDateString("es-MX", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    label.textContent = "Hoy es " + hoyTxt;
+  }
+
+  actualizarBadgeHoy(deHoy.length);
+
+  if (!deHoy.length) {
+    w.innerHTML = `
+      <div class="empty">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <p>Nada pendiente por hoy</p>
+        <small>No hay prospectos con seguimiento programado para el día de hoy.</small>
+      </div>
+    `;
+    return;
+  }
+
+  w.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Producto</th>
+            <th>Estatus</th>
+            <th>Seguimiento</th>
+            <th>Notas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>${deHoy
+          .map(
+            (p) => `<tr>
+              <td class="td-nombre">${esc(p.nombre)}</td>
+              <td>${esc(p.tel)}</td>
+              <td>${esc(p.tipo) || "—"}</td>
+              <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
+              <td>${esc(p.fecha) || "—"}</td>
+              <td>${
+                p.notas
+                  ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')">Ver nota</button>`
+                  : "—"
+              }</td>
+              <td>
+                <button class="btn btn-sm" onclick="editarProspecto('${p.id}')">✏️</button>
+                <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')">🗑️</button>
+              </td>
+            </tr>`,
+          )
+          .join("")}</tbody>
+      </table>
+    </div>
+  `;
 }
 
 function renderTabla(rows) {
@@ -641,3 +752,20 @@ document.getElementById("modal-nota").addEventListener("click", (event) => {
 cargarCfg();
 const hoy = new Date().toISOString().split("T")[0];
 document.getElementById("f-fecha").value = hoy;
+renderHoy();
+// Carga los datos una vez al iniciar para poder mostrar el contador de
+// "Seguimiento hoy" en la pestaña, sin necesidad de que el usuario la abra.
+if (obtenerCfg().url) {
+  cargarLista();
+}
+
+// Revisa cada minuto si cambió el día (ej. dejaste la app abierta pasada la
+// medianoche) y refresca automáticamente la pestaña "Seguimiento hoy".
+let __diaActual = new Date().toDateString();
+setInterval(() => {
+  const diaAhora = new Date().toDateString();
+  if (diaAhora !== __diaActual) {
+    __diaActual = diaAhora;
+    renderHoy();
+  }
+}, 60000);

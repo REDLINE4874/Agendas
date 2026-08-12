@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agenda de Prospectos</title>
-    <link rel="stylesheet" href="styles.css?v=3" />
-    <script src="script.js?v=3" defer></script>
+    <link rel="stylesheet" href="styles.css?v=5" />
+    <script src="script.js?v=5" defer></script>
   </head>
   <body>
     
@@ -44,6 +44,10 @@
       </div>
 
       <div class="tabs">
+        <button class="tab" onclick="cambiarTab('hoy', this)">
+          🔔 Seguimiento hoy
+          <span id="badge-hoy" class="tab-badge" style="display: none">0</span>
+        </button>
         <button class="tab active" onclick="cambiarTab('nuevo', this)">
           <span class="tab-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
@@ -56,6 +60,7 @@
 
           Mis prospectos
         </button>
+        
         <button class="tab" onclick="cambiarTab('config', this)">
           ⚙ Configuración
         </button>
@@ -228,8 +233,30 @@
         </div>
       </div>
 
+      <!-- SEGUIMIENTO HOY -->
+      <div id="panel-hoy" class="panel">
+        <div class="search-bar">
+          <p id="hoy-fecha-label" style="font-size: 13px; color: var(--text-muted); font-weight: 500; flex: 1;"></p>
+          <button class="btn btn-sm" onclick="cargarLista()">
+            ↻ Actualizar
+          </button>
+        </div>
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div id="tabla-hoy-wrap">
+            <div class="empty">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 3" />
+              </svg>
+              <p>Sin datos todavía</p>
+              <small>Configura tu Google Sheet y agrega el primer prospecto.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- CONFIG -->
-      <div id="panel-config" class="panel">
+        <div id="panel-config" class="panel">
         <!-- <div class="card">
           <p style="font-weight: 600; font-size: 15px; margin-bottom: 1.25rem">
             Conectar con Google Sheets
