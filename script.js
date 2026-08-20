@@ -709,23 +709,7 @@ async function eliminarProspecto(id) {
     toast("Error al eliminar", "err");
   }
 }
-// ─── cambiar tema ────────────────────────────────────────────────────────────
-function toggleTheme() {
-  document.body.classList.toggle("dark");
 
-  localStorage.setItem(
-    "tema",
-    document.body.classList.contains("dark") ? "dark" : "light",
-  );
-}
-
-(function () {
-  const tema = localStorage.getItem("tema");
-
-  if (tema === "dark") {
-    document.body.classList.add("dark");
-  }
-})();
 // ─── modal notas ─────────────────────────────────────────────────────────────────────
 function verNota(nombre, nota) {
   document.body.classList.add("modal-open");

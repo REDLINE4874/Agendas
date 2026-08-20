@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles.css?v=5" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=calendar_clock" />
     <script src="script.js?v=5" defer></script>
+    <script src="src/components/theme-toggle.js" defer></script>
   </head>
   <body>
     
@@ -28,23 +29,7 @@
           <h1>Agenda de prospectos</h1>
           <p>Tarjetas de crédito</p>
         </div>
-        <button class="theme-switch" onclick="toggleTheme()" type="button" aria-label="Cambiar tema" title="Cambiar tema">
-          <span class="theme-switch__track">
-            <span class="theme-switch__thumb">
-              <span class="theme-switch__icon theme-switch__icon--sun" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="4.2"></circle>
-                  <path d="M12 2.5v2.2M12 19.3v2.2M4.7 12H2.5M21.5 12h-2.2M5.9 5.9l-1.6-1.6M19.7 19.7l-1.6-1.6M5.9 18.1l-1.6 1.6M19.7 4.3l-1.6 1.6"></path>
-                </svg>
-              </span>
-              <span class="theme-switch__icon theme-switch__icon--moon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M20 13.4A8 8 0 1 1 10.6 4a6.5 6.5 0 1 0 9.4 9.4Z"></path>
-                </svg>
-              </span>
-            </span>
-          </span>
-        </button>
+         <theme-toggle dark-class="dark" size:"40"></theme-toggle>
       </div>
 
       <div class="tabs">
