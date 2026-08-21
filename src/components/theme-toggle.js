@@ -15,24 +15,11 @@
  *     - sm  (pequeño,  38x20px)
  *     - md  (mediano,  52x28px) — valor por defecto si no se especifica
  *     - lg  (grande,   64x34px)
- *   O dale cualquier número (la ALTURA en px) y el resto se calcula
- *   proporcionalmente, para un tamaño 100% a tu medida:
- *     <theme-toggle size="40"></theme-toggle>
- *     <theme-toggle size="16"></theme-toggle>
- *   Ejemplo con preset:  <theme-toggle size="sm"></theme-toggle>
- *
- *   Para control aún más fino (ancho y alto de forma independiente),
- *   puedes sobrescribir las variables CSS directamente desde tu página,
- *   sin tocar este archivo:
- *     <theme-toggle style="--w:90px; --h:30px; --pad:3px; --knob:24px; --tx:57px;"></theme-toggle>
- *
- * INTEGRACIÓN CON TU CSS EXISTENTE:
- *   Por defecto, el componente activa la clase "dark-mode" en <body>:
- *         body.dark-mode { ... }
- *   Si tu CSS usa otro nombre (por ejemplo, solo "dark"), dile al
- *   componente cuál usar con el atributo "dark-class":
- *     <theme-toggle dark-class="dark"></theme-toggle>
- *
+ *   Ejemplo:  <theme-toggle size="sm"></theme-toggle>
+ * ***************************************************************************************
+ *      si se requiere otro valor solo coloca un numero en la equita del html, ejemplo: 
+ *      <theme-toggle size="40"></theme-toggle> y el tamaño se ajustará a 40px de ancho.
+ *******************************************************************************************
  * El componente:
  *   - Activa la clase "dark-mode" en <body> (misma convención que el CSS existente):
  *         body.dark-mode { ... }
@@ -46,7 +33,7 @@
 
 class ThemeToggle extends HTMLElement {
   static get observedAttributes() {
-    return ['size', 'dark-class'];
+    return ['size'];
   }
 
   constructor() {
@@ -150,7 +137,7 @@ class ThemeToggle extends HTMLElement {
           background:#ffb648;
           box-shadow:0 3px 8px rgba(0,0,0,.25);
           transform:translateX(0);
-          transition:transform .55s cubic-bezier(.68,-0.4,.27,1.4), background .5s ease;
+          transition:transform .3s cubic-bezier(.68,-0.4,.27,1.4), background .3s ease;
         }
         .switch.dark .knob{
           transform:translateX(var(--tx));
@@ -183,51 +170,12 @@ class ThemeToggle extends HTMLElement {
     this.$btn = this.shadowRoot.querySelector('.switch');
     this.$btn.addEventListener('click', () => this.toggle());
 
-    this._applySize(this.getAttribute('size'));
-
     // Estado inicial: localStorage > preferencia del sistema
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDark = saved ? saved === 'dark' : prefersDark;
 
     this._setTheme(initialDark, { persist: false });
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'size' && this.$btn) {
-      this._applySize(newValue);
-    }
-  }
-
-  // Si "size" es sm/md/lg, deja que las reglas :host([size="..."]) del CSS
-  // hagan el trabajo. Si es un número, calcula --w/--h/--pad/--knob/--tx
-  // proporcionalmente a partir de las proporciones del tamaño "md" y las
-  // aplica como estilo inline (con más prioridad que los presets).
-  _applySize(value) {
-    const props = ['--w', '--h', '--pad', '--knob', '--tx'];
-
-    if (value === 'sm' || value === 'lg' || !value) {
-      props.forEach(p => this.style.removeProperty(p));
-      return;
-    }
-
-    const h = parseFloat(value);
-    if (isNaN(h) || h <= 0) {
-      props.forEach(p => this.style.removeProperty(p));
-      return;
-    }
-
-    // Proporciones tomadas del tamaño "md" (52 x 28)
-    const w = h * (52 / 28);
-    const pad = h * (3 / 28);
-    const knob = h * (22 / 28);
-    const tx = w - knob - pad * 2;
-
-    this.style.setProperty('--h', `${h}px`);
-    this.style.setProperty('--w', `${w.toFixed(1)}px`);
-    this.style.setProperty('--pad', `${pad.toFixed(1)}px`);
-    this.style.setProperty('--knob', `${knob.toFixed(1)}px`);
-    this.style.setProperty('--tx', `${tx.toFixed(1)}px`);
   }
 
   toggle() {
@@ -239,11 +187,9 @@ class ThemeToggle extends HTMLElement {
     this.$btn.classList.toggle('dark', isDark);
     this.$btn.setAttribute('aria-checked', String(isDark));
 
-    // Activa el modo oscuro con la clase que tu CSS espera.
-    // Por defecto "dark-mode"; cámbiala con el atributo dark-class="dark"
-    // si tu página usa otro nombre.
-    const darkClass = this.getAttribute('dark-class') || 'dark-mode';
-    document.body.classList.toggle(darkClass, isDark);
+    // Activa el modo oscuro con la MISMA convención que ya usa tu CSS:
+    // body.dark-mode { ... }
+    document.body.classList.toggle('dark-mode', isDark);
 
     if (persist) {
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
