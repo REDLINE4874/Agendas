@@ -541,7 +541,7 @@ function renderHoy() {
               <td>${esc(p.fecha) || "—"}</td>
               <td>${
                 p.notas
-                  ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')">Ver nota</button>`
+                  ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
                   : "—"
               }</td>
               <td>
@@ -624,7 +624,7 @@ function renderTabla(rows) {
                 <td class="td-registro">${esc(p.registro) || "—"}</td>
                 <td>${
                   p.notas
-                    ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')">Ver nota</button>`
+                    ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
                     : "—"
                 }</td>
                 <td>
