@@ -2,6 +2,8 @@
 // Acceso: Cualquier usuario (Anyone, even anonymous)
 
 const HOJA = "Prospectos";
+const CACHE_KEY = "prospectos_lista";
+const CACHE_SEGUNDOS = 60;
 
 function doGet(e) {
 
@@ -39,6 +41,10 @@ function doGet(e) {
   return ContentService
     .createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function invalidarCache() {
+  CacheService.getScriptCache().remove(CACHE_KEY);
 }
 
 function guardar(p) {
@@ -82,10 +88,16 @@ function guardar(p) {
     hoy
   ]);
 
-  return { ok: true };
+  invalidarCache();
+
+  return { ok: true, id: id };
 }
 
 function listar() {
+
+  const cache = CacheService.getScriptCache();
+  const cacheado = cache.get(CACHE_KEY);
+  if (cacheado) return JSON.parse(cacheado);
 
   const ss = SpreadsheetApp.getActiveSpreadsheet();
 
@@ -97,33 +109,31 @@ function listar() {
     .getRange(2, 1, sheet.getLastRow() - 1, 8)
     .getValues();
 
-  return filas.map(r => ({
+  const tz = Session.getScriptTimeZone();
 
-  id: r[0],
-  nombre: r[1],
-  tel: r[2],
-  tipo: r[3],
-  estatus: r[4],
+  const resultado = filas.map(r => ({
 
-  fecha: r[5]
-    ? Utilities.formatDate(
-        new Date(r[5]),
-        Session.getScriptTimeZone(),
-        "dd/MM/yyyy"
-      )
-    : "",
+    id: r[0],
+    nombre: r[1],
+    tel: r[2],
+    tipo: r[3],
+    estatus: r[4],
 
-  notas: r[6],
+    fecha: r[5]
+      ? Utilities.formatDate(new Date(r[5]), tz, "dd/MM/yyyy")
+      : "",
 
-  registro: r[7]
-    ? Utilities.formatDate(
-        new Date(r[7]),
-        Session.getScriptTimeZone(),
-        "dd/MM/yyyy"
-      )
-    : ""
+    notas: r[6],
 
-}));
+    registro: r[7]
+      ? Utilities.formatDate(new Date(r[7]), tz, "dd/MM/yyyy")
+      : ""
+
+  }));
+
+  cache.put(CACHE_KEY, JSON.stringify(resultado), CACHE_SEGUNDOS);
+
+  return resultado;
 }
 
 function editar(p) {
@@ -145,6 +155,8 @@ function editar(p) {
       sheet.getRange(i + 1, 6).setValue(p.fecha);
       sheet.getRange(i + 1, 7).setValue(p.notas);
 
+      invalidarCache();
+
       return { ok: true };
     }
   }
@@ -165,6 +177,8 @@ function eliminar(id) {
     if (String(datos[i][0]) === String(id)) {
 
       sheet.deleteRow(i + 1);
+
+      invalidarCache();
 
       return { ok: true };
     }

@@ -6,6 +6,12 @@ const APPS_SCRIPT_CODE = `
 const DEFAULT_SCRIPT_URL = "";
 const DEFAULT_SHEET_NAME = "Prospectos";
 
+// Cuánto tiempo (ms) se considera "fresca" la última carga antes de volver
+// a golpear el Apps Script al cambiar de pestaña. El caché del backend ya
+// evita relecturas pesadas del Sheet, esto solo evita llamadas JSONP de más.
+const MS_CONSIDERADO_FRESCO = 30000;
+let ultimaCarga = 0;
+
 const codeBlock = document.getElementById("code-block");
 if (codeBlock) {
   codeBlock.textContent = APPS_SCRIPT_CODE;
@@ -152,7 +158,7 @@ function cambiarTab(id, btn) {
     .forEach((p) => p.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("panel-" + id).classList.add("active");
-  if (id === "lista" || id === "hoy") cargarLista();
+  if (id === "lista" || id === "hoy") cargarListaSiHaceFalta();
 }
 
 // ─── Formulario ──────────────────────────────────────────────────────────────
@@ -171,7 +177,7 @@ function limpiarForm() {
 }
 
 // ─── JSONP helper (única forma confiable de leer de Apps Script sin CORS) ─────
-function jsonp(url, params) {
+function jsonp(url, params, timeoutMs) {
   return new Promise((resolve, reject) => {
     const cbName =
       "_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
@@ -179,7 +185,7 @@ function jsonp(url, params) {
       delete window[cbName];
       script.remove();
       reject(new Error("timeout"));
-    }, 10000);
+    }, timeoutMs || 20000); // 20s: da margen al cold start de Apps Script
 
     window[cbName] = (data) => {
       clearTimeout(timeout);
@@ -240,7 +246,9 @@ async function guardarProspecto() {
 
       limpiarForm();
 
-      cargarLista();
+      // El guardado invalida el caché del servidor, así que forzamos
+      // una recarga real en vez de usar la versión "fresca" en memoria.
+      await cargarLista();
     } else {
       toast("El script respondió con un error", "err");
     }
@@ -272,6 +280,7 @@ async function cargarLista() {
 
     prospectos = Array.isArray(respuesta) ? respuesta : [];
     prospectosBase = [...prospectos];
+    ultimaCarga = Date.now();
     actualizarFiltroMes(prospectosBase);
     filtrar();
     renderHoy();
@@ -280,10 +289,23 @@ async function cargarLista() {
 
     console.error(e);
 
+    toast("No se pudo conectar con la hoja de cálculo", "err");
     renderTabla([]);
 
   }
 
+}
+
+// Evita relecturas JSONP innecesarias al cambiar de pestaña cuando los
+// datos siguen frescos (el backend ya cachea, pero esto ahorra hasta la
+// ida y vuelta de red). Si ya pasó el umbral, recarga de verdad.
+async function cargarListaSiHaceFalta() {
+  if (Date.now() - ultimaCarga < MS_CONSIDERADO_FRESCO) {
+    filtrar();
+    renderHoy();
+    return;
+  }
+  await cargarLista();
 }
 
 function mesLabel(key) {
@@ -701,7 +723,8 @@ async function eliminarProspecto(id) {
     if (r.ok) {
       toast("Prospecto eliminado", "ok");
 
-      cargarLista();
+      // El borrado invalida el caché del servidor: forzamos recarga real.
+      await cargarLista();
     } else {
       toast("No se pudo eliminar", "err");
     }
