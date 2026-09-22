@@ -16,6 +16,15 @@
     --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   }
 
+  
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+  }
+
   /* ── Base ── */
   body { font-family: "Quicksand", sans-serif; background: var(--bg-2); color: var(--text); min-height: 100vh; }
   .app { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
@@ -65,7 +74,7 @@
   }
   .date-picker-btn:hover { background: rgba(17, 17, 17, 0.08); color: var(--text); }
   .date-picker-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  #f-fecha { padding-right: 40px; }
+ 
   label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
 
   /* ===== Floating / inline labels for inputs ===== */
@@ -149,7 +158,7 @@
   }
   .custom-select {
     width: 100%; min-width: 0;
-    padding: 10px 40px 10px 14px;
+    padding: 10px 20px 10px 14px;
     border: 1px solid var(--input-border);
     border-radius: 12px;
     font-size: 12px; font-family: inherit;

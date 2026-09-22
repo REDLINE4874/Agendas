@@ -545,8 +545,8 @@ function renderHoy() {
                   : "—"
               }</td>
               <td>
-                <button class="btn btn-sm" onclick="editarProspecto('${p.id}')">✏️</button>
-                <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')">🗑️</button>
+                <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
+                <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
               </td>
             </tr>`,
           )
@@ -628,8 +628,10 @@ function renderTabla(rows) {
                     : "—"
                 }</td>
                 <td>
-                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')">✏️</button>
-                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')">🗑️</button>
+                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
+                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">
+delete
+</span></button>
                 </td>
               </tr>`,
             )
