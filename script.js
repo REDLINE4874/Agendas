@@ -6,12 +6,8 @@ const APPS_SCRIPT_CODE = `
 const DEFAULT_SCRIPT_URL = "";
 const DEFAULT_SHEET_NAME = "Prospectos";
 
-// Cuánto tiempo (ms) se considera "fresca" la última carga antes de volver
-// a golpear el Apps Script al cambiar de pestaña. El caché del backend ya
-// evita relecturas pesadas del Sheet, esto solo evita llamadas JSONP de más.
-const MS_CONSIDERADO_FRESCO = 30000;
-let ultimaCarga = 0;
-
+// El listado solo se actualiza por acción explícita del usuario o al
+// guardar/editar un prospecto; no se recarga en segundo plano.
 const codeBlock = document.getElementById("code-block");
 if (codeBlock) {
   codeBlock.textContent = APPS_SCRIPT_CODE;
@@ -20,6 +16,34 @@ if (codeBlock) {
 let prospectos = [];
 let prospectosBase = [];
 let editandoId = null;
+let cargandoLista = false;
+
+function setBotonesActualizacionEstado(cargando) {
+  document.querySelectorAll('button[onclick*="cargarLista()"]').forEach((btn) => {
+    btn.disabled = cargando;
+    const textoBase = btn.dataset.originalText || btn.textContent.trim();
+    if (!btn.dataset.originalText) btn.dataset.originalText = textoBase;
+    btn.innerHTML = cargando
+      ? '<span class="loader"></span> Actualizando...'
+      : textoBase;
+  });
+}
+
+function mostrarCargaLista() {
+  const contenedor = document.getElementById("tabla-wrap");
+  const contenedorHoy = document.getElementById("tabla-hoy-wrap");
+
+  const loader = `
+    <div class="loading-state">
+      <div class="loading-state__spinner"></div>
+      <p>Actualizando prospectos...</p>
+      <small>Cargando información desde la hoja.</small>
+    </div>
+  `;
+
+  if (contenedor) contenedor.innerHTML = loader;
+  if (contenedorHoy) contenedorHoy.innerHTML = loader;
+}
 
 function obtenerCfg() {
   if (!window.agendaCfg) {
@@ -158,7 +182,10 @@ function cambiarTab(id, btn) {
     .forEach((p) => p.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("panel-" + id).classList.add("active");
-  if (id === "lista" || id === "hoy") cargarListaSiHaceFalta();
+  if (id === "lista" || id === "hoy") {
+    renderHoy();
+    if (id === "lista") renderTabla(prospectos);
+  }
 }
 
 // ─── Formulario ──────────────────────────────────────────────────────────────
@@ -269,6 +296,13 @@ async function cargarLista() {
     return;
   }
 
+  if (cargandoLista) return;
+
+  cargandoLista = true;
+  mostrarCargaLista();
+  setBotonesActualizacionEstado(true);
+  toast("Actualizando prospectos...", "ok");
+
   try {
 
     const respuesta = await jsonp(
@@ -280,10 +314,10 @@ async function cargarLista() {
 
     prospectos = Array.isArray(respuesta) ? respuesta : [];
     prospectosBase = [...prospectos];
-    ultimaCarga = Date.now();
     actualizarFiltroMes(prospectosBase);
     filtrar();
     renderHoy();
+    toast("✓ Prospectos actualizados correctamente", "ok");
 
   } catch (e) {
 
@@ -292,20 +326,18 @@ async function cargarLista() {
     toast("No se pudo conectar con la hoja de cálculo", "err");
     renderTabla([]);
 
+  } finally {
+    cargandoLista = false;
+    setBotonesActualizacionEstado(false);
   }
 
 }
 
-// Evita relecturas JSONP innecesarias al cambiar de pestaña cuando los
-// datos siguen frescos (el backend ya cachea, pero esto ahorra hasta la
-// ida y vuelta de red). Si ya pasó el umbral, recarga de verdad.
+// Solo vuelve a pintar la vista sin consultar el backend; la recarga real
+// ocurre solo cuando el usuario fuerza la actualización o guarda un prospecto.
 async function cargarListaSiHaceFalta() {
-  if (Date.now() - ultimaCarga < MS_CONSIDERADO_FRESCO) {
-    filtrar();
-    renderHoy();
-    return;
-  }
-  await cargarLista();
+  filtrar();
+  renderHoy();
 }
 
 function mesLabel(key) {
@@ -768,13 +800,5 @@ if (obtenerCfg().url) {
   cargarLista();
 }
 
-// Revisa cada minuto si cambió el día (ej. dejaste la app abierta pasada la
-// medianoche) y refresca automáticamente la pestaña "Seguimiento hoy".
-let __diaActual = new Date().toDateString();
-setInterval(() => {
-  const diaAhora = new Date().toDateString();
-  if (diaAhora !== __diaActual) {
-    __diaActual = diaAhora;
-    renderHoy();
-  }
-}, 60000);
+// El refresco de la vista se hace de forma manual o al guardar/editar
+// un prospecto, sin actualización automática cada minuto.
