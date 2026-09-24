@@ -817,17 +817,19 @@ function verNota(nombre, nota) {
   document.body.classList.add("modal-open");
 
   document.getElementById("titulo-nota").textContent =
-    "📝 " + decodeURIComponent(nombre);
+    " " + decodeURIComponent(nombre);
 
   document.getElementById("modal-texto").textContent =
     decodeURIComponent(nota);
 
   document.getElementById("modal-nota").classList.add("active");
+  document.querySelector(".app")?.classList.add("modal-shifted");
 }
 
 function cerrarNota() {
   document.body.classList.remove("modal-open");
   document.getElementById("modal-nota").classList.remove("active");
+  document.querySelector(".app")?.classList.remove("modal-shifted");
 }
 
 document.getElementById("modal-nota").addEventListener("click", (event) => {
