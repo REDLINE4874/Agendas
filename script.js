@@ -172,6 +172,43 @@ function toast(msg, tipo) {
   t._t = setTimeout(() => (t.style.display = "none"), 3500);
 }
 
+function copiarTelefono(valor = "") {
+  const texto = String(valor || document.getElementById("f-tel")?.value || "").trim();
+
+  if (!texto) {
+    toast("No hay un número para copiar", "err");
+    return;
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard
+      .writeText(texto)
+      .then(() => toast("✓ Número copiado al portapapeles", "ok"))
+      .catch(() => fallbackCopy(texto));
+    return;
+  }
+
+  fallbackCopy(texto);
+}
+
+function fallbackCopy(texto) {
+  const temp = document.createElement("textarea");
+  temp.value = texto;
+  temp.setAttribute("readonly", "");
+  temp.style.position = "fixed";
+  temp.style.opacity = "0";
+  document.body.appendChild(temp);
+  temp.select();
+  try {
+    document.execCommand("copy");
+    toast("✓ Número copiado al portapapeles", "ok");
+  } catch (e) {
+    toast("No se pudo copiar el número", "err");
+  } finally {
+    document.body.removeChild(temp);
+  }
+}
+
 // ─── Tabs ────────────────────────────────────────────────────────────────────
 function cambiarTab(id, btn) {
   document
@@ -567,7 +604,10 @@ function renderHoy() {
           .map(
             (p) => `<tr>
               <td class="td-nombre">${esc(p.nombre)}</td>
-              <td>${esc(p.tel)}</td>
+              <td class="phone-cell">
+                <span>${esc(p.tel)}</span>
+                <button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded">content_copy</span></button>
+              </td>
               <td>${esc(p.tipo) || "—"}</td>
               <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
               <td>${esc(p.fecha) || "—"}</td>
@@ -649,7 +689,10 @@ function renderTabla(rows) {
             .map(
               (p) => `<tr>
                 <td class="td-nombre">${esc(p.nombre)}</td>
-                <td>${esc(p.tel)}</td>
+                <td class="phone-cell">
+                  <span>${esc(p.tel)}</span>
+                  <button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded">content_copy</span></button>
+                </td>
                 <td>${esc(p.tipo) || "—"}</td>
                 <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
                 <td>${esc(p.fecha) || "—"}</td>

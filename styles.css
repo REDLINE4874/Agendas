@@ -85,6 +85,47 @@
     position: relative;
   }
 
+  .phone-cell {
+    white-space: nowrap;
+    min-width: 170px;
+    vertical-align: middle;
+  }
+
+  .phone-cell > span {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: calc(100% - 36px);
+    overflow-wrap: anywhere;
+  }
+
+  .copy-phone-row {
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--border);
+    background: rgba(17, 17, 17, 0.03);
+    color: var(--text-muted);
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .copy-phone-row:hover {
+    background: rgba(17, 17, 17, 0.06);
+    border-color: rgba(17, 17, 17, 0.2);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .copy-phone-row .material-symbols-rounded {
+    font-size: 16px;
+    line-height: 1;
+  }
+
   .input-container label,
   .custom-select-label {
     position: absolute;
@@ -382,7 +423,7 @@
   }
   table { width: 100%; min-width: 700px; border-collapse: collapse; font-size: 13px; }
   th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td { padding: 11px 12px; border-bottom: 1px solid var(--bg-2); vertical-align: middle; font-weight: 600; }
+  td { padding: 8px; border-bottom: 1px solid var(--bg-2); vertical-align: middle; font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--bg-2); }
   .td-nombre { font-weight: 600; }
