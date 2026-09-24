@@ -616,9 +616,11 @@ function renderHoy() {
                   ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
                   : "—"
               }</td>
-              <td>
-                <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
-                <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
+              <td class="acciones-cell">
+                <div class="acciones">
+                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
+                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
+                </div>
               </td>
             </tr>`,
           )
@@ -702,11 +704,11 @@ function renderTabla(rows) {
                     ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
                     : "—"
                 }</td>
-                <td>
-                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
-                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">
-delete
-</span></button>
+                <td class="acciones-cell">
+                  <div class="acciones">
+                    <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
+                    <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
+                  </div>
                 </td>
               </tr>`,
             )

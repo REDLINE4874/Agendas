@@ -460,7 +460,9 @@
   .mes-group:last-child { margin-bottom: 0; }
 
   /* ── Action buttons in table ── */
-  .acciones { display: flex; gap: 6px; justify-content: center; }
+  .acciones-cell { white-space: nowrap; }
+  .acciones { display: flex; align-items: center; gap: 6px; justify-content: flex-start; flex-wrap: nowrap; }
+  .acciones .btn { flex-shrink: 0; }
   .btn-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; border: 1px solid transparent; background: none; transition: background .3s, transform .3s, border-color .3s; }
   .btn-icon:hover { background: var(--bg-3); border-color: var(--border); transform: scale(1.08); }
   .btn-icon.del:hover { background: var(--red-light); border-color: #F7C1C1; color: var(--red); }
