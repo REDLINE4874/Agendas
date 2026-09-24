@@ -613,13 +613,13 @@ function renderHoy() {
               <td>${esc(p.fecha) || "—"}</td>
               <td>${
                 p.notas
-                  ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
+                  ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded icono-20">note_stack</span></button>`
                   : "—"
               }</td>
               <td class="acciones-cell">
                 <div class="acciones">
-                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
-                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
+                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">border_color</span></button>
+                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">delete</span></button>
                 </div>
               </td>
             </tr>`,
@@ -693,7 +693,7 @@ function renderTabla(rows) {
                 <td class="td-nombre">${esc(p.nombre)}</td>
                 <td class="phone-cell">
                   <span>${esc(p.tel)}</span>
-                  <button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded">content_copy</span></button>
+                  <button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded ">content_copy</span></button>
                 </td>
                 <td>${esc(p.tipo) || "—"}</td>
                 <td><span class="badge ${badgeClass(p.estatus)}">${esc(p.estatus) || "—"}</span></td>
@@ -701,13 +701,13 @@ function renderTabla(rows) {
                 <td class="td-registro">${esc(p.registro) || "—"}</td>
                 <td>${
                   p.notas
-                    ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded">note_stack</span></button>`
+                    ? `<button class="btn btn-sm" onclick="verNota('${encodeURIComponent(p.nombre)}','${encodeURIComponent(p.notas)}')"><span class="material-symbols-rounded icono-20">note_stack</span></button>`
                     : "—"
                 }</td>
                 <td class="acciones-cell">
                   <div class="acciones">
-                    <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded">border_color</span></button>
-                    <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded">delete</span></button>
+                    <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">border_color</span></button>
+                    <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">delete</span></button>
                   </div>
                 </td>
               </tr>`,
