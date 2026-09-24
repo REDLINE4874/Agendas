@@ -4,40 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agenda de Prospectos</title>
-    <link rel="icon" href="assets/icon/agenda-light.svg" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="assets/icon/agenda-dark.svg" media="(prefers-color-scheme: dark)">
+    <link
+      rel="icon"
+      href="assets/icon/agenda-light.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      href="assets/icon/agenda-dark.svg"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <link rel="stylesheet" href="styles.css?v=5" />
     <!-- ICONS -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=delete,border_color,calendar_clock,calendar_add_on,event_note,settings,sensors,note_stack" />
-    
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0&icon_names=delete,border_color,calendar_clock,calendar_add_on,event_note,settings,sensors,note_stack"
+    />
+
     <script src="script.js?v=5" defer></script>
     <script src="src/components/theme-toggle.js" defer></script>
   </head>
   <body>
-    
     <div class="app">
-      
       <div class="header">
-        
         <div class="header-icon">
-          
-          <svg viewBox="0 0 24 24">
-            <rect x="2" y="3" width="20" height="18" rx="2" />
-            <path d="M8 7h8M8 11h8M8 15h5" />
-          </svg>
+          <img
+            class="header-logo"
+            src="assets/icon/talent.svg"
+            alt="Agenda de prospectos"
+          />
         </div>
-        <div>
+        <div class="header-text">
           <h1>Agenda de prospectos</h1>
           <p>Tarjetas de crédito</p>
         </div>
-        <div style="flex: 1"></div>
         <theme-toggle dark-class="dark" size="30"></theme-toggle>
       </div>
 
       <div class="tabs">
         <button class="tab" onclick="cambiarTab('hoy', this)">
-          <span class="material-symbols-rounded">calendar_clock</span>Seguimiento hoy
+          <span class="material-symbols-rounded">calendar_clock</span
+          >Seguimiento hoy
           <span id="badge-hoy" class="tab-badge" style="display: none">0</span>
         </button>
         <button class="tab active" onclick="cambiarTab('nuevo', this)">
@@ -45,10 +53,9 @@
           <span>Nuevo prospecto</span>
         </button>
         <button class="tab" onclick="cambiarTab('lista', this)">
-
           <span class="material-symbols-rounded">event_note</span>Mis prospectos
         </button>
-        
+
         <button class="tab" onclick="cambiarTab('config', this)">
           <span class="material-symbols-rounded">settings</span>Configuración
         </button>
@@ -78,7 +85,7 @@
             <div class="form-group">
               <div class="input-container">
                 <div class="date-input-wrap">
-                  <input type="date" id="f-fecha" />    
+                  <input type="date" id="f-fecha" />
                 </div>
                 <label for="f-fecha">Fecha de seguimiento</label>
               </div>
@@ -87,37 +94,117 @@
             <div class="form-group">
               <div class="input-container custom-select-wrap">
                 <input type="hidden" id="f-tipo" value="" />
-                <button type="button" class="custom-select" data-target="f-tipo" data-placeholder="Selecciona un producto" aria-haspopup="listbox" aria-expanded="false">
-                  <span class="custom-select__value">Selecciona un producto</span>
+                <button
+                  type="button"
+                  class="custom-select"
+                  data-target="f-tipo"
+                  data-placeholder="Selecciona un producto"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
+                  <span class="custom-select__value"
+                    >Selecciona un producto</span
+                  >
                   <span class="custom-select__arrow">▾</span>
                 </button>
                 <div class="custom-select__menu" role="listbox">
-                  <button type="button" class="custom-option" data-value="">Selecciona un producto</button>
-                  <button type="button" class="custom-option" data-value="Joy">Joy</button>
-                  <button type="button" class="custom-option" data-value="Teleton">Teleton</button>
-                  <button type="button" class="custom-option" data-value="Clasica">Clasica</button>
-                  <button type="button" class="custom-option" data-value="Oro">Oro</button>
-                  <button type="button" class="custom-option" data-value="Descubre">Descubre</button>
-                  <button type="button" class="custom-option" data-value="Platinum">Platinum</button>
-                  <button type="button" class="custom-option" data-value="Explora">Explora</button>
+                  <button type="button" class="custom-option" data-value="">
+                    Selecciona un producto
+                  </button>
+                  <button type="button" class="custom-option" data-value="Joy">
+                    Joy
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Teleton"
+                  >
+                    Teleton
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Clasica"
+                  >
+                    Clasica
+                  </button>
+                  <button type="button" class="custom-option" data-value="Oro">
+                    Oro
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Descubre"
+                  >
+                    Descubre
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Platinum"
+                  >
+                    Platinum
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Explora"
+                  >
+                    Explora
+                  </button>
                 </div>
-                <label class="custom-select-label" for="f-tipo">Tipo de tarjeta / producto</label>
+                <label class="custom-select-label" for="f-tipo"
+                  >Tipo de tarjeta / producto</label
+                >
               </div>
             </div>
             <div class="form-group">
               <div class="input-container custom-select-wrap">
                 <input type="hidden" id="f-estatus" value="Interesado" />
-                <button type="button" class="custom-select" data-target="f-estatus" data-placeholder="Interesado" aria-haspopup="listbox" aria-expanded="false">
+                <button
+                  type="button"
+                  class="custom-select"
+                  data-target="f-estatus"
+                  data-placeholder="Interesado"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                >
                   <span class="custom-select__value">Interesado</span>
                   <span class="custom-select__arrow">▾</span>
                 </button>
                 <div class="custom-select__menu" role="listbox">
-                  <button type="button" class="custom-option" data-value="Interesado">Interesado</button>
-                  <button type="button" class="custom-option" data-value="En proceso">En proceso</button>
-                  <button type="button" class="custom-option" data-value="Cerrado">Cerrado</button>
-                  <button type="button" class="custom-option" data-value="Perdido">Perdido</button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Interesado"
+                  >
+                    Interesado
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="En proceso"
+                  >
+                    En proceso
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Cerrado"
+                  >
+                    Cerrado
+                  </button>
+                  <button
+                    type="button"
+                    class="custom-option"
+                    data-value="Perdido"
+                  >
+                    Perdido
+                  </button>
                 </div>
-                <label class="custom-select-label" for="f-estatus">Estatus</label>
+                <label class="custom-select-label" for="f-estatus"
+                  >Estatus</label
+                >
               </div>
             </div>
 
@@ -157,7 +244,10 @@
       <!-- LISTA -->
       <div id="panel-lista" class="panel">
         <div class="search-bar">
-          <div class="input-container" style="flex:1; min-width:160px; max-width:280px;">
+          <div
+            class="input-container"
+            style="flex: 1; min-width: 160px; max-width: 280px"
+          >
             <input
               type="text"
               id="buscador"
@@ -166,29 +256,72 @@
             />
             <label for="buscador">Buscar</label>
           </div>
-          <div class="input-container custom-select-wrap" style="min-width:140px; max-width:200px;">
+          <div
+            class="input-container custom-select-wrap"
+            style="min-width: 140px; max-width: 200px"
+          >
             <input type="hidden" id="filtro-estatus" value="" />
-            <button type="button" class="custom-select" data-target="filtro-estatus" data-placeholder="Todos los estatus" aria-haspopup="listbox" aria-expanded="false">
+            <button
+              type="button"
+              class="custom-select"
+              data-target="filtro-estatus"
+              data-placeholder="Todos los estatus"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
               <span class="custom-select__value">Todos los estatus</span>
               <span class="custom-select__arrow">▾</span>
             </button>
             <div class="custom-select__menu" role="listbox">
-              <button type="button" class="custom-option" data-value="">Todos los estatus</button>
-              <button type="button" class="custom-option" data-value="Interesado">Interesado</button>
-              <button type="button" class="custom-option" data-value="En proceso">En proceso</button>
-              <button type="button" class="custom-option" data-value="Cerrado">Cerrado</button>
-              <button type="button" class="custom-option" data-value="Perdido">Perdido</button>
+              <button type="button" class="custom-option" data-value="">
+                Todos los estatus
+              </button>
+              <button
+                type="button"
+                class="custom-option"
+                data-value="Interesado"
+              >
+                Interesado
+              </button>
+              <button
+                type="button"
+                class="custom-option"
+                data-value="En proceso"
+              >
+                En proceso
+              </button>
+              <button type="button" class="custom-option" data-value="Cerrado">
+                Cerrado
+              </button>
+              <button type="button" class="custom-option" data-value="Perdido">
+                Perdido
+              </button>
             </div>
-            <label class="custom-select-label" for="filtro-estatus">Estatus</label>
+            <label class="custom-select-label" for="filtro-estatus"
+              >Estatus</label
+            >
           </div>
-          <div class="input-container custom-select-wrap" data-filter="mes" style="min-width:160px; max-width:220px;">
+          <div
+            class="input-container custom-select-wrap"
+            data-filter="mes"
+            style="min-width: 160px; max-width: 220px"
+          >
             <input type="hidden" id="filtro-mes" value="" />
-            <button type="button" class="custom-select" data-target="filtro-mes" data-placeholder="Todos los meses" aria-haspopup="listbox" aria-expanded="false">
+            <button
+              type="button"
+              class="custom-select"
+              data-target="filtro-mes"
+              data-placeholder="Todos los meses"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
               <span class="custom-select__value">Todos los meses</span>
               <span class="custom-select__arrow">▾</span>
             </button>
             <div class="custom-select__menu" role="listbox">
-              <button type="button" class="custom-option" data-value="">Todos los meses</button>
+              <button type="button" class="custom-option" data-value="">
+                Todos los meses
+              </button>
             </div>
             <label class="custom-select-label" for="filtro-mes">Mes</label>
           </div>
@@ -215,7 +348,15 @@
       <!-- SEGUIMIENTO HOY -->
       <div id="panel-hoy" class="panel">
         <div class="search-bar">
-          <p id="hoy-fecha-label" style="font-size: 13px; color: var(--text-muted); font-weight: 500; flex: 1;"></p>
+          <p
+            id="hoy-fecha-label"
+            style="
+              font-size: 13px;
+              color: var(--text-muted);
+              font-weight: 500;
+              flex: 1;
+            "
+          ></p>
           <button class="btn btn-sm" onclick="cargarLista()">
             ↻ Actualizar
           </button>
@@ -228,54 +369,48 @@
                 <path d="M12 7v5l3 3" />
               </svg>
               <p>Sin datos todavía</p>
-              <small>Configura tu Google Sheet y agrega el primer prospecto.</small>
+              <small
+                >Configura tu Google Sheet y agrega el primer prospecto.</small
+              >
             </div>
           </div>
         </div>
       </div>
 
       <!-- CONFIG -->
-        <div id="panel-config" class="panel">
-        <!-- <div class="card">
+      <div id="panel-config" class="panel">
+        <div class="card">
           <p style="font-weight: 600; font-size: 15px; margin-bottom: 1.25rem">
-            Conectar con Google Sheets
+            Conexión con Agenda
           </p>
 
           <div class="steps">
             <div class="step">
               <div class="step-num">1</div>
               <p>
-                Ve a <strong>Google Sheets</strong>, crea una hoja nueva. En el
-                menú abre <strong>Extensiones → Apps Script</strong>.
+                Coloca en el espacio URL KEY la <strong>"KEY"</strong>,
+                proporcionada por el administrador <strong>(si no la tienes, solicita el
+                acceso).</strong> 
               </p>
             </div>
             <div class="step">
               <div class="step-num">2</div>
               <p>
-                Borra el contenido del editor, pega el código de abajo y guarda
-                con <code>Ctrl+S</code>.
+                Presione el boton <span class="material-symbols-rounded">sensors</span> para probar la conexion con los registros,
+                si todo esta correcto, se mostrara un mensaje de confirmacion.
               </p>
             </div>
             <div class="step">
               <div class="step-num">3</div>
               <p>
-                Haz clic en <strong>Implementar → Nueva implementación</strong>.
-                Tipo: <code>Aplicación web</code>. Acceso:
-                <code>Cualquier usuario</code>. Autoriza y copia la URL.
+                En el espacio <strong>Nombre Sheet</strong> se queda el nombre por defecto <strong>"Prospectos"</strong>.
               </p>
             </div>
-            <div class="step">
-              <div class="step-num">4</div>
-              <p>
-                Pega la URL aquí abajo y presiona
-                <strong>Probar conexión</strong>.
-              </p>
-            </div>
-          </div> -->
+          </div>
 
           <div class="form-group" style="margin-bottom: 1rem">
             <div class="input-row">
-              <div class="input-container" style="flex:1;">
+              <div class="input-container" style="flex: 1">
                 <input
                   type="url"
                   id="cfg-url"
@@ -286,7 +421,7 @@
                 <label for="cfg-url">URL KEY</label>
               </div>
               <button class="btn btn-sm" onclick="probar()">
-              <span class="material-symbols-rounded">sensors</span>
+                <span class="material-symbols-rounded">sensors</span>
               </button>
             </div>
           </div>
@@ -306,33 +441,26 @@
               <label for="cfg-sheet">Nombre Sheet</label>
             </div>
           </div>
-
+          <div class="Note">
+              <p>
+                  <strong>Nota:</strong> Si se presentan problemas de conexion contacte al administrador.
+              </p>
+            </div>
         </div>
       </div>
     </div>
     <!-- Modal de notas -->
-<div id="modal-nota" class="modal">
+    <div id="modal-nota" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="titulo-nota">📝 Nota del prospecto</h3>
 
-  <div class="modal-content">
+          <button class="modal-close" onclick="cerrarNota()">✕</button>
+        </div>
 
-    <div class="modal-header">
-
-      <h3 id="titulo-nota">📝 Nota del prospecto</h3>
-
-      <button
-        class="modal-close"
-        onclick="cerrarNota()">
-        ✕
-      </button>
-
+        <div id="modal-texto" class="modal-body"></div>
+      </div>
     </div>
-
-    <div id="modal-texto" class="modal-body"></div>
-
-  </div>
-
-</div>
     <div id="toast"></div>
-    
   </body>
 </html>
