@@ -1,7 +1,8 @@
 ﻿*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     /* ===== Paleta monocromÃ¡tica (inspirada en el CSS de referencia) ===== */
-    --blue: #111111; --blue-light: #f3f3f3; --blue-dark: #1b1b1b;
+    --accent-color: #111111; --accent-color-dark: #f5f7fa;
+    --blue: var(--accent-color); --blue-light: #f3f3f3; --blue-dark: var(--accent-color);
     --green-light: #f4f9f4; --green-dark: #2f6b3d;
     --amber-light: #f5f5f5; --amber-dark: #4a4a4a;
     --red-light: #fcebeb; --red-dark: #791f1f; --red: #b81c1c;
@@ -30,7 +31,7 @@
   }
 
   /* â”€â”€ Base â”€â”€ */
-  body { font-family: "Quicksand", sans-serif; background: var(--bg-2); color: var(--text); min-height: 100vh; }
+  body { font-family: "Quicksand", sans-serif; background: var(--page-background, var(--bg-2)); color: var(--text); min-height: 100vh; }
   .app { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
 
   /* â”€â”€ Header â”€â”€ */
@@ -40,7 +41,7 @@
   .header-text { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-width: 0; z-index: 0; }
   .header h1 { font-size: 18px; font-weight: 600; }
   .header p { font-size: 13px; color: var(--text-muted); }
-  .header > theme-toggle { margin-left: auto; z-index: 1; }
+  .theme-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; z-index: 1; }
   body.dark .header-logo { filter: brightness(0) invert(1); }
 
   /* â”€â”€ Tabs â”€â”€ */

@@ -235,6 +235,10 @@ class ThemeToggle extends HTMLElement {
     this._setTheme(!isDark, { persist: true });
   }
 
+  setTheme(theme) {
+    this._setTheme(theme === 'dark', { persist: true });
+  }
+
   _setTheme(isDark, { persist }) {
     this.$btn.classList.toggle('dark', isDark);
     this.$btn.setAttribute('aria-checked', String(isDark));

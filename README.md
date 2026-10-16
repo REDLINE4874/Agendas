@@ -9,6 +9,7 @@ Aplicación web estática para registrar y dar seguimiento a prospectos de tarje
 - Filtrar y agrupar prospectos por mes.
 - Copiar teléfonos desde la agenda.
 - Cambiar entre tema claro y oscuro.
+- Elegir un color de fondo; esta acción activa el modo claro automáticamente.
 - Guardar la configuración de conexión en `localStorage`.
 
 ## Estructura del proyecto
@@ -51,6 +52,8 @@ Agendas/
 ```
 
 La lógica JavaScript está separada en módulos dentro de `src/js/modules/`. Los estilos están organizados en `src/styles/modules/` y se cargan desde `src/styles/main.css` mediante `@import`.
+
+El componente [`theme-background-picker.js`](./src/components/theme-background-picker.js) permite elegir el color de fondo y ajusta el contraste de la interfaz. Al seleccionar un fondo personalizado se activa el modo claro automáticamente.
 
 ## Uso local
 

@@ -1,0 +1,61 @@
+body.custom-background .card,
+body.custom-background .mes-group,
+body.custom-background .modal,
+body.custom-background .confirm-modal,
+body.custom-background .modal-content {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body.custom-background .mes-header,
+body.custom-background tr:hover td,
+body.custom-background .tab:hover {
+  background: var(--bg-3);
+}
+
+body.custom-background input,
+body.custom-background select,
+body.custom-background textarea,
+body.custom-background .custom-select,
+body.custom-background .custom-select__menu {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--input-border);
+}
+
+body.custom-background select {
+  background-image: none;
+}
+
+body.custom-background .custom-option {
+  color: var(--input-text);
+}
+
+body.custom-background .custom-option:hover,
+body.custom-background .custom-option.is-selected {
+  background: var(--bg-3);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body.custom-background .modal-header,
+body.custom-background .modal-body {
+  background: var(--bg-3);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body.custom-background .input-container label,
+body.custom-background .custom-select-label {
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+body.custom-background .header-logo {
+  filter: brightness(0) contrast(1) saturate(0) invert(0);
+}
+
+body.custom-background-dark .header-logo {
+  filter: brightness(0) invert(1);
+}

@@ -33,6 +33,7 @@
     <script src="src/js/modules/actions.js?v=6" defer></script>
     <script src="src/js/app.js?v=6" defer></script>
     <script src="src/components/theme-toggle.js" defer></script>
+    <script src="src/components/theme-background-picker.js" defer></script>
   </head>
   <body>
     <div class="app">
@@ -48,10 +49,20 @@
           <h1>Agenda de prospectos</h1>
           <p>Tarjetas de crédito</p>
         </div>
-        <theme-toggle dark-class="dark" size="30"></theme-toggle>
+        <div class="theme-actions" role="group" aria-label="Opciones de apariencia">
+          <span class="theme-actions__title">Apariencia</span>
+          <div class="theme-control">
+            <span class="theme-control__label">Color de fondo</span>
+            <theme-background-picker></theme-background-picker>
+          </div>
+          <div class="theme-control">
+            <span class="theme-control__label">Modo oscuro</span>
+            <theme-toggle dark-class="dark" size="30"></theme-toggle>
+          </div>
+        </div>
       </div>
 
-      <div class="tabs">
+      <nav class="tabs" aria-label="Navegación principal">
         <button class="tab" onclick="cambiarTab('hoy', this)">
           <span class="material-symbols-rounded icono-20">calendar_clock</span
           >Seguimiento hoy
@@ -68,7 +79,7 @@
         <button class="tab" onclick="cambiarTab('config', this)">
           <span class="material-symbols-rounded icono-20">settings</span>Configuración
         </button>
-      </div>
+      </nav>
 
       <!-- NUEVO PROSPECTO -->
       <div id="panel-nuevo" class="panel active">

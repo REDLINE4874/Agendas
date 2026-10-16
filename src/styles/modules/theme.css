@@ -14,9 +14,9 @@
     --input-focus-ring: rgba(255, 255, 255, 0.16);
     --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f5f7fa' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 
-    --blue: #f5f7fa;
+    --blue: var(--accent-color-dark, #f5f7fa);
     --blue-light: rgba(255, 255, 255, 0.08);
-    --blue-dark: #f5f7fa;
+    --blue-dark: var(--accent-color-dark, #f5f7fa);
 
     --green-light: rgba(118, 213, 141, 0.16);
     --green-dark: #76d58d;

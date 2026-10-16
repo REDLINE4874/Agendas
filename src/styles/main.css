@@ -1,4 +1,6 @@
-﻿@import url("modules/base.css");
+@import url("modules/base.css");
+@import url("modules/appearance.css");
+@import url("modules/navigation.css");
 @import url("modules/forms.css");
 @import url("modules/controls.css");
 @import url("modules/tables.css");
@@ -7,3 +9,4 @@
 @import url("modules/theme.css");
 @import url("modules/responsive.css");
 @import url("modules/modal.css");
+@import url("modules/custom-background.css");
