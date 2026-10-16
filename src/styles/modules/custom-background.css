@@ -2,7 +2,10 @@ body.custom-background .card,
 body.custom-background .mes-group,
 body.custom-background .modal,
 body.custom-background .confirm-modal,
-body.custom-background .modal-content {
+body.custom-background .modal-content,
+body.custom-background .theme-actions,
+body.custom-background .btn,
+body.custom-background .tabs {
   background: var(--bg);
   color: var(--text);
   border-color: var(--border);
@@ -43,6 +46,18 @@ body.custom-background .modal-header,
 body.custom-background .modal-body {
   background: var(--bg-3);
   color: var(--text);
+  border-color: var(--border);
+}
+
+body.custom-background .btn-primary {
+  background: var(--bg-3);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+body.custom-background .btn-primary:hover,
+body.custom-background .btn:hover {
+  background: var(--bg-3);
   border-color: var(--border);
 }
 

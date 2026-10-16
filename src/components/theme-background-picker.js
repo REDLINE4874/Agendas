@@ -1,4 +1,7 @@
 class ThemeBackgroundPicker extends HTMLElement {
+  static PROFILE_STORAGE_KEY = "agenda_profile";
+  static BACKGROUND_PROFILE_KEY = "backgroundColor";
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -47,7 +50,7 @@ class ThemeBackgroundPicker extends HTMLElement {
     this.input = this.shadowRoot.querySelector("input");
     this.swatch = this.shadowRoot.querySelector(".swatch");
 
-    const savedColor = localStorage.getItem("background-color");
+    const savedColor = this._getSavedColor();
     this.input.value = this._normalizeColor(savedColor || "#f2f2f2");
     if (savedColor) this._applyColor(this.input.value, false);
 
@@ -56,7 +59,7 @@ class ThemeBackgroundPicker extends HTMLElement {
 
     document.addEventListener("theme-change", (event) => {
       if (event.detail?.theme !== "dark") return;
-      localStorage.removeItem("background-color");
+      this._saveColor("");
       this._clearCustomBackground();
       this.input.value = "#f2f2f2";
       this.swatch.style.background = "#f2f2f2";
@@ -65,6 +68,41 @@ class ThemeBackgroundPicker extends HTMLElement {
 
   _normalizeColor(value) {
     return /^#[0-9a-f]{6}$/i.test(value) ? value : "#f2f2f2";
+  }
+
+  _getSavedColor() {
+    try {
+      const profile = JSON.parse(localStorage.getItem(ThemeBackgroundPicker.PROFILE_STORAGE_KEY) || "{}");
+      if (profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY]) {
+        return profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY];
+      }
+
+      // Migra el valor usado por versiones anteriores.
+      const legacyColor = localStorage.getItem("background-color");
+      if (legacyColor) {
+        this._saveColor(legacyColor);
+        return legacyColor;
+      }
+    } catch (error) {
+      // El selector sigue funcionando aunque el storage esté bloqueado.
+    }
+    return "";
+  }
+
+  _saveColor(color) {
+    try {
+      const profile = JSON.parse(localStorage.getItem(ThemeBackgroundPicker.PROFILE_STORAGE_KEY) || "{}");
+      if (color) {
+        profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY] = color;
+        localStorage.setItem("background-color", color);
+      } else {
+        delete profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY];
+        localStorage.removeItem("background-color");
+      }
+      localStorage.setItem(ThemeBackgroundPicker.PROFILE_STORAGE_KEY, JSON.stringify(profile));
+    } catch (error) {
+      // El color sigue aplicándose visualmente si el storage no está disponible.
+    }
   }
 
   _hexToRgb(hex) {
@@ -84,6 +122,10 @@ class ThemeBackgroundPicker extends HTMLElement {
     return `#${toHex(channel(sourceRgb.red, targetRgb.red))}${toHex(channel(sourceRgb.green, targetRgb.green))}${toHex(channel(sourceRgb.blue, targetRgb.blue))}`;
   }
 
+  _darken(hex, amount) {
+    return this._mix(hex, "#000000", amount);
+  }
+
   _luminance(hex) {
     const { red, green, blue } = this._hexToRgb(hex);
     const values = [red, green, blue].map((value) => {
@@ -95,30 +137,33 @@ class ThemeBackgroundPicker extends HTMLElement {
 
   _applyColor(color, persist) {
     const root = document.documentElement;
-    const isDarkBackground = this._luminance(color) < .52;
-    const surface = isDarkBackground ? "#151a22" : this._mix(color, "#ffffff", .9);
-    const surfaceAlt = isDarkBackground ? "#1a2029" : this._mix(color, "#000000", .04);
+    // Todas las superficies conservan el tono elegido, pero son más oscuras
+    // que el fondo para separar visualmente la información.
+    const surface = this._darken(color, .14);
+    const surfaceAlt = this._darken(color, .22);
+    const inputSurface = this._darken(color, .1);
+    const isDarkSurface = this._luminance(surface) < .52;
 
     root.style.setProperty("--page-background", color);
     root.style.setProperty("--bg-2", color);
     root.style.setProperty("--bg", surface);
     root.style.setProperty("--bg-3", surfaceAlt);
-    root.style.setProperty("--text", isDarkBackground ? "#f5f7fa" : "#101828");
-    root.style.setProperty("--text-muted", isDarkBackground ? "#cbd5e1" : "#69707e");
-    root.style.setProperty("--border", isDarkBackground ? "rgba(255, 255, 255, .18)" : "rgba(15, 23, 42, .14)");
-    root.style.setProperty("--input-bg", isDarkBackground ? "#151a22" : this._mix(color, "#ffffff", .96));
-    root.style.setProperty("--input-border", isDarkBackground ? "rgba(255, 255, 255, .2)" : "rgba(15, 23, 42, .16)");
-    root.style.setProperty("--input-text", isDarkBackground ? "#f5f7fa" : "#101828");
-    root.style.setProperty("--shadow", isDarkBackground ? "0 16px 36px rgba(0, 0, 0, .42)" : "0 2px 12px rgba(15, 23, 42, .12)");
+    root.style.setProperty("--text", isDarkSurface ? "#f5f7fa" : "#101828");
+    root.style.setProperty("--text-muted", isDarkSurface ? "#e2e8f0" : "#3f4652");
+    root.style.setProperty("--border", isDarkSurface ? "rgba(255, 255, 255, .24)" : "rgba(15, 23, 42, .2)");
+    root.style.setProperty("--input-bg", inputSurface);
+    root.style.setProperty("--input-border", isDarkSurface ? "rgba(255, 255, 255, .26)" : "rgba(15, 23, 42, .22)");
+    root.style.setProperty("--input-text", isDarkSurface ? "#f5f7fa" : "#101828");
+    root.style.setProperty("--shadow", isDarkSurface ? "0 16px 36px rgba(0, 0, 0, .42)" : "0 3px 14px rgba(15, 23, 42, .18)");
     document.body.classList.add("custom-background");
-    document.body.classList.toggle("custom-background-dark", isDarkBackground);
+    document.body.classList.toggle("custom-background-dark", isDarkSurface);
     document.body.classList.remove("dark");
 
     const themeToggle = document.querySelector("theme-toggle");
     if (themeToggle?.setTheme) themeToggle.setTheme("light");
 
     this.swatch.style.background = color;
-    if (persist) localStorage.setItem("background-color", color);
+    if (persist) this._saveColor(color);
   }
 
   _clearCustomBackground() {
