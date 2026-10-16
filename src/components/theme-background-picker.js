@@ -12,6 +12,8 @@ class ThemeBackgroundPicker extends HTMLElement {
       <style>
         :host { display: inline-flex; }
         .picker {
+          position: relative;
+          overflow: hidden;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -30,6 +32,10 @@ class ThemeBackgroundPicker extends HTMLElement {
           outline: 3px solid var(--input-focus-ring, rgba(17, 17, 17, .16));
           outline-offset: 2px;
         }
+        .picker:focus-within {
+          outline: 3px solid var(--input-focus-ring, rgba(17, 17, 17, .16));
+          outline-offset: 2px;
+        }
         .swatch {
           width: 16px;
           height: 16px;
@@ -38,15 +44,22 @@ class ThemeBackgroundPicker extends HTMLElement {
           border: 1px solid rgba(100, 116, 139, .45);
           box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7), 0 1px 3px rgba(0, 0, 0, .2);
         }
-        input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+        input {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
       </style>
-      <button class="picker" type="button" aria-label="Elegir color de fondo" title="Elegir color de fondo">
+      <label class="picker" aria-label="Elegir color de fondo" title="Elegir color de fondo">
         <span class="swatch" aria-hidden="true"></span>
-      </button>
-      <input type="color" aria-label="Color de fondo" />
+        <input type="color" aria-label="Color de fondo" />
+      </label>
     `;
 
-    this.button = this.shadowRoot.querySelector(".picker");
     this.input = this.shadowRoot.querySelector("input");
     this.swatch = this.shadowRoot.querySelector(".swatch");
 
@@ -54,8 +67,14 @@ class ThemeBackgroundPicker extends HTMLElement {
     this.input.value = this._normalizeColor(savedColor || "#f2f2f2");
     if (savedColor) this._applyColor(this.input.value, false);
 
-    this.button.addEventListener("click", () => this.input.click());
-    this.input.addEventListener("input", () => this._applyColor(this.input.value, true));
+    let lastAppliedColor = this.input.value;
+    const applySelectedColor = () => {
+      if (this.input.value === lastAppliedColor) return;
+      lastAppliedColor = this.input.value;
+      this._applyColor(this.input.value, true);
+    };
+    this.input.addEventListener("input", applySelectedColor);
+    this.input.addEventListener("change", applySelectedColor);
 
     document.addEventListener("theme-change", (event) => {
       if (event.detail?.theme !== "dark") return;
