@@ -1,0 +1,256 @@
+﻿  /* â”€â”€ Form â”€â”€ */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; min-width: 0; }
+  .form-group.full { grid-column: 1 / -1; }
+  .date-input-wrap { position: relative; }
+  .date-picker-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .date-picker-btn:hover { background: rgba(17, 17, 17, 0.08); color: var(--text); }
+  .date-picker-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+ 
+  label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+
+  /* ===== Floating / inline labels for inputs ===== */
+  .input-container {
+    position: relative;
+  }
+
+  .phone-cell {
+    white-space: nowrap;
+    min-width: 170px;
+    vertical-align: middle;
+  }
+
+  .phone-cell > span {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: calc(100% - 36px);
+    overflow-wrap: anywhere;
+  }
+
+  .copy-phone-row {
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--border);
+    background: rgba(17, 17, 17, 0.03);
+    color: var(--text-muted);
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .copy-phone-row:hover {
+    background: rgba(17, 17, 17, 0.06);
+    border-color: rgba(17, 17, 17, 0.2);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  .copy-phone-row .material-symbols-rounded {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .input-container label,
+  .custom-select-label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .3s ease;
+    pointer-events: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg);
+    z-index: 2;
+    padding: 0 6px;
+    text-transform: none;
+  }
+
+  /* Give extra top padding so the floated label doesn't overlap the value */
+  .input-container input,
+  .input-container textarea,
+  .input-container select {
+    padding-top: 12px;
+  }
+
+  .input-container textarea {
+    padding-top: 12px;
+  }
+
+  /* Hide placeholders so they no longer visually overlap the floating labels */
+  .input-container input::placeholder,
+  .input-container textarea::placeholder {
+    color: transparent;
+    opacity: 0;
+  }
+
+  /* Activate floating label when input is focused or has content.
+     Uses :focus-within for wide support and :has() as progressive enhancement. */
+  .input-container:focus-within label,
+  .input-container:has(input:not(:placeholder-shown)) label,
+  .input-container:has(textarea:not(:placeholder-shown)) label,
+  .input-container:has(select:valid) label,
+  .custom-select-wrap.active .custom-select-label {
+    top: -8px;
+    left: 12px;
+    transform: none;
+    font-size: 13px;
+    color: var(--blue);
+    background: var(--bg);
+    padding: 0 8px;
+    line-height: 1;
+    border-radius: 6px;
+    z-index: 3;
+  }
+
+  /* Dark mode tweak: etiquetas visibles en foco/activo */
+  body.dark .input-container:focus-within label,
+  body.dark .input-container:has(input:not(:placeholder-shown)) label,
+  body.dark .input-container:has(textarea:not(:placeholder-shown)) label,
+  body.dark .input-container:has(select:valid) label {
+    color: var(--blue-dark);
+  }
+  input, select, textarea {
+    width: 100%; min-width: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    font-size: 12px; font-family: inherit;
+    color: var(--input-text);
+    background-color: var(--input-bg);
+    background-image: none;
+    appearance: none; -webkit-appearance: none;
+    transition: border-color .3s, box-shadow .3s, background-color .3s, color .3s, transform .3s ease;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  }
+  .custom-select {
+    width: 100%; min-width: 0;
+    padding: 10px 20px 10px 14px;
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    font-size: 12px; font-family: inherit;
+    color: var(--input-text);
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.88));
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 10px rgba(15, 23, 42, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    text-align: left;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  .custom-select:hover {
+    border-color: rgba(17, 17, 17, 0.45);
+    transform: translateY(-1px);
+  }
+  .custom-select__value { color: var(--input-text); }
+  .custom-select__arrow { color: var(--text-muted); font-size: 14px; }
+  .custom-select-wrap { position: relative; }
+  .custom-select__menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .custom-select-wrap.active .custom-select__menu { display: flex; }
+  .custom-option {
+    width: 100%; border: 1px solid transparent; border-radius: 8px; background: transparent; padding: 9px 10px; text-align: left; color: var(--text); cursor: pointer; font-size: 12px; font-family: inherit;
+    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+  }
+  .custom-option:hover,
+  .custom-option.is-selected {
+    background: linear-gradient(135deg, rgba(243, 243, 243, 0.95), rgba(235, 235, 235, 0.9));
+    color: #1b1b1b;
+    border-color: rgba(17, 17, 17, 0.18);
+    transform: translateX(2px);
+  }
+  select {
+    background-image: var(--select-arrow), linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.88));
+    background-repeat: no-repeat, no-repeat;
+    background-position: right 12px center, center;
+    background-size: 12px 12px, auto;
+    padding: 10px 40px 10px 14px;
+    cursor: pointer;
+    min-height: 42px;
+    line-height: 1.3;
+    color-scheme: light;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05), 0 6px 14px rgba(15, 23, 42, 0.05);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease, background .3s ease;
+  }
+  select:hover {
+    border-color: rgba(17, 17, 17, 0.45);
+    transform: translateY(-1px);
+  }
+  select:focus {
+    animation: selectOpen .22s ease;
+  }
+  select option {
+    color: #101828;
+    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 12px;
+    border-radius: 8px;
+    margin: 2px 0;
+    border: 1px solid transparent;
+    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease;
+  }
+  select option:checked,
+  select option:hover {
+    background: linear-gradient(135deg, rgba(243, 243, 243, 0.95), rgba(235, 235, 235, 0.9));
+    color: #1b1b1b;
+    border-color: rgba(17, 17, 17, 0.18);
+    transform: translateX(2px);
+  }
+  textarea { min-height: 100px; height: auto; padding-top: 12px; resize: vertical; line-height: 1.5; }
+  input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--input-focus-ring), inset 0 1px 2px rgba(15, 23, 42, 0.06);
+    background-color: var(--input-bg);
+  }
+  .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+

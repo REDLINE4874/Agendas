@@ -1,0 +1,22 @@
+﻿  /* â”€â”€ Config steps â”€â”€ */
+  .steps { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.5rem; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--blue-light); color: var(--blue); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step p { font-size: 13px; line-height: 1.6; }
+  .step .material-symbols-rounded {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    line-height: 1;
+    transform: translateY(-1px);
+    margin: 0 2px;
+  }
+  .Note { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+  .Note p {  text-align: center; }
+  .step code { background: var(--bg-3); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: 'Courier New', monospace; font-size: 12px; }
+  .input-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .input-row input { flex: 1; min-width: 0; }
+  pre { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; font-size: 11.5px; font-family: 'Courier New', monospace; overflow-x: auto; white-space: pre; line-height: 1.6; margin-top: .75rem; }
+  details summary { cursor: pointer; font-size: 14px; font-weight: 500; padding: 8px 0; user-select: none; }
+
