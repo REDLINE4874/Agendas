@@ -1,4 +1,4 @@
-﻿  /* â”€â”€ Buttons â”€â”€ */
+  /* ===== Botones ===== */
   .btn { padding: 10px 20px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: background .3s, border-color .3s, transform .3s; background: var(--bg); color: var(--text); white-space: nowrap; }
   .btn:hover { background: var(--bg-3); }
   .btn:active { transform: scale(.98); }
@@ -86,4 +86,3 @@
   body:not(.dark) .theme-switch__icon--moon { opacity: 0; }
   body.dark .theme-switch__icon--sun { opacity: 0; }
   body.dark .theme-switch__icon--moon { opacity: 1; }
-

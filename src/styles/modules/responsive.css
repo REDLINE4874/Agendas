@@ -1,4 +1,4 @@
-﻿  /* â”€â”€ Responsive: tablet â”€â”€ */
+  /* ===== Adaptación: tableta ===== */
   @media (max-width: 900px) {
     .app { padding: 1.5rem; }
     .form-grid { grid-template-columns: 1fr; }
@@ -16,8 +16,7 @@
     }
     .search-bar input, .search-bar select, .search-bar button { width: 100%; max-width: none; min-width: 0; }
   }
-
-  /* â”€â”€ Responsive: mobile â”€â”€ */
+  /* ===== Adaptación: móvil ===== */
   @media (max-width: 600px) {
     .header {
       gap: 10px;
@@ -52,7 +51,7 @@
     #toast { bottom: 1rem; right: 1rem; left: 1rem; text-align: center; }
   }
 
-  /* â”€â”€ Responsive: very small â”€â”€ */
+  /* ===== Adaptación: pantallas muy pequeñas ===== */
   @media (max-width: 380px) {
     .header-icon { width: 36px; height: 36px; }
     .header-logo { width: 36px; height: 36px; }

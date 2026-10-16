@@ -1,16 +1,16 @@
-﻿  /* â”€â”€ Badges â”€â”€ */
+  /* ===== Insignias ===== */
   .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
   .badge-interesado { background: var(--blue-light); color: var(--blue-dark); }
   .badge-proceso { background: var(--amber-light); color: var(--amber-dark); }
   .badge-cerrado { background: var(--green-light); color: var(--green-dark); }
   .badge-perdido { background: var(--red-light); color: var(--red-dark); }
 
-  /* â”€â”€ Search bar â”€â”€ */
+  /* ===== Barra de búsqueda ===== */
   .search-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
   .search-bar input { flex: 1; min-width: 160px; max-width: 280px; }
   .search-bar select { min-width: 140px; max-width: 200px; }
 
-  /* â”€â”€ Table â”€â”€ */
+  /* ===== Tabla ===== */
   .table-wrap {
     max-height: 65vh;
     overflow-x: auto;
@@ -43,7 +43,7 @@
 
 }
 
-  /* â”€â”€ AgrupaciÃ³n por mes â”€â”€ */
+  /* ===== Agrupación por mes ===== */
   .mes-group {
     margin-bottom: 1rem;
     border: 1px solid var(--border);
@@ -58,7 +58,7 @@
   .mes-group table { min-width: 700px; }
   .mes-group:last-child { margin-bottom: 0; }
 
-  /* â”€â”€ Action buttons in table â”€â”€ */
+  /* ===== Botones de acción en la tabla ===== */
   .acciones-cell { white-space: nowrap; }
   .acciones { display: flex; align-items: center; gap: 6px; justify-content: flex-start; flex-wrap: nowrap; }
   .acciones .btn { flex-shrink: 0; }
@@ -67,9 +67,8 @@
   .btn-icon.del:hover { background: var(--red-light); border-color: #F7C1C1; color: var(--red); }
   .btn-icon svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* â”€â”€ Empty state â”€â”€ */
+  /* ===== Estado vacío ===== */
   .empty { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
   .empty svg { width: 40px; height: 40px; stroke: var(--border); fill: none; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; margin: 0 auto 12px; display: block; }
   .empty p { font-size: 15px; font-weight: 500; }
   .empty small { font-size: 13px; }
-

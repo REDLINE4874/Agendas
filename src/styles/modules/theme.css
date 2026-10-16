@@ -1,4 +1,4 @@
-﻿  /* â”€â”€ Dark mode â”€â”€ */
+  /* ===== Modo oscuro ===== */
   body.dark {
     --bg: #11151c;
     --bg-2: #0b0d10;
@@ -205,4 +205,3 @@
     background: linear-gradient(135deg, #ffffff, #e5e7eb);
     box-shadow: 0 4px 16px rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
-

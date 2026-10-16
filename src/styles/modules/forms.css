@@ -1,4 +1,4 @@
-﻿  /* â”€â”€ Form â”€â”€ */
+  /* ===== Formulario ===== */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .form-group { display: flex; flex-direction: column; gap: 5px; width: 100%; min-width: 0; }
   .form-group.full { grid-column: 1 / -1; }
@@ -24,7 +24,7 @@
  
   label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
 
-  /* ===== Floating / inline labels for inputs ===== */
+  /* ===== Etiquetas flotantes o en línea para campos ===== */
   .input-container {
     position: relative;
   }
@@ -87,7 +87,7 @@
     text-transform: none;
   }
 
-  /* Give extra top padding so the floated label doesn't overlap the value */
+  /* Deja espacio superior para que la etiqueta no se superponga al valor */
   .input-container input,
   .input-container textarea,
   .input-container select {
@@ -98,14 +98,14 @@
     padding-top: 12px;
   }
 
-  /* Hide placeholders so they no longer visually overlap the floating labels */
+  /* Oculta los textos de ayuda para que no se superpongan a las etiquetas */
   .input-container input::placeholder,
   .input-container textarea::placeholder {
     color: transparent;
     opacity: 0;
   }
 
-  /* Activate floating label when input is focused or has content.
+  /* Activa la etiqueta cuando el campo tiene foco o contenido.
      Uses :focus-within for wide support and :has() as progressive enhancement. */
   .input-container:focus-within label,
   .input-container:has(input:not(:placeholder-shown)) label,
@@ -124,7 +124,7 @@
     z-index: 3;
   }
 
-  /* Dark mode tweak: etiquetas visibles en foco/activo */
+  /* Ajuste para modo oscuro: etiquetas visibles en foco o estado activo */
   body.dark .input-container:focus-within label,
   body.dark .input-container:has(input:not(:placeholder-shown)) label,
   body.dark .input-container:has(textarea:not(:placeholder-shown)) label,
@@ -253,4 +253,3 @@
     background-color: var(--input-bg);
   }
   .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
-

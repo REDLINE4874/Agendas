@@ -1,6 +1,6 @@
 ﻿*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    /* ===== Paleta monocromÃ¡tica (inspirada en el CSS de referencia) ===== */
+    /* ===== Paleta monocromática (inspirada en el CSS de referencia) ===== */
     --accent-color: #111111; --accent-color-dark: #f5f7fa;
     --blue: var(--accent-color); --blue-light: #f3f3f3; --blue-dark: var(--accent-color);
     --green-light: #f4f9f4; --green-dark: #2f6b3d;
@@ -30,11 +30,11 @@
     font-size: 20px;
   }
 
-  /* â”€â”€ Base â”€â”€ */
+  /* ===== Base ===== */
   body { font-family: "Quicksand", sans-serif; background: var(--page-background, var(--bg-2)); color: var(--text); min-height: 100vh; }
   .app { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
 
-  /* â”€â”€ Header â”€â”€ */
+  /* ===== Encabezado ===== */
   .header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2rem; min-height: 72px; }
   .header-icon { width: 58px; height: 58px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
   .header-logo { display: block; margin-left: 7rem; height: 58px; object-fit: contain; filter: brightness(0) contrast(1) saturate(0) invert(0); transition: filter .25s ease; }
@@ -44,7 +44,7 @@
   .theme-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; z-index: 1; }
   body.dark .header-logo { filter: brightness(0) invert(1); }
 
-  /* â”€â”€ Tabs â”€â”€ */
+  /* ===== Pestañas ===== */
   .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
   .tab { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: none; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; border-radius: var(--radius) var(--radius) 0 0; transition: color .3s, background .3s; white-space: nowrap; flex-shrink: 0; }
@@ -56,6 +56,6 @@
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* â”€â”€ Card â”€â”€ */
+  /* ===== Tarjeta ===== */
   .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
 

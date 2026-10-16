@@ -1,4 +1,4 @@
-﻿  /* ===== MODAL ===== */
+  /* ===== MODAL ===== */
 
 .modal{
   display: none;
@@ -58,7 +58,7 @@ body.dark .modal-header {
   gap:8px;
 }
 
-/* BOTON CERRAR */
+/* ===== Botón de cierre ===== */
 
 .modal-close{
   width: 38px;
@@ -100,7 +100,7 @@ body.modal-open .app {
   opacity: 0.9;
 }
 
-/* CONTENIDO */
+/* ===== Contenido ===== */
 
 .modal-body{
   padding: 20px 22px 24px;
@@ -118,7 +118,7 @@ body.dark .modal-body {
   background: rgba(255, 255, 255, 0.04);
 }
 
-/* SCROLL */
+/* ===== Desplazamiento ===== */
 
 .modal-body::-webkit-scrollbar{
   width:8px;
@@ -129,7 +129,7 @@ body.dark .modal-body {
   border-radius:20px;
 }
 
-/* PIE */
+/* ===== Pie ===== */
 
 .modal-footer{
   padding:16px 22px;
@@ -138,7 +138,7 @@ body.dark .modal-body {
   justify-content:flex-end;
 }
 
-/* ANIMACIONES */
+/* ===== Animaciones ===== */
 
 @keyframes fadeIn{
 
@@ -178,7 +178,7 @@ body.dark .modal-body {
   }
 }
 
-/* MÃ“VIL */
+/* ===== Móvil ===== */
 
 @media (max-width:600px){
 
@@ -201,4 +201,3 @@ body.dark .modal-body {
   }
 
 }
-
