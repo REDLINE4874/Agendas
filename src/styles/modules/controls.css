@@ -3,6 +3,7 @@
   .btn:hover { background: var(--bg-3); }
   .btn:active { transform: scale(.98); }
   .btn:disabled { opacity: .6; cursor: not-allowed; }
+  #btn-cancelar[hidden] { display: none !important; }
   .btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
   .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
   .btn-danger { background: var(--red-light); color: var(--red); border-color: #F7C1C1; }

@@ -2,6 +2,7 @@
 let prospectoNuevaVentaId = null;
 let botonOrigenNuevaVenta = null;
 let accionesProspectoId = null;
+let prospectoEliminarId = null;
 
 function abrirAccionesProspecto(idCodificado) {
   const id = decodeURIComponent(idCodificado);
@@ -26,11 +27,13 @@ function abrirAccionesProspecto(idCodificado) {
   lista.innerHTML = '<div class="modal-actions-grid">' + acciones.join("") + '</div>';
   document.getElementById("modal-acciones").classList.add("active");
   document.body.classList.add("modal-open");
+  document.querySelector(".app")?.classList.add("modal-shifted");
 }
 
 function cerrarAccionesProspecto() {
   document.getElementById("modal-acciones")?.classList.remove("active");
   document.body.classList.remove("modal-open");
+  document.querySelector(".app")?.classList.remove("modal-shifted");
   accionesProspectoId = null;
 }
 
@@ -45,11 +48,19 @@ document.addEventListener("click", (event) => {
     }
     if (action.dataset.modalAction === "agenda") (action.dataset.remove === "true" ? retirarDeAgendaGeneral : publicarEnAgendaGeneral)(id);
     if (action.dataset.modalAction === "edit") editarProspecto(id);
-    if (action.dataset.modalAction === "delete") eliminarProspecto(id);
+    if (action.dataset.modalAction === "delete") {
+      cerrarAccionesProspecto();
+      eliminarProspecto(id);
+      return;
+    }
     cerrarAccionesProspecto();
     return;
   }
   if (event.target.id === "modal-acciones") cerrarAccionesProspecto();
+});
+
+document.getElementById("modal-confirmar-eliminacion")?.addEventListener("click", (event) => {
+  if (event.target.id === "modal-confirmar-eliminacion") cancelarEliminacion();
 });
 
 function fechaLocalInput(date = new Date()) {
@@ -178,9 +189,25 @@ function editarProspecto(id) {
 }
 // ─── eliminar ────────────────────────────────────────────────────────────
 async function eliminarProspecto(id) {
-  if (!confirm("¿Deseas eliminar este prospecto?")) {
-    return;
-  }
+  const prospecto = prospectosBase.find((item) => String(item.id) === String(id));
+  if (!prospecto) return;
+  prospectoEliminarId = id;
+  document.getElementById("mensaje-confirmar-eliminacion").textContent =
+    `¿Deseas eliminar a ${prospecto.nombre}? Esta acción no se puede deshacer.`;
+  document.getElementById("modal-confirmar-eliminacion").classList.add("active");
+  document.body.classList.add("modal-open");
+}
+
+function cancelarEliminacion() {
+  prospectoEliminarId = null;
+  document.getElementById("modal-confirmar-eliminacion")?.classList.remove("active");
+  document.body.classList.remove("modal-open");
+}
+
+async function confirmarEliminacion() {
+  const id = prospectoEliminarId;
+  cancelarEliminacion();
+  if (!id) return;
 
   try {
     const user = await usuarioActual();

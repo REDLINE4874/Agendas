@@ -88,7 +88,7 @@ async function mostrarUsuarioActual(user) {
   const userLabel = byId("current-user");
   if (!userLabel) return;
   if (!user) { userLabel.textContent = ""; return; }
-  userLabel.textContent = "Usuario: cargando...";
+  userLabel.textContent = "Cargando...";
   try {
     const directProfile = await window.SUPABASE_AUTH_CLIENT
       .from("profiles")
@@ -100,9 +100,9 @@ async function mostrarUsuarioActual(user) {
       const fallback = await window.SUPABASE_AUTH_CLIENT.schema("agendas").rpc("get_current_username");
       username = Array.isArray(fallback.data) ? fallback.data[0]?.username : fallback.data?.username;
     }
-    userLabel.textContent = `Usuario: ${username || "Usuario"}`;
+    userLabel.textContent = username || "Sin nombre";
   } catch (error) {
-    userLabel.textContent = "Usuario: Usuario";
+    userLabel.textContent = "Sin nombre";
   }
 }
 
