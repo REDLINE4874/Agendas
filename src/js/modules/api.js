@@ -1,65 +1,110 @@
 ﻿
-// ─── JSONP helper (única forma confiable de leer de Apps Script sin CORS) ─────
-function jsonp(url, params, timeoutMs) {
-  return new Promise((resolve, reject) => {
-    const cbName =
-      "_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-    const timeout = setTimeout(() => {
-      delete window[cbName];
-      script.remove();
-      reject(new Error("timeout"));
-    }, timeoutMs || 20000); // 20s: da margen al cold start de Apps Script
+// ─── Persistencia Supabase ───────────────────────────────────────────────────
+function agendaTable() {
+  return window.SUPABASE_AUTH_CLIENT.schema("agendas").from("prospectos");
+}
 
-    window[cbName] = (data) => {
-      clearTimeout(timeout);
-      delete window[cbName];
-      script.remove();
-      resolve(data);
-    };
+function formatoFecha(fecha) {
+  if (!fecha) return "";
+  const [anio, mes, dia] = String(fecha).slice(0, 10).split("-");
+  return anio && mes && dia ? `${dia}/${mes}/${anio}` : "";
+}
 
-    const allParams = new URLSearchParams({ ...params, callback: cbName });
-    const script = document.createElement("script");
-    script.src = url + "?" + allParams.toString();
-    script.onerror = () => {
-      clearTimeout(timeout);
-      delete window[cbName];
-      reject(new Error("script error"));
-    };
-    document.head.appendChild(script);
+function mapProspecto(row) {
+  return {
+    ...row,
+    fecha: formatoFecha(row.fecha),
+    fecha_cierre: formatoFecha(row.fecha_cierre),
+    registro: formatoFecha(row.created_at),
+  };
+}
+
+async function usuarioActual() {
+  const { data, error } = await window.SUPABASE_AUTH_CLIENT.auth.getUser();
+  if (error || !data?.user) throw new Error("Sesión no disponible");
+  return data.user;
+}
+
+function fechaHoyLocal() {
+  const hoy = new Date();
+  return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}-${String(hoy.getDate()).padStart(2, "0")}`;
+}
+
+async function enviarNuevaVenta(venta) {
+  const user = await usuarioActual();
+  const { data: prospecto, error: prospectoError } = await agendaTable()
+    .select("id, user_id, nombre, tel, tipo, estatus, fecha_cierre")
+    .eq("id", venta.id).eq("user_id", user.id).single();
+  if (prospectoError || !prospecto) return { ok: false, error: "No se encontró el prospecto." };
+  if (prospecto.estatus !== "Cerrado") return { ok: false, error: "Solo se puede registrar una venta para un prospecto cerrado." };
+  if (venta.fecha > fechaHoyLocal()) return { ok: false, error: "La fecha de cierre no puede ser futura." };
+
+  if (prospecto.fecha_cierre) {
+    const { count } = await window.SUPABASE_AUTH_CLIENT.schema("agendas").from("ventas")
+      .select("id", { count: "exact", head: true }).eq("prospecto_id", prospecto.id).eq("user_id", user.id);
+    if (!count) {
+      await window.SUPABASE_AUTH_CLIENT.schema("agendas").from("ventas").insert({
+        prospecto_id: prospecto.id, user_id: user.id, producto: prospecto.tipo || "",
+        fecha_cierre: prospecto.fecha_cierre, notas: "Cierre anterior al registro del historial",
+      });
+    }
+  }
+  const { error: ventaError } = await window.SUPABASE_AUTH_CLIENT.schema("agendas").from("ventas").insert({
+    prospecto_id: prospecto.id, user_id: user.id, producto: venta.tipo,
+    fecha_cierre: venta.fecha, notas: venta.notas || "",
   });
+  if (ventaError) return { ok: false, error: ventaError.message };
+  const { error: updateError } = await agendaTable().update({ tipo: venta.tipo, fecha_cierre: venta.fecha })
+    .eq("id", prospecto.id).eq("user_id", user.id);
+  return updateError ? { ok: false, error: updateError.message } : { ok: true };
+}
+
+async function obtenerHistorialVentas(id) {
+  const user = await usuarioActual();
+  const { data, error } = await window.SUPABASE_AUTH_CLIENT.schema("agendas").from("ventas")
+    .select("id, producto, fecha_cierre, notas")
+    .eq("prospecto_id", id).eq("user_id", user.id)
+    .order("fecha_cierre", { ascending: false });
+  if (error) throw error;
+  return (data || []).map((venta) => ({ ...venta, fecha: formatoFecha(venta.fecha_cierre) }));
 }
 
 async function guardarProspecto() {
-  const cfg = obtenerCfg();
   const nombre = document.getElementById("f-nombre").value.trim();
   const tel = document.getElementById("f-tel").value.trim();
   if (!nombre || !tel) {
     toast("El nombre y teléfono son obligatorios", "err");
     return;
   }
-  if (!cfg.url) {
-    toast("Primero configura la URL del Apps Script", "err");
-    cambiarTab("config", document.querySelectorAll(".tab")[2]);
-    return;
-  }
-
   const btn = document.getElementById("btn-guardar");
   const btnTxt = document.getElementById("btn-text");
   btn.disabled = true;
   btnTxt.innerHTML = '<span class="loader"></span> Guardando...';
 
   try {
-    const data = await jsonp(cfg.url, {
-      accion: editandoId ? "editar" : "guardar",
-      id: editandoId,
+    const user = await usuarioActual();
+    let fechaCierre = null;
+    if (document.getElementById("f-estatus").value === "Cerrado") {
+      fechaCierre = fechaHoyLocal();
+      if (editandoId) {
+        const { data: anterior } = await agendaTable().select("fecha_cierre").eq("id", editandoId).single();
+        fechaCierre = anterior?.fecha_cierre || fechaCierre;
+      }
+    }
+    const valores = {
       nombre,
       tel,
       tipo: document.getElementById("f-tipo").value,
       estatus: document.getElementById("f-estatus").value,
-      fecha: document.getElementById("f-fecha").value,
+      fecha: document.getElementById("f-fecha").value || null,
+      fecha_cierre: fechaCierre,
       notas: document.getElementById("f-notas").value.trim(),
-    });
-    if (data && data.ok) {
+    };
+    const consulta = editandoId
+      ? agendaTable().update(valores).eq("id", editandoId)
+      : agendaTable().insert({ ...valores, user_id: user.id });
+    const { error } = await consulta;
+    if (!error) {
       toast(
         editandoId
           ? "✓ Prospecto actualizado"
@@ -72,11 +117,9 @@ async function guardarProspecto() {
       // El guardado invalida el caché del servidor, así que forzamos
       // una recarga real en vez de usar la versión "fresca" en memoria.
       await cargarLista();
-    } else {
-      toast("El script respondió con un error", "err");
-    }
+    } else toast("No se pudo guardar el prospecto", "err");
   } catch (e) {
-    toast("Error de conexión. Revisa la URL del script.", "err");
+    toast("Error de conexión con Supabase", "err");
   } finally {
     btn.disabled = false;
     btnTxt.textContent = "Guardar prospecto";
@@ -85,13 +128,6 @@ async function guardarProspecto() {
 
 // ─── Lista ───────────────────────────────────────────────────────────────────
 async function cargarLista() {
-  const cfg = obtenerCfg();
-
-  if (!cfg.url) {
-    renderTabla([]);
-    return;
-  }
-
   if (cargandoLista) return;
 
   cargandoLista = true;
@@ -101,26 +137,26 @@ async function cargarLista() {
 
   try {
 
-    const respuesta = await jsonp(
-      cfg.url,
-      { accion: "listar" }
-    );
-
-    console.log("LISTAR:", respuesta);
-
-    prospectos = Array.isArray(respuesta) ? respuesta : [];
+    const { data, error } = await window.SUPABASE_AUTH_CLIENT.schema("agendas").rpc("list_visible_prospectos");
+    if (error) throw error;
+    prospectos = (data || []).map(mapProspecto);
     prospectosBase = [...prospectos];
+    if (typeof cargarAgendaGeneral === "function") await cargarAgendaGeneral();
+    actualizarSelectProspectos();
     actualizarFiltroMes(prospectosBase);
     filtrar();
+    if (typeof renderCompartidos === "function") renderCompartidos();
     renderHoy();
+    renderReventa();
     toast("✓ Prospectos actualizados correctamente", "ok");
 
   } catch (e) {
 
     console.error(e);
 
-    toast("No se pudo conectar con la hoja de cálculo", "err");
+    toast("No se pudo conectar con Supabase", "err");
     renderTabla([]);
+    renderReventa();
 
   } finally {
     cargandoLista = false;

@@ -66,6 +66,20 @@
   });
 }
 
+function refrescarCustomSelect(id) {
+  const input = document.getElementById(id);
+  const wrap = input?.closest('.custom-select-wrap');
+  const button = wrap?.querySelector('.custom-select');
+  const valueSpan = button?.querySelector('.custom-select__value');
+  if (!input || !button || !valueSpan) return;
+  const option = [...wrap.querySelectorAll('.custom-option')]
+    .find((item) => item.getAttribute('data-value') === (input.value || ''));
+  wrap.querySelectorAll('.custom-option').forEach((item) => {
+    item.classList.toggle('is-selected', item === option);
+  });
+  valueSpan.textContent = option?.textContent || button.getAttribute('data-placeholder') || '';
+}
+
 document.addEventListener('DOMContentLoaded', setupCustomSelects);
 
 

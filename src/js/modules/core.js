@@ -1,7 +1,5 @@
 ﻿// ─── Código Apps Script que el usuario pegará ────────────────────────────────
-// IMPORTANTE: usa JSONP para leer (evita CORS) y no-cors para escribir.
-const APPS_SCRIPT_CODE = `
-`;
+const APPS_SCRIPT_CODE = "";
 
 const DEFAULT_SCRIPT_URL = "";
 const DEFAULT_SHEET_NAME = "Prospectos";
@@ -37,7 +35,7 @@ function mostrarCargaLista() {
     <div class="loading-state">
       <div class="loading-state__spinner"></div>
       <p>Actualizando prospectos...</p>
-      <small>Cargando información desde la hoja.</small>
+      <small>Cargando información desde Supabase.</small>
     </div>
   `;
 

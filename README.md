@@ -96,6 +96,18 @@ La aplicación utiliza JSONP para consultar datos y solicitudes sin credenciales
 
 La URL de Apps Script y el nombre de la hoja se almacenan localmente en el navegador mediante `localStorage`.
 
+## Persistencia en Supabase
+
+La aplicación usa el schema privado `agendas` y la tabla `agendas.prospectos`.
+Ejecuta [`supabase/agendas.sql`](./supabase/agendas.sql) en el SQL Editor de
+Supabase y agrega `agendas` en **Settings > API > Exposed schemas**.
+Las políticas RLS relacionan cada registro con el usuario autenticado mediante
+`user_id`, por lo que cada usuario solo puede consultar y modificar sus propias
+agendas.
+
+Para migrar los datos existentes, exporta la hoja `Prospectos` a CSV e importa
+sus filas en `agendas.prospectos`, asignando el `user_id` del propietario.
+
 ## Dependencias externas
 
 - Google Material Symbols Rounded para los iconos de la interfaz.

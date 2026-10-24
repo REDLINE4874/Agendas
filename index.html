@@ -15,27 +15,35 @@
       media="(prefers-color-scheme: dark)"
     />
 
-    <link rel="stylesheet" href="src/styles/main.css?v=6" />
+    <link rel="stylesheet" href="src/styles/main.css?v=11" />
+    <link rel="stylesheet" href="src/styles/site-auth.css?v=2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
     <!-- ICONS -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0&icon_names=delete,border_color,calendar_clock,calendar_add_on,event_note,settings,sensors,note_stack,content_copy,calendar_month,calendar_today,calendar_view_month,calendar_view_week,calendar_view_day,calendar_view_agenda,calendar_view_timeline,calendar_view_list,calendar_view_module,calendar_view_compact,calendar_view_card,calendar_view_grid,calendar_view_table,calendar_view_chart,calendar_view_map,calendar_view_gallery,calendar_view_slider,calendar_view_carousel,calendar_view_tabs,calendar_view_accordion,calendar_view_tree,calendar_view_timeline_alt,calendar_view_timeline_vertical"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0&icon_names=delete,border_color,calendar_clock,calendar_add_on,event_note,settings,sensors,note_stack,content_copy,calendar_month,calendar_today,calendar_view_month,calendar_view_week,calendar_view_day,calendar_view_agenda,calendar_view_timeline,calendar_view_list,calendar_view_module,calendar_view_compact,calendar_view_card,calendar_view_grid,calendar_view_table,calendar_view_chart,calendar_view_map,calendar_view_gallery,calendar_view_slider,calendar_view_carousel,calendar_view_tabs,calendar_view_accordion,calendar_view_tree,calendar_view_timeline_alt,calendar_view_timeline_vertical,autorenew,add_shopping_cart,history,person_add,public,public_off,group,more_vert,login,logout"
     />
 
-    <script src="src/js/modules/core.js?v=6" defer></script>
-    <script src="src/js/modules/custom-selects.js?v=6" defer></script>
-    <script src="src/js/modules/config.js?v=6" defer></script>
-    <script src="src/js/modules/ui.js?v=6" defer></script>
-    <script src="src/js/modules/navigation.js?v=6" defer></script>
-    <script src="src/js/modules/api.js?v=6" defer></script>
-    <script src="src/js/modules/filters.js?v=6" defer></script>
-    <script src="src/js/modules/views.js?v=6" defer></script>
-    <script src="src/js/modules/actions.js?v=6" defer></script>
-    <script src="src/js/app.js?v=6" defer></script>
-    <script src="src/components/theme-toggle.js" defer></script>
-    <script src="src/components/theme-background-picker.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="src/js/supabase-config.js?v=2" defer></script>
+    <script src="src/js/site-auth.js?v=5" defer></script>
+    <script src="src/js/modules/core.js?v=8" defer></script>
+    <script src="src/js/modules/custom-selects.js?v=8" defer></script>
+    <script src="src/js/modules/date-picker.js?v=1" defer></script>
+    <script src="src/js/modules/ui.js?v=7" defer></script>
+    <script src="src/js/modules/navigation.js?v=8" defer></script>
+    <script src="src/js/modules/api.js?v=8" defer></script>
+    <script src="src/js/modules/sharing.js?v=3" defer></script>
+    <script src="src/js/modules/filters.js?v=7" defer></script>
+    <script src="src/js/modules/views.js?v=8" defer></script>
+    <script src="src/js/modules/actions.js?v=8" defer></script>
+    <script src="src/js/app.js?v=7" defer></script>
+    <script src="src/components/theme-toggle.js?v=7" defer></script>
+    <script src="src/components/theme-background-picker.js?v=7" defer></script>
   </head>
-  <body>
+  <body class="site-auth-pending agendas-ecosystem">
     <div class="app">
       <div class="header">
         <div class="header-icon">
@@ -50,6 +58,11 @@
           <p>Tarjetas de crédito</p>
         </div>
         <div class="theme-actions" role="group" aria-label="Opciones de apariencia">
+          <span class="current-user" id="current-user" aria-live="polite"></span>
+          <button class="agenda-auth-button" id="authButton" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
+            <span class="material-symbols-rounded" aria-hidden="true">logout</span>
+            <span class="sr-only">Cerrar sesión</span>
+          </button>
           
           <div class="theme-control">
             <span class="theme-control__label">Color de fondo</span>
@@ -68,16 +81,26 @@
           >Seguimiento hoy
           <span id="badge-hoy" class="tab-badge" style="display: none">0</span>
         </button>
-        <button class="tab active" onclick="cambiarTab('nuevo', this)">
+        <button class="tab active" id="tab-nuevo" onclick="cambiarTab('nuevo', this)">
           <span class="material-symbols-rounded icono-20">calendar_add_on</span>
           <span>Nuevo prospecto</span>
         </button>
-        <button class="tab" onclick="cambiarTab('lista', this)">
+        <button class="tab" id="tab-lista" onclick="cambiarTab('lista', this)">
           <span class="material-symbols-rounded icono-20">event_note</span>Mis prospectos
         </button>
+        <button class="tab" id="tab-compartidos" onclick="cambiarTab('compartidos', this)">
+          <span class="material-symbols-rounded icono-20">group</span>Compartidos conmigo
+        </button>
 
-        <button class="tab" onclick="cambiarTab('config', this)">
-          <span class="material-symbols-rounded icono-20">settings</span>Configuración
+        <button class="tab" id="tab-reventa" onclick="cambiarTab('reventa', this)">
+          <span class="material-symbols-rounded icono-20">autorenew</span>
+          Reventa disponible
+          <span id="badge-reventa" class="tab-badge" style="display: none">0</span>
+        </button>
+
+        <button class="tab" onclick="cambiarTab('general', this)">
+          <span class="material-symbols-rounded icono-20">public</span>
+          Agenda general
         </button>
       </nav>
 
@@ -105,7 +128,10 @@
             <div class="form-group">
               <div class="input-container">
                 <div class="date-input-wrap">
-                  <input type="date" id="f-fecha" />
+                  <input type="date" id="f-fecha" aria-haspopup="dialog" />
+                  <button type="button" class="date-picker-btn" data-date-target="f-fecha" aria-label="Abrir calendario">
+                    <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
+                  </button>
                 </div>
                 <label for="f-fecha">Fecha de seguimiento</label>
               </div>
@@ -244,8 +270,9 @@
             <button
               class="btn btn-sm"
               id="btn-cancelar"
-              onclick="limpiarForm()"
-              style="display: none"
+              type="button"
+              onclick="cancelarEdicion()"
+              hidden
             >
               Cancelar edición
             </button>
@@ -358,9 +385,22 @@
               </svg>
               <p>Sin datos todavía</p>
               <small
-                >Configura tu Google Sheet y agrega el primer prospecto.</small
+                >Crea tu primer prospecto para comenzar.</small
               >
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPARTIDOS CONMIGO -->
+      <div id="panel-compartidos" class="panel">
+        <div class="card">
+          <h2>Compartidos conmigo</h2>
+          <p class="text-muted">Registros que otros usuarios compartieron contigo. El propietario aparece en la tabla.</p>
+        </div>
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div id="tabla-compartidos-wrap">
+            <div class="empty"><p>No tienes registros compartidos</p><small>Cuando otro usuario comparta un cliente contigo aparecerá aquí.</small></div>
           </div>
         </div>
       </div>
@@ -390,15 +430,58 @@
               </svg>
               <p>Sin datos todavía</p>
               <small
-                >Configura tu Google Sheet y agrega el primer prospecto.</small
+                >Crea tu primer prospecto para comenzar.</small
               >
             </div>
           </div>
         </div>
       </div>
 
-      <!-- CONFIG -->
-      <div id="panel-config" class="panel">
+      <!-- REVENTA DISPONIBLE -->
+      <div id="panel-reventa" class="panel">
+        <div class="search-bar">
+          <p id="reventa-resumen" style="font-size: 13px; color: var(--text-muted); font-weight: 500; flex: 1">
+            Clientes cerrados que ya cumplieron 3 meses y 5 días desde su cierre.
+          </p>
+          <button class="btn btn-sm" onclick="cargarLista()">↻ Actualizar</button>
+        </div>
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div id="tabla-reventa-wrap">
+            <div class="empty"><p>Sin datos todavía</p><small>Carga tus prospectos para consultar clientes elegibles.</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPARTIR REGISTRO -->
+      <div id="modal-compartir" class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-compartir">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="titulo-compartir">Compartir registro</h3>
+            <button class="modal-close" type="button" aria-label="Cerrar" onclick="cerrarCompartirProspecto()">✕</button>
+          </div>
+          <div class="modal-body">
+          <p class="text-muted">Comparte este cliente con otro usuario. Puedes permitir solo lectura o edición.</p>
+          <div class="form-grid">
+            <div class="form-group"><div class="input-container custom-select-wrap"><input type="hidden" id="share-usuario" value="" /><button type="button" class="custom-select" data-target="share-usuario" data-placeholder="Selecciona un usuario" aria-haspopup="listbox" aria-expanded="false"><span class="custom-select__value">Cargando usuarios...</span><span class="custom-select__arrow">▾</span></button><div class="custom-select__menu" role="listbox"></div><label class="custom-select-label" for="share-usuario">Usuario destinatario</label></div></div>
+            <div class="form-group"><div class="input-container custom-select-wrap"><input type="hidden" id="share-permiso" value="view" /><button type="button" class="custom-select" data-target="share-permiso" data-placeholder="Solo lectura" aria-haspopup="listbox" aria-expanded="false"><span class="custom-select__value">Solo lectura</span><span class="custom-select__arrow">▾</span></button><div class="custom-select__menu" role="listbox"><button type="button" class="custom-option" data-value="view">Solo lectura</button><button type="button" class="custom-option" data-value="edit">Puede editar</button></div><label class="custom-select-label" for="share-permiso">Permiso</label></div></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" type="button" onclick="compartirProspecto()">Compartir registro</button></div>
+          <div class="card share-access-card"><h2>Accesos actuales</h2><div id="share-list"><div class="empty"><p>No hay accesos compartidos</p></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGENDA GENERAL -->
+      <div id="panel-general" class="panel">
+        <div class="card">
+          <h2>Agenda general</h2>
+          <p class="text-muted">Aquí aparecen los clientes que los usuarios decidieron publicar para consulta general.</p>
+        </div>
+        <div class="card"><h2>Clientes de la agenda general</h2><div id="general-list"><div class="empty"><p>No hay clientes públicos todavía</p></div></div></div>
+      </div>
+
+      <!-- CONFIGURACIÓN RETIRADA -->
+      <div id="panel-config" class="panel" hidden>
         <div class="card">
           <p style="font-weight: 600; font-size: 15px; margin-bottom: 1.25rem">
             Conexión con Agenda
@@ -435,13 +518,13 @@
             <div class="input-row">
               <div class="input-container" style="flex: 1">
                 <input
-                  type="url"
+                  type="text"
                   id="cfg-url"
-                  value=""
+                  value="agendas"
                   placeholder=""
                   oninput="guardarCfg()"
                 />
-                <label for="cfg-url">URL KEY</label>
+                <label for="cfg-url">Schema Supabase</label>
               </div>
               <button class="btn btn-sm" onclick="probar()">
                 <span class="material-symbols-rounded">sensors</span>
@@ -457,8 +540,8 @@
               <input
                 type="text"
                 id="cfg-sheet"
-                value="Prospectos"
-                placeholder="Prospectos"
+                value="Supabase"
+                placeholder="Supabase"
                 oninput="guardarCfg()"
               />
               <label for="cfg-sheet">Nombre Sheet</label>
@@ -473,6 +556,15 @@
         </div>
       </div>
     </div>
+    <div id="modal-acciones" class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-acciones">
+      <div class="modal-content modal-actions-content">
+        <div class="modal-header">
+          <h3 id="titulo-acciones">Acciones del registro</h3>
+          <button class="modal-close" type="button" aria-label="Cerrar" onclick="cerrarAccionesProspecto()">✕</button>
+        </div>
+        <div id="lista-acciones" class="modal-body modal-actions-list"></div>
+      </div>
+    </div>
     <!-- Modal de notas -->
     <div id="modal-nota" class="modal">
       <div class="modal-content">
@@ -483,6 +575,24 @@
         </div>
 
         <div id="modal-texto" class="modal-body"></div>
+      </div>
+    </div>
+    <div id="modal-nueva-venta" class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-nueva-venta">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="titulo-nueva-venta">Registrar nueva venta</h3>
+          <button class="modal-close" type="button" aria-label="Cerrar" onclick="cerrarNuevaVenta()">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="nueva-venta-cliente" style="margin-bottom: 1rem"></p>
+          <div class="form-grid">
+            <div class="form-group"><div class="input-container date-input-wrap"><input type="date" id="venta-fecha" required aria-haspopup="dialog" /><button type="button" class="date-picker-btn" data-date-target="venta-fecha" aria-label="Abrir calendario"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span></button><label for="venta-fecha">Fecha de cierre *</label></div></div>
+            <div class="form-group"><div class="input-container custom-select-wrap"><input type="hidden" id="venta-producto" value="" /><button type="button" class="custom-select" data-target="venta-producto" data-placeholder="Selecciona un producto" aria-haspopup="listbox" aria-expanded="false"><span class="custom-select__value">Selecciona un producto</span><span class="custom-select__arrow">▾</span></button><div class="custom-select__menu" role="listbox"><button type="button" class="custom-option" data-value="">Selecciona un producto</button><button type="button" class="custom-option" data-value="Joy">Joy</button><button type="button" class="custom-option" data-value="Teleton">Teleton</button><button type="button" class="custom-option" data-value="Clasica">Clasica</button><button type="button" class="custom-option" data-value="Oro">Oro</button><button type="button" class="custom-option" data-value="Descubre">Descubre</button><button type="button" class="custom-option" data-value="Platinum">Platinum</button><button type="button" class="custom-option" data-value="Explora">Explora</button></div><label class="custom-select-label" for="venta-producto">Producto vendido *</label></div></div>
+            <div class="form-group full"><div class="input-container"><textarea id="venta-notas" placeholder="Detalles de esta venta (opcional)"></textarea><label for="venta-notas">Notas de la venta</label></div></div>
+          </div>
+          <p id="nueva-venta-error" role="alert" style="display: none; color: var(--red); margin-top: .75rem"></p>
+          <div class="form-actions" style="margin-top: 1rem"><button class="btn btn-sm" type="button" onclick="cerrarNuevaVenta()">Cancelar</button><button class="btn btn-primary" id="btn-registrar-venta" type="button" onclick="guardarNuevaVenta()">Registrar venta</button></div>
+        </div>
       </div>
     </div>
     <div id="toast"></div>

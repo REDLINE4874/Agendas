@@ -32,6 +32,10 @@ function actualizarBadgeHoy(cantidad) {
   }
 }
 
+function accionesProspecto(p) {
+  return `<button class="btn btn-sm action-menu-button" title="Ver acciones" onclick="abrirAccionesProspecto('${encodeURIComponent(String(p.id))}')"><span class="material-symbols-rounded icono-20">more_vert</span><span class="sr-only">Ver acciones</span></button>`;
+}
+
 function renderHoy() {
   const w = document.getElementById("tabla-hoy-wrap");
   const label = document.getElementById("hoy-fecha-label");
@@ -100,8 +104,7 @@ function renderHoy() {
               }</td>
               <td class="acciones-cell">
                 <div class="acciones">
-                  <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">border_color</span></button>
-                  <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">delete</span></button>
+                  ${accionesProspecto(p)}
                 </div>
               </td>
             </tr>`,
@@ -112,10 +115,63 @@ function renderHoy() {
   `;
 }
 
-function renderTabla(rows) {
+function fechaDisponibleReventa(p) {
+  const fechaBase = parseFechaProspecto(p.fecha_cierre || p.registro);
+  if (!fechaBase) return null;
+  const diaOriginal = fechaBase.getDate();
+  const fechaDisponible = new Date(fechaBase.getFullYear(), fechaBase.getMonth() + 3, 1);
+  const ultimoDia = new Date(fechaDisponible.getFullYear(), fechaDisponible.getMonth() + 1, 0).getDate();
+  fechaDisponible.setDate(Math.min(diaOriginal, ultimoDia) + 5);
+  return fechaDisponible;
+}
+
+function actualizarBadgeReventa(cantidad) {
+  const badge = document.getElementById("badge-reventa");
+  if (!badge) return;
+  badge.textContent = cantidad > 99 ? "99+" : String(cantidad);
+  badge.style.display = cantidad > 0 ? "inline-flex" : "none";
+}
+
+function esProspectoCerrado(p) {
+  return String(p.estatus || "").trim().toLocaleLowerCase("es-MX") === "cerrado";
+}
+
+function renderReventa() {
+  const contenedor = document.getElementById("tabla-reventa-wrap");
+  if (!contenedor) return;
+  const hoy = inicioDeHoy();
+  const cerrados = (Array.isArray(prospectosBase) ? prospectosBase : [])
+    .filter(esProspectoCerrado)
+    .map((p) => ({ prospecto: p, disponibleDesde: fechaDisponibleReventa(p) }));
+  const elegibles = cerrados
+    .filter(({ disponibleDesde }) => disponibleDesde && disponibleDesde <= hoy)
+    .sort((a, b) => a.disponibleDesde - b.disponibleDesde);
+  actualizarBadgeReventa(elegibles.length);
+  const resumen = document.getElementById("reventa-resumen");
+  if (resumen) {
+    const esperando = cerrados.filter(({ disponibleDesde }) => disponibleDesde && disponibleDesde > hoy).length;
+    resumen.textContent = `${elegibles.length} cliente${elegibles.length === 1 ? "" : "s"} disponible${elegibles.length === 1 ? "" : "s"} para reventa · ${esperando} aún dentro del plazo`;
+  }
+  if (!elegibles.length) {
+    contenedor.innerHTML = '<div class="empty"><p>Aún no hay clientes disponibles para reventa</p><small>Se muestran prospectos cerrados al cumplir 3 meses y 5 días desde el cierre.</small></div>';
+    return;
+  }
+  contenedor.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Producto</th><th>Fecha de cierre</th><th>Disponible desde</th><th>Acciones</th></tr></thead><tbody>${elegibles.map(({ prospecto: p, disponibleDesde }) => `<tr>
+    <td class="td-nombre">${esc(p.nombre)}</td><td class="phone-cell"><span>${esc(p.tel)}</span><button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded">content_copy</span></button></td>
+    <td>${esc(p.tipo) || "—"}</td><td>${esc(p.fecha_cierre) || esc(p.registro) || "—"}</td><td>${disponibleDesde.toLocaleDateString("es-MX")}</td>
+    <td class="acciones-cell"><div class="acciones"><button class="btn btn-sm" title="Registrar nueva venta" onclick="abrirNuevaVenta('${encodeURIComponent(String(p.id))}')"><span class="material-symbols-rounded icono-20">add_shopping_cart</span></button><button class="btn btn-sm" title="Historial de ventas" onclick="verHistorialVentas('${encodeURIComponent(String(p.id))}')"><span class="material-symbols-rounded icono-20">history</span></button></div></td>
+  </tr>`).join("")}</tbody></table></div>`;
+}
+
+function renderCompartidos() {
+  const compartidos = (prospectosBase || []).filter((p) => p.access !== "owner");
+  renderTabla(compartidos, "tabla-compartidos-wrap", { compartidos: true });
+}
+
+function renderTabla(rows, targetId = "tabla-wrap", options = {}) {
   console.log("renderTabla:", rows);
 
-  const w = document.getElementById("tabla-wrap");
+  const w = document.getElementById(targetId);
 
   if (!Array.isArray(rows)) {
 
@@ -138,8 +194,8 @@ function renderTabla(rows) {
           <circle cx="12" cy="12" r="9"/>
           <path d="M8 12h8M12 8v8"/>
         </svg>
-        <p>Sin resultados</p>
-        <small>Prueba con otros filtros o agrega un nuevo prospecto.</small>
+        <p>${options.compartidos ? "No tienes registros compartidos" : "Sin resultados"}</p>
+        <small>${options.compartidos ? "Cuando otro usuario comparta un cliente contigo aparecerá aquí." : "Prueba con otros filtros o agrega un nuevo prospecto."}</small>
       </div>
     `;
 
@@ -160,6 +216,7 @@ function renderTabla(rows) {
           <thead>
             <tr>
               <th>Nombre</th>
+              ${options.compartidos ? "<th>Compartido por</th>" : ""}
               <th>Teléfono</th>
               <th>Producto</th>
               <th>Estatus</th>
@@ -173,6 +230,7 @@ function renderTabla(rows) {
             .map(
               (p) => `<tr>
                 <td class="td-nombre">${esc(p.nombre)}</td>
+                ${options.compartidos ? `<td>${esc(p.owner_username) || "Usuario"}</td>` : ""}
                 <td class="phone-cell">
                   <span>${esc(p.tel)}</span>
                   <button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded ">content_copy</span></button>
@@ -188,8 +246,7 @@ function renderTabla(rows) {
                 }</td>
                 <td class="acciones-cell">
                   <div class="acciones">
-                    <button class="btn btn-sm" onclick="editarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">border_color</span></button>
-                    <button class="btn btn-sm" onclick="eliminarProspecto('${p.id}')"><span class="material-symbols-rounded icono-20">delete</span></button>
+                    ${accionesProspecto(p)}
                   </div>
                 </td>
               </tr>`,
