@@ -24,6 +24,7 @@
     picker.setAttribute("aria-label", "Calendario");
     picker.hidden = true;
     host.appendChild(picker);
+    picker.addEventListener("click", (event) => event.stopPropagation());
 
     const initial = fromIso(input.value) || new Date();
     const state = { year: initial.getFullYear(), month: initial.getMonth() };
@@ -48,7 +49,9 @@
         const todayClass = iso === toIso(today) ? " is-today" : "";
         const min = fromIso(input.min);
         const max = fromIso(input.max);
-        const disabled = (min && date < min) || (max && date > max);
+        const disabled =
+          input.id !== "f-fecha" &&
+          ((min && date < min) || (max && date > max));
         cells += `<button type="button" class="agenda-calendar__day${selectedClass}${todayClass}" data-date="${iso}"${disabled ? " disabled" : ""}>${day}</button>`;
       }
       picker.innerHTML = `
