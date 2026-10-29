@@ -307,21 +307,39 @@ input[type="date"]::-webkit-clear-button { display: none; }
 
 .date-input-wrap input[type="date"] { background-image: none; }
 
-/* Modales: mismo lenguaje visual que las tarjetas y controles. */
-.modal-overlay { background: rgba(15, 23, 42, .42); backdrop-filter: blur(4px); }
-.modal, .confirm-modal, .modal-content {
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--bg);
-  color: var(--text);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, .22);
+/* Modales: capa de fondo y panel claramente separados. */
+.modal,
+body.custom-background .modal {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 32px);
+  background: rgba(15, 23, 42, .56);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-.modal, .confirm-modal { padding: 1.5rem; }
+.modal.active { display: flex; }
+
+.modal-content,
+.confirm-modal {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 28px 90px rgba(15, 23, 42, .32), 0 8px 24px rgba(15, 23, 42, .16);
+}
+
+.modal-content { max-height: min(88vh, 820px); }
+.confirm-modal { padding: 1.75rem; }
+.modal.active .modal-content,
+.modal.active .confirm-modal { animation: modalShow .26s cubic-bezier(.2,.8,.2,1); }
+
 .modal-header {
-  background: var(--bg-3);
+  padding: 18px 22px;
+  background: var(--bg-2);
   border-bottom-color: var(--border);
-  border-radius: 12px 12px 0 0;
 }
 
 .modal-header h3, .modal h2, .confirm-modal h2 {
@@ -331,10 +349,28 @@ input[type="date"]::-webkit-clear-button { display: none; }
 }
 
 .modal-body { color: var(--text); font-family: var(--agenda-font-body); }
+.app.modal-shifted { transform: none; filter: none; opacity: 1; }
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text);
+}
+.modal-close:hover { background: var(--bg); color: var(--text); }
 .modal-close { display: inline-grid; place-items: center; }
 .modal-close:focus-visible, .btn:focus-visible, .tab:focus-visible, .custom-option:focus-visible {
   outline: 3px solid var(--agenda-focus);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal-content,
+  .confirm-modal {
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 .modal-actions, .confirm-actions {
@@ -435,10 +471,17 @@ body.dark .custom-select__menu { box-shadow: 0 18px 38px rgba(0, 0, 0, .42); }
   width: min(440px, 100%);
   max-width: 440px;
   overflow: hidden;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  border-color: color-mix(in srgb, var(--border) 72%, transparent);
+  box-shadow: 0 30px 90px rgba(15, 23, 42, .32), 0 8px 24px rgba(15, 23, 42, .16);
 }
 
-#modal-acciones .modal-header { padding: 16px 18px; }
-#modal-acciones .modal-body { padding: 18px; }
+#modal-acciones .modal-header,
+#modal-acciones .modal-body {
+  padding: 16px 18px;
+  background: transparent;
+}
+#modal-acciones .modal-body { padding-top: 18px; }
 .modal-actions-grid { display: grid; gap: 9px; }
 .modal-actions-grid .btn {
   width: 100%;

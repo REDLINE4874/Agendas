@@ -10,7 +10,7 @@ function abrirAccionesProspecto(idCodificado) {
   const lista = document.getElementById("lista-acciones");
   if (!prospecto || !lista) return;
   accionesProspectoId = id;
-  document.getElementById("titulo-acciones").textContent = `Acciones · ${prospecto.nombre}`;
+  document.getElementById("titulo-acciones").textContent = `Acciones - ${prospecto.nombre}`;
   const acciones = [];
   if (prospecto.access === "owner") {
     acciones.push('<button class="btn btn-primary" type="button" data-modal-action="share" data-id="' + id + '"><span class="material-symbols-rounded icono-20">person_add</span>Compartir registro</button>');
