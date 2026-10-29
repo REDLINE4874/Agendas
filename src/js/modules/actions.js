@@ -1,4 +1,4 @@
-﻿// ─── Probar conexión ──────────────────────────────────────────────────────────
+// --- Probar conexi�n ----------------------------------------------------------
 let prospectoNuevaVentaId = null;
 let botonOrigenNuevaVenta = null;
 let accionesProspectoId = null;
@@ -10,7 +10,7 @@ function abrirAccionesProspecto(idCodificado) {
   const lista = document.getElementById("lista-acciones");
   if (!prospecto || !lista) return;
   accionesProspectoId = id;
-  document.getElementById("titulo-acciones").textContent = `Acciones · ${prospecto.nombre}`;
+  document.getElementById("titulo-acciones").textContent = `Acciones � ${prospecto.nombre}`;
   const acciones = [];
   if (prospecto.access === "owner") {
     acciones.push('<button class="btn btn-primary" type="button" data-modal-action="share" data-id="' + id + '"><span class="material-symbols-rounded icono-20">person_add</span>Compartir registro</button>');
@@ -70,7 +70,7 @@ function fechaLocalInput(date = new Date()) {
 function abrirNuevaVenta(idCodificado) {
   const id = decodeURIComponent(idCodificado);
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
-  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontró un cliente cerrado", "err");
+  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontr� un cliente cerrado", "err");
   prospectoNuevaVentaId = id;
   botonOrigenNuevaVenta = document.activeElement;
   document.getElementById("nueva-venta-cliente").textContent = `Cliente: ${prospecto.nombre}`;
@@ -106,7 +106,7 @@ async function guardarNuevaVenta() {
     const result = await enviarNuevaVenta({ id: prospectoNuevaVentaId, fecha: fecha.value, tipo: producto.value, notas: document.getElementById("venta-notas").value.trim() });
     if (!result.ok) { error.textContent = result.error || "No se pudo registrar la venta."; error.style.display = "block"; return; }
     cerrarNuevaVenta();
-    toast("✓ Nueva venta registrada; el plazo vuelve a iniciar.", "ok");
+    toast("? Nueva venta registrada; el plazo vuelve a iniciar.", "ok");
     await cargarLista();
   } catch (exception) {
     console.error(exception);
@@ -123,15 +123,15 @@ async function verHistorialVentas(idCodificado) {
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
   if (!prospecto) return;
   const content = document.getElementById("modal-texto");
-  document.getElementById("titulo-nota").textContent = `Historial de ventas · ${prospecto.nombre}`;
+  document.getElementById("titulo-nota").textContent = `Historial de ventas � ${prospecto.nombre}`;
   content.textContent = "Cargando historial...";
   document.getElementById("modal-nota").classList.add("active");
   document.body.classList.add("modal-open");
   try {
     const historial = await obtenerHistorialVentas(id);
     content.innerHTML = historial.length
-      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "—"}</td></tr>`).join("")}</tbody></table></div>`
-      : "Todavía no hay ventas registradas para este cliente.";
+      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "�"}</td></tr>`).join("")}</tbody></table></div>`
+      : "Todav�a no hay ventas registradas para este cliente.";
   } catch (exception) { content.textContent = "No se pudo cargar el historial."; }
 }
 
@@ -139,20 +139,13 @@ async function probar() {
   try {
     const { count, error } = await agendaTable().select("id", { count: "exact", head: true });
     if (error) throw error;
-    toast(`✓ Conexión exitosa — ${count || 0} registros encontrados`, "ok");
+    toast(`? Conexi�n exitosa � ${count || 0} registros encontrados`, "ok");
   } catch (e) {
     toast("No se pudo conectar con Supabase. Revisa el schema agendas.", "err");
   }
 }
 
-// ─── Copiar código ────────────────────────────────────────────────────────────
-function copiarCodigo() {
-  navigator.clipboard
-    .writeText(APPS_SCRIPT_CODE)
-    .then(() => toast("Código copiado al portapapeles", "ok"))
-    .catch(() => toast("No se pudo copiar, selecciónalo manualmente", "err"));
-}
-// ─── editar ────────────────────────────────────────────────────────────
+// --- editar ------------------------------------------------------------
 function editarProspecto(id) {
   const p = prospectosBase.find((x) => x.id == id);
 
@@ -187,13 +180,13 @@ function editarProspecto(id) {
   const btnNuevo = document.getElementById("tab-nuevo");
   cambiarTab("nuevo", btnNuevo);
 }
-// ─── eliminar ────────────────────────────────────────────────────────────
+// --- eliminar ------------------------------------------------------------
 async function eliminarProspecto(id) {
   const prospecto = prospectosBase.find((item) => String(item.id) === String(id));
   if (!prospecto) return;
   prospectoEliminarId = id;
   document.getElementById("mensaje-confirmar-eliminacion").textContent =
-    `¿Deseas eliminar a ${prospecto.nombre}? Esta acción no se puede deshacer.`;
+    `�Deseas eliminar a ${prospecto.nombre}? Esta acci�n no se puede deshacer.`;
   document.getElementById("modal-confirmar-eliminacion").classList.add("active");
   document.body.classList.add("modal-open");
 }
@@ -215,7 +208,7 @@ async function confirmarEliminacion() {
     if (!error) {
       toast("Prospecto eliminado", "ok");
 
-      // El borrado invalida el caché del servidor: forzamos recarga real.
+      // El borrado invalida el cach� del servidor: forzamos recarga real.
       await cargarLista();
     } else toast("No se pudo eliminar", "err");
   } catch (e) {
@@ -223,7 +216,7 @@ async function confirmarEliminacion() {
   }
 }
 
-// ─── modal notas ─────────────────────────────────────────────────────────────────────
+// --- modal notas ---------------------------------------------------------------------
 function verNota(nombre, nota) {
   document.body.classList.add("modal-open");
 
@@ -247,5 +240,5 @@ document.getElementById("modal-nota").addEventListener("click", (event) => {
   if (event.target.id === "modal-nota") cerrarNota();
 });
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
+// --- Init ---------------------------------------------------------------------
 

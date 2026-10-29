@@ -1,16 +1,18 @@
 # Agenda de Prospectos
 
-Aplicación web estática para registrar y dar seguimiento a prospectos de tarjetas de crédito. La información se almacena en Google Sheets mediante Google Apps Script.
+Aplicación web estática para registrar y dar seguimiento a prospectos de tarjetas de crédito. La información se almacena en **Supabase** mediante el schema privado `agendas`.
 
 ## Funcionalidades
 
 - Crear, consultar, editar y eliminar prospectos.
 - Ver seguimientos programados para el día actual.
 - Filtrar y agrupar prospectos por mes.
+- Registrar historial de ventas por prospecto.
+- Compartir prospectos con otros usuarios (solo lectura o edición).
+- Agenda general: publicar prospectos para consulta de todos los usuarios.
 - Copiar teléfonos desde la agenda.
 - Cambiar entre tema claro y oscuro.
 - Elegir un color de fondo; esta acción activa el modo claro automáticamente.
-- Guardar la configuración de conexión en `localStorage`.
 
 ## Estructura del proyecto
 
@@ -20,40 +22,46 @@ Agendas/
 ├── README.md                     # Documentación del proyecto
 ├── assets/
 │   └── icons/                    # Iconos y favicon
-├── backend/
-│   └── apps-script.gs            # API para Google Apps Script
+├── supabase/
+│   └── agendas.sql               # Schema, tablas, funciones RLS y RPCs
 └── src/
     ├── components/
-    │   └── theme-toggle.js       # Componente Web para el tema
+    │   ├── theme-toggle.js       # Componente Web para el tema claro/oscuro
+    │   └── theme-background-picker.js  # Selector de color de fondo
     ├── js/
+    │   ├── supabase-config.js    # Credenciales públicas de Supabase (anon key)
+    │   ├── site-auth.js          # Autenticación con Supabase Auth
     │   ├── app.js                # Punto de entrada e inicialización
     │   └── modules/
-    │       ├── core.js           # Estado global y constantes
+    │       ├── core.js           # Estado global y helpers de UI
     │       ├── custom-selects.js # Selectores personalizados
-    │       ├── config.js         # Configuración local
+    │       ├── date-picker.js    # Selector de fecha
     │       ├── ui.js             # Interacciones de interfaz
     │       ├── navigation.js     # Navegación entre pestañas
-    │       ├── api.js            # Comunicación con Apps Script
-    │       ├── filters.js        # Filtros y fechas
-    │       ├── views.js          # Renderizado de vistas
-    │       └── actions.js        # Acciones de prospectos
+    │       ├── api.js            # Operaciones CRUD con Supabase
+    │       ├── sharing.js        # Compartir prospectos y agenda general
+    │       ├── filters.js        # Filtros y agrupación por mes
+    │       ├── views.js          # Renderizado de vistas y tablas
+    │       └── actions.js        # Acciones sobre prospectos (editar, eliminar, ventas)
     └── styles/
-        ├── main.css              # Entrada principal de estilos
+        ├── main.css              # Entrada principal de estilos (@import)
         └── modules/
-            ├── base.css          # Variables y estilos base
+            ├── base.css          # Variables CSS y estilos base
+            ├── appearance.css    # Panel de apariencia (tema y fondo)
+            ├── navigation.css    # Barra de navegación
             ├── forms.css         # Formularios e inputs
             ├── controls.css      # Botones y controles
             ├── tables.css        # Tablas y agrupaciones
             ├── config.css        # Panel de configuración
-            ├── feedback.css      # Toasts, loaders y estados
+            ├── feedback.css      # Toasts, loaders y estados vacíos
             ├── theme.css         # Tema oscuro
+            ├── modal.css         # Modales
+            ├── custom-background.css  # Fondos personalizados
             ├── responsive.css    # Adaptación responsive
-            └── modal.css         # Modal de notas
+            └── polish.css        # Animaciones y detalles visuales
 ```
 
 La lógica JavaScript está separada en módulos dentro de `src/js/modules/`. Los estilos están organizados en `src/styles/modules/` y se cargan desde `src/styles/main.css` mediante `@import`.
-
-El componente [`theme-background-picker.js`](./src/components/theme-background-picker.js) permite elegir el color de fondo y ajusta el contraste de la interfaz. Al seleccionar un fondo personalizado se activa el modo claro automáticamente.
 
 ## Uso local
 
@@ -65,50 +73,56 @@ No requiere Node.js ni un proceso de compilación.
 
 También puedes usar la extensión **Live Server** de Visual Studio Code y abrir `index.html` con **Open with Live Server**.
 
-## Configuración de Google Sheets
+## Configuración de Supabase
 
-1. Crea o abre una hoja de cálculo de Google.
-2. Abre **Extensiones > Apps Script**.
-3. Copia el contenido de [`backend/apps-script.gs`](./backend/apps-script.gs) en el editor de Apps Script.
-4. Guarda el proyecto.
-5. Selecciona **Implementar > Nueva implementación**.
-6. Elige **Aplicación web**.
-7. Configura la ejecución como tú mismo y el acceso como **Cualquier usuario**.
-8. Implementa y copia la URL generada.
-9. En la pestaña **Configuración** de la aplicación, pega la URL en el campo **URL KEY**.
-10. Mantén `Prospectos` como nombre de la hoja, salvo que utilices otro nombre.
-11. Presiona el botón de prueba para confirmar la conexión.
+### 1. Crear el schema y las tablas
 
-La hoja se crea automáticamente si no existe. Sus columnas son:
+Ejecuta el archivo [`supabase/agendas.sql`](./supabase/agendas.sql) en el **SQL Editor** de tu proyecto de Supabase. Este script crea:
 
-```text
-ID | Nombre | Teléfono | Producto | Estatus | Seguimiento | Notas | Fecha registro
+- El schema `agendas`.
+- Las tablas `agendas.prospectos` y `agendas.ventas`.
+- Las políticas RLS que vinculan cada registro con el `user_id` del usuario autenticado.
+- Las funciones RPC utilizadas por la aplicación (`list_visible_prospectos`, `share_prospecto_with_username`, etc.).
+
+### 2. Exponer el schema
+
+En **Settings › API › Exposed schemas**, agrega `agendas` a la lista.
+
+### 3. Configurar las credenciales
+
+Edita [`src/js/supabase-config.js`](./src/js/supabase-config.js) con la URL y la `anon key` de tu proyecto:
+
+```js
+window.SUPABASE_CONFIG = {
+  url: "https://<tu-proyecto>.supabase.co",
+  anonKey: "<tu-anon-key>",
+};
 ```
 
-## Comunicación con el backend
+> La `anon key` es pública y está protegida por las políticas RLS. **Nunca coloques aquí una `service role key`.**
 
-La aplicación utiliza JSONP para consultar datos y solicitudes sin credenciales de navegador para guardar, editar y eliminar registros. El backend admite estas acciones mediante el parámetro `accion`:
+### 4. Verificar la conexión
 
-- `listar`
-- `guardar`
-- `editar`
-- `eliminar`
+Abre la aplicación, inicia sesión y usa el botón **Probar conexión** en la pestaña de configuración para confirmar que el acceso a Supabase está activo.
 
-La URL de Apps Script y el nombre de la hoja se almacenan localmente en el navegador mediante `localStorage`.
+## Autenticación
 
-## Persistencia en Supabase
+La aplicación usa **Supabase Auth** (email + contraseña). El flujo de sesión está manejado por [`src/js/site-auth.js`](./src/js/site-auth.js):
 
-La aplicación usa el schema privado `agendas` y la tabla `agendas.prospectos`.
-Ejecuta [`supabase/agendas.sql`](./supabase/agendas.sql) en el SQL Editor de
-Supabase y agrega `agendas` en **Settings > API > Exposed schemas**.
-Las políticas RLS relacionan cada registro con el usuario autenticado mediante
-`user_id`, por lo que cada usuario solo puede consultar y modificar sus propias
-agendas.
+- Muestra el formulario de inicio de sesión si no hay sesión activa.
+- Carga la lista de prospectos automáticamente al recuperar una sesión válida.
+- Cierra la sesión desde el botón de logout en el header.
 
-Para migrar los datos existentes, exporta la hoja `Prospectos` a CSV e importa
-sus filas en `agendas.prospectos`, asignando el `user_id` del propietario.
+## Persistencia y RLS
+
+Cada prospecto y venta tiene un campo `user_id` que referencia al usuario autenticado. Las políticas RLS garantizan que cada usuario solo puede ver y modificar sus propios registros, salvo los que hayan sido compartidos explícitamente o publicados en la agenda general.
+
+## Compartir prospectos
+
+Un usuario puede compartir cualquiera de sus prospectos con otro usuario registrado, otorgando permiso de solo lectura o de edición. Esto se gestiona desde el modal **Compartir** en las acciones de cada registro, utilizando las RPCs definidas en `agendas.sql`.
 
 ## Dependencias externas
 
-- Google Material Symbols Rounded para los iconos de la interfaz.
-- Google Apps Script y Google Sheets para persistencia de datos.
+- [Supabase JS v2](https://github.com/supabase/supabase-js) — cliente de base de datos y autenticación (cargado desde CDN).
+- [Google Material Symbols Rounded](https://fonts.google.com/icons) — iconos de la interfaz.
+- [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) e [Inter](https://fonts.google.com/specimen/Inter) — tipografías.

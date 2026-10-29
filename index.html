@@ -480,77 +480,23 @@
         <div class="card"><h2>Clientes de la agenda general</h2><div id="general-list"><div class="empty"><p>No hay clientes públicos todavía</p></div></div></div>
       </div>
 
-      <!-- CONFIGURACIÓN RETIRADA -->
       <div id="panel-config" class="panel" hidden>
         <div class="card">
           <p style="font-weight: 600; font-size: 15px; margin-bottom: 1.25rem">
-            Conexión con Agenda
+            Conexi&#243;n con Supabase
           </p>
-
-          <div class="steps">
-            <div class="step">
-              <div class="step-num">1</div>
-              <p>
-                Coloca en el espacio URL KEY la <strong>"KEY"</strong>,
-                proporcionada por el administrador
-                <strong>(si no la tienes, solicita el acceso).</strong>
-              </p>
-            </div>
-            <div class="step">
-              <div class="step-num">2</div>
-              <p>
-                Presione el boton
-                <span class="material-symbols-rounded">sensors</span> para
-                probar la conexion con los registros, si todo esta correcto, se
-                mostrara un mensaje de confirmacion.
-              </p>
-            </div>
-            <div class="step">
-              <div class="step-num">3</div>
-              <p>
-                En el espacio <strong>Nombre Sheet</strong> se queda el nombre
-                por defecto <strong>"Prospectos"</strong>.
-              </p>
-            </div>
+          <p class="text-muted">
+            La conexi&#243;n se establece autom&#225;ticamente. Usa el bot&#243;n de abajo para verificar que el acceso a la base de datos est&#233; activo.
+          </p>
+          <div style="margin-top: 1.25rem">
+            <button class="btn btn-sm" onclick="probar()">
+              <span class="material-symbols-rounded">sensors</span>
+              Probar conexi&#243;n
+            </button>
           </div>
-
-          <div class="form-group" style="margin-bottom: 1rem">
-            <div class="input-row">
-              <div class="input-container" style="flex: 1">
-                <input
-                  type="text"
-                  id="cfg-url"
-                  value="agendas"
-                  placeholder=""
-                  oninput="guardarCfg()"
-                />
-                <label for="cfg-url">Schema Supabase</label>
-              </div>
-              <button class="btn btn-sm" onclick="probar()">
-                <span class="material-symbols-rounded">sensors</span>
-              </button>
-            </div>
-          </div>
-
-          <div
-            class="form-group"
-            style="margin-bottom: 1.5rem; max-width: 240px"
-          >
-            <div class="input-container">
-              <input
-                type="text"
-                id="cfg-sheet"
-                value="Supabase"
-                placeholder="Supabase"
-                oninput="guardarCfg()"
-              />
-              <label for="cfg-sheet">Nombre Sheet</label>
-            </div>
-          </div>
-          <div class="Note">
+          <div class="Note" style="margin-top: 1.25rem">
             <p>
-              <strong>Nota:</strong> Si se presentan problemas de conexion
-              contacte al administrador.
+              <strong>Nota:</strong> Si se presentan problemas de conexi&#243;n, contacte al administrador.
             </p>
           </div>
         </div>

@@ -1,15 +1,5 @@
-﻿// ─── Código Apps Script que el usuario pegará ────────────────────────────────
-const APPS_SCRIPT_CODE = "";
-
-const DEFAULT_SCRIPT_URL = "";
-const DEFAULT_SHEET_NAME = "Prospectos";
-
 // El listado solo se actualiza por acción explícita del usuario o al
 // guardar/editar un prospecto; no se recarga en segundo plano.
-const codeBlock = document.getElementById("code-block");
-if (codeBlock) {
-  codeBlock.textContent = APPS_SCRIPT_CODE;
-}
 
 let prospectos = [];
 let prospectosBase = [];
@@ -42,12 +32,3 @@ function mostrarCargaLista() {
   if (contenedor) contenedor.innerHTML = loader;
   if (contenedorHoy) contenedorHoy.innerHTML = loader;
 }
-
-function obtenerCfg() {
-  if (!window.agendaCfg) {
-    window.agendaCfg = { url: DEFAULT_SCRIPT_URL, sheet: DEFAULT_SHEET_NAME };
-  }
-  return window.agendaCfg;
-}
-
-
