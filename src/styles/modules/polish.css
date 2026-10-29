@@ -130,6 +130,36 @@ body.custom-background textarea::placeholder {
   color: color-mix(in srgb, var(--input-text) 62%, var(--input-bg));
 }
 
+body.custom-background .input-container label,
+body.custom-background .custom-select-label,
+body.custom-background .input-container:focus-within label,
+body.custom-background .input-container:has(input:not(:placeholder-shown)) label,
+body.custom-background .input-container:has(textarea:not(:placeholder-shown)) label,
+body.custom-background .input-container:has(select:valid) label,
+body.custom-background .custom-select-wrap.active .custom-select-label {
+  color: var(--text);
+}
+
+body.dark .input-container label,
+body.dark .custom-select-label,
+body.dark .input-container:focus-within label,
+body.dark .input-container:has(input:not(:placeholder-shown)) label,
+body.dark .input-container:has(textarea:not(:placeholder-shown)) label,
+body.dark .input-container:has(select:valid) label,
+body.dark .custom-select-wrap.active .custom-select-label {
+  color: var(--text);
+}
+
+.input-container label,
+.custom-select-label,
+.input-container:focus-within label,
+.input-container:has(input:not(:placeholder-shown)) label,
+.input-container:has(textarea:not(:placeholder-shown)) label,
+.input-container:has(select:valid) label,
+.custom-select-wrap.active .custom-select-label {
+  color: var(--text);
+}
+
 input:hover, select:hover, textarea:hover, .custom-select:hover {
   border-color: color-mix(in srgb, var(--blue) 42%, var(--input-border));
 }
@@ -453,10 +483,8 @@ body.dark .custom-select__menu { box-shadow: 0 18px 38px rgba(0, 0, 0, .42); }
   margin-bottom: 1.25rem;
   border: 1px solid color-mix(in srgb, var(--border) 76%, var(--text) 24%);
   border-radius: 22px;
-  background:
-    radial-gradient(circle at 8% 0%, rgba(255,255,255,.9), transparent 34%),
-    linear-gradient(135deg, var(--bg), color-mix(in srgb, var(--bg-2) 72%, var(--bg) 28%));
-  box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
+  background: var(--bg);
+  box-shadow: none;
 }
 
 .header-icon {
@@ -512,7 +540,7 @@ body.dark .custom-select__menu { box-shadow: 0 18px 38px rgba(0, 0, 0, .42); }
   border: 1px solid color-mix(in srgb, var(--border) 78%, var(--text) 22%);
   border-radius: 15px;
   background: color-mix(in srgb, var(--bg) 88%, var(--bg-2) 12%);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
+  box-shadow: none;
 }
 
 .tab {
@@ -536,8 +564,8 @@ body.dark .custom-select__menu { box-shadow: 0 18px 38px rgba(0, 0, 0, .42); }
 .tab.active {
   color: #fff;
   border-color: var(--text);
-  background: linear-gradient(135deg, #111827, #374151);
-  box-shadow: 0 5px 12px rgba(15, 23, 42, .18);
+  background: #111827;
+  box-shadow: none;
 }
 
 .tab.active .tab-badge {
@@ -551,14 +579,13 @@ body.dark .custom-select__menu { box-shadow: 0 18px 38px rgba(0, 0, 0, .42); }
 }
 
 body.dark .header {
-  background:
-    radial-gradient(circle at 8% 0%, rgba(255,255,255,.1), transparent 34%),
-    linear-gradient(135deg, var(--bg), var(--bg-2));
+  background: var(--bg);
+  box-shadow: none;
 }
 
 body.dark .header-logo { filter: brightness(0) invert(1); }
 body.dark .tabs { background: color-mix(in srgb, var(--bg) 88%, #fff 12%); }
-body.dark .tab.active { background: linear-gradient(135deg, #f8fafc, #cbd5e1); color: #111827; border-color: #f8fafc; }
+body.dark .tab.active { background: #cbd5e1; color: #111827; border-color: #f8fafc; box-shadow: none; }
 body.dark .tab.active .tab-badge { background: #111827; color: #fff; }
 
 @media (max-width: 700px) {
