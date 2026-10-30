@@ -206,7 +206,17 @@ if (!siteAuthReady) {
   window.SUPABASE_AUTH_CLIENT ||= window.supabase.createClient(
     siteAuthConfig.url,
     siteAuthConfig.anonKey,
-    { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "talent-ecosystem-auth" } },
+    {
+      auth: {
+        // La sesión sobrevive recargas, pero el navegador la elimina al cerrar
+        // la pestaña; autoRefreshToken la mantiene vigente mientras siga abierta.
+        persistSession: true,
+        storage: window.sessionStorage,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storageKey: "talent-ecosystem-auth",
+      },
+    },
   );
   listenForHostSession();
   window.SUPABASE_AUTH_CLIENT.auth.onAuthStateChange((event, session) => {
