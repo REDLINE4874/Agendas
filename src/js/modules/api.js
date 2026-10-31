@@ -146,7 +146,11 @@ async function fetchProspectosBackend(forzar = false) {
         .schema("agendas")
         .rpc("list_visible_prospectos");
       if (error) throw error;
-      prospectos = (data || []).map(mapProspecto);
+      // Mostrar los registros más recientes primero, usando la marca de tiempo
+      // completa para ordenar también los prospectos creados el mismo día.
+      prospectos = (data || [])
+        .map(mapProspecto)
+        .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
       prospectosBase = [...prospectos];
       ultimaCargaProspectos = Date.now();
       if (typeof actualizarSelectProspectos === "function") {
