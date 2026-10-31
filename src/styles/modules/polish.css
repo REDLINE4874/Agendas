@@ -732,7 +732,7 @@ body.dark .tab.active .tab-badge { background: #111827; color: #fff; }
   max-width: 190px;
   padding: 8px 11px;
   border: 1px solid color-mix(in srgb, var(--border) 70%, var(--text) 30%);
-  border-radius: 999px;
+  border-radius: 20px;
   background: color-mix(in srgb, var(--bg) 82%, var(--bg-2) 18%);
   color: var(--text);
   font-size: 12px;

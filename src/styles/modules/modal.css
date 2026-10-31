@@ -152,9 +152,8 @@ body.dark .modal-close:hover {
 
 /* Cuerpo de la ventana flotante */
 .modal-body {
-  padding: 20px 22px 24px;
+  padding: 10px 22px 10px;
   font-size: 14.5px;
-  line-height: 1.7;
   color: var(--text);
   overflow-y: auto;
   max-height: calc(88vh - 120px);
@@ -177,7 +176,7 @@ body.dark .modal-close:hover {
   white-space: pre-wrap !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;
-  line-height: 1.75;
+  line-height: 1.5;
 }
 
 body.dark .modal-body {
