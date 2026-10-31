@@ -1,203 +1,255 @@
-  /* ===== MODAL ===== */
+/* ===== MODAL BACKDROP (OVERLAY FLOTANTE CENTRADO) ===== */
 
-.modal{
+.modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.24);
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 9999;
   align-items: center;
   justify-content: center;
-  padding: clamp(12px, 4vw, 24px);
+  padding: clamp(16px, 4vw, 32px);
+  margin: 0;
+  border: none !important;
+  box-shadow: none !important;
+  overflow-y: auto;
   animation: fadeIn .18s ease;
 }
 
 .modal.active {
-  display: flex;
+  display: flex !important;
 }
 
-.modal-content {
-  width: min(100%, 680px);
-  max-width: 680px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.99), rgba(248,250,252,0.95));
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.24), 0 10px 24px rgba(15, 23, 42, 0.10);
-  animation: modalShow .22s ease;
+/* ===== VENTANA FLOTANTE CENTRADA ===== */
+
+.modal-content,
+.confirm-modal {
+  position: relative;
+  margin: auto;
+  width: min(100%, 560px);
+  max-width: 560px;
+  max-height: min(88vh, 800px);
+  background: var(--bg);
   color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.45), 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalFloatCenter .24s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center center;
 }
 
-body.dark .modal-content {
-  background: linear-gradient(135deg, rgba(17, 21, 28, 0.98), rgba(11, 13, 16, 0.96));
-  border-color: rgba(255, 255, 255, 0.14);
+/* Dimensiones optimizadas para cada modal flotante */
+#modal-acciones .modal-content {
+  width: min(100%, 420px);
+  max-width: 420px;
+}
+
+#modal-compartir .modal-content {
+  width: min(100%, 640px);
+  max-width: 640px;
+}
+
+#modal-nueva-venta .modal-content {
+  width: min(100%, 540px);
+  max-width: 540px;
+}
+
+#modal-editar .modal-content {
+  width: min(100%, 580px);
+  max-width: 580px;
+}
+
+#modal-nota .modal-content {
+  width: min(100%, 520px);
+  max-width: 520px;
+}
+
+.confirm-modal {
+  width: min(100%, 420px);
+  max-width: 420px;
+  padding: 1.75rem;
+  text-align: center;
+}
+
+/* Modo oscuro para ventanas flotantes */
+body.dark .modal-content,
+body.dark .confirm-modal {
+  background: #151a22;
+  border-color: rgba(255, 255, 255, 0.12);
   color: #f5f7fa;
+  box-shadow: 0 30px 75px -10px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.modal-header{
+/* Encabezado */
+.modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 20px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(17, 17, 17, 0.06), rgba(255, 255, 255, 0.02));
+  background: var(--bg-2);
+  flex-shrink: 0;
 }
 
 body.dark .modal-header {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(17, 21, 28, 0.04));
+  background: #11151c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.modal-header h3{
-  font-size:18px;
-  font-weight:600;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-/* ===== Botón de cierre ===== */
-
-.modal-close{
-  width: 38px;
-  height: 38px;
-  border: none;
-  border-radius: 999px;
-  background: rgba(148, 163, 184, 0.12);
-  color: var(--text-muted);
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform .3s ease, background .3s ease, color .3s ease;
-}
-
-.modal-close:hover{
-  background: rgba(17, 17, 17, 0.10);
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 700;
   color: var(--text);
-  transform: rotate(90deg) scale(1.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
 }
 
-body.dark .modal-body,
 body.dark .modal-header h3,
-body.dark .confirm-modal p {
+body.dark .confirm-modal h2 {
   color: #f5f7fa;
 }
 
+/* Botón de cierre */
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-3);
+  color: var(--text-muted);
+  font-size: 16px;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .25s ease, background .2s ease, color .2s ease;
+}
+
+.modal-close:hover {
+  background: var(--bg);
+  color: var(--text);
+  transform: rotate(90deg) scale(1.05);
+}
+
+body.dark .modal-close {
+  background: #1c222c;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #9aa4b2;
+}
+
+body.dark .modal-close:hover {
+  background: #252d3a;
+  color: #ffffff;
+}
+
+/* Cuerpo de la ventana flotante */
+.modal-body {
+  padding: 20px 22px 24px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text);
+  overflow-y: auto;
+  max-height: calc(88vh - 120px);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Restablecer flujo normal para formularios y tablas dentro del modal */
+.modal-body .form-grid,
+.modal-body .modal-actions-grid,
+.modal-body .table-wrap,
+.modal-body table {
+  white-space: normal;
+}
+
+/* Respeto estricto de saltos de línea para notas y textos largos */
+#modal-texto,
+.confirm-modal p {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.75;
+}
+
+body.dark .modal-body {
+  color: #f5f7fa;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+/* Pie de modal */
+.modal-footer {
+  padding: 16px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* Prevenir movimiento de la app o fondo */
 body.modal-open {
   overflow: hidden;
 }
 
+.app.modal-shifted,
 body.modal-open .app {
-  transition: transform .25s ease, opacity .2s ease, filter .25s ease;
-  opacity: 1;
-  pointer-events: auto;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transition: none !important;
 }
 
-.app.modal-shifted {
-  transform: translateX(180px) scale(0.98);
-  filter: saturate(0.92);
-  opacity: 0.9;
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* ===== Contenido ===== */
-
-.modal-body{
-  padding: 20px 22px 24px;
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--text);
-  white-space: pre-wrap;
-  word-break: break-word;
-  max-height: 70vh;
-  overflow-y: auto;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-body.dark .modal-body {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-/* ===== Desplazamiento ===== */
-
-.modal-body::-webkit-scrollbar{
-  width:8px;
-}
-
-.modal-body::-webkit-scrollbar-thumb{
-  background:var(--border);
-  border-radius:20px;
-}
-
-/* ===== Pie ===== */
-
-.modal-footer{
-  padding:16px 22px;
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:flex-end;
-}
-
-/* ===== Animaciones ===== */
-
-@keyframes fadeIn{
-
-  from{
-    opacity:0;
+@keyframes modalFloatCenter {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
   }
-
-  to{
-    opacity:1;
-  }
-
-}
-
-@keyframes modalShow{
-
-  from{
-    opacity:0;
-    transform:translateY(15px) scale(.97);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-
-}
-
-@keyframes selectOpen {
-  0% {
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 10px rgba(15, 23, 42, 0.04);
-  }
-  50% {
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 18px rgba(17, 17, 17, 0.12);
-  }
-  100% {
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 10px rgba(15, 23, 42, 0.04);
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 
-/* ===== Móvil ===== */
-
-@media (max-width:600px){
-
-  .modal{
-    padding:12px;
+/* Adaptabilidad móvil */
+@media (max-width: 600px) {
+  .modal {
+    padding: 12px;
   }
 
-  .modal-content{
-    max-width:100%;
-    border-radius:14px;
+  .modal-content,
+  .confirm-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
   }
 
-  .modal-header{
-    padding:14px 16px;
+  .modal-header {
+    padding: 14px 16px;
   }
 
-  .modal-body{
-    padding:18px;
-    font-size:14px;
+  .modal-body {
+    padding: 16px;
   }
-
 }

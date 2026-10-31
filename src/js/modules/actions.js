@@ -1,4 +1,4 @@
-// --- Probar conexión ----------------------------------------------------------
+// --- Probar conexiï¿½n ----------------------------------------------------------
 let prospectoNuevaVentaId = null;
 let botonOrigenNuevaVenta = null;
 let accionesProspectoId = null;
@@ -27,13 +27,13 @@ function abrirAccionesProspecto(idCodificado) {
   lista.innerHTML = '<div class="modal-actions-grid">' + acciones.join("") + '</div>';
   document.getElementById("modal-acciones").classList.add("active");
   document.body.classList.add("modal-open");
-  document.querySelector(".app")?.classList.add("modal-shifted");
+  
 }
 
 function cerrarAccionesProspecto() {
   document.getElementById("modal-acciones")?.classList.remove("active");
   document.body.classList.remove("modal-open");
-  document.querySelector(".app")?.classList.remove("modal-shifted");
+  
   accionesProspectoId = null;
 }
 
@@ -70,7 +70,7 @@ function fechaLocalInput(date = new Date()) {
 function abrirNuevaVenta(idCodificado) {
   const id = decodeURIComponent(idCodificado);
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
-  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontró un cliente cerrado", "err");
+  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontrï¿½ un cliente cerrado", "err");
   prospectoNuevaVentaId = id;
   botonOrigenNuevaVenta = document.activeElement;
   document.getElementById("nueva-venta-cliente").textContent = `Cliente: ${prospecto.nombre}`;
@@ -123,15 +123,15 @@ async function verHistorialVentas(idCodificado) {
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
   if (!prospecto) return;
   const content = document.getElementById("modal-texto");
-  document.getElementById("titulo-nota").textContent = `Historial de ventas · ${prospecto.nombre}`;
+  document.getElementById("titulo-nota").textContent = `Historial de ventas ï¿½ ${prospecto.nombre}`;
   content.textContent = "Cargando historial...";
   document.getElementById("modal-nota").classList.add("active");
   document.body.classList.add("modal-open");
   try {
     const historial = await obtenerHistorialVentas(id);
     content.innerHTML = historial.length
-      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "—"}</td></tr>`).join("")}</tbody></table></div>`
-      : "Todavía no hay ventas registradas para este cliente.";
+      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "ï¿½"}</td></tr>`).join("")}</tbody></table></div>`
+      : "Todavï¿½a no hay ventas registradas para este cliente.";
   } catch (exception) { content.textContent = "No se pudo cargar el historial."; }
 }
 
@@ -139,54 +139,146 @@ async function probar() {
   try {
     const { count, error } = await agendaTable().select("id", { count: "exact", head: true });
     if (error) throw error;
-    toast(`? Conexión exitosa — ${count || 0} registros encontrados`, "ok");
+    toast(`? Conexiï¿½n exitosa ï¿½ ${count || 0} registros encontrados`, "ok");
   } catch (e) {
     toast("No se pudo conectar con Supabase. Revisa el schema agendas.", "err");
   }
 }
 
-// --- editar ------------------------------------------------------------
-function editarProspecto(id) {
-  const p = prospectosBase.find((x) => x.id == id);
+// --- editar modal ------------------------------------------------------
+let prospectoEditarId = null;
 
+function editarProspecto(id) {
+  const p = prospectosBase.find((x) => String(x.id) === String(id));
   if (!p) return;
 
-  document.getElementById("f-nombre").value = p.nombre;
-  document.getElementById("f-tel").value = p.tel;
-  document.getElementById("f-tipo").value = p.tipo;
-  document.getElementById("f-estatus").value = p.estatus;
-  refrescarCustomSelect("f-tipo");
-  refrescarCustomSelect("f-estatus");
- if (p.fecha) {
+  cerrarAccionesProspecto();
+  prospectoEditarId = String(p.id);
 
-  const partes = p.fecha.split("/");
-
-  if (partes.length === 3) {
-
-    document.getElementById("f-fecha").value =
-      `${partes[2]}-${partes[1]}-${partes[0]}`;
-
+  // 0. Campos informativos cliente y telÃ©fono (solo lectura con diseÃ±o formal acorde)
+  const inputNombre = document.getElementById("f-edit-nombre");
+  if (inputNombre) {
+    inputNombre.value = p.nombre || "";
+  }
+  const inputTel = document.getElementById("f-edit-tel");
+  if (inputTel) {
+    inputTel.value = p.tel || "";
   }
 
+  // 1. Fecha de seguimiento
+  const inputFecha = document.getElementById("f-edit-fecha");
+  if (inputFecha) {
+    if (p.fecha) {
+      const partes = String(p.fecha).split("/");
+      if (partes.length === 3) {
+        inputFecha.value = `${partes[2]}-${partes[1].padStart(2, "0")}-${partes[0].padStart(2, "0")}`;
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(p.fecha)) {
+        inputFecha.value = p.fecha;
+      } else {
+        inputFecha.value = "";
+      }
+    } else {
+      inputFecha.value = "";
+    }
+  }
+
+  // 2. Tarjeta / producto
+  const inputTipo = document.getElementById("f-edit-tipo");
+  if (inputTipo) {
+    inputTipo.value = p.tipo || "";
+    if (typeof refrescarCustomSelect === "function") refrescarCustomSelect("f-edit-tipo");
+  }
+
+  // 3. Estatus
+  const inputEstatus = document.getElementById("f-edit-estatus");
+  if (inputEstatus) {
+    inputEstatus.value = p.estatus || "Interesado";
+    if (typeof refrescarCustomSelect === "function") refrescarCustomSelect("f-edit-estatus");
+  }
+
+  // 4. Notas
+  const inputNotas = document.getElementById("f-edit-notas");
+  if (inputNotas) {
+    inputNotas.value = p.notas || "";
+  }
+
+  const errorP = document.getElementById("editar-prospecto-error");
+  if (errorP) errorP.style.display = "none";
+
+  document.getElementById("modal-editar")?.classList.add("active");
+  document.body.classList.add("modal-open");
 }
-  document.getElementById("f-notas").value = p.notas;
 
-  editandoId = p.id;
-
-  document.getElementById("btn-text").textContent = "Actualizar prospecto";
-  const cancelar = document.getElementById("btn-cancelar");
-  if (cancelar) cancelar.hidden = false;
-
-  const btnNuevo = document.getElementById("tab-nuevo");
-  cambiarTab("nuevo", btnNuevo);
+function cerrarEditarProspecto() {
+  document.getElementById("modal-editar")?.classList.remove("active");
+  document.body.classList.remove("modal-open");
+  prospectoEditarId = null;
 }
+
+async function guardarEdicionProspecto() {
+  if (!prospectoEditarId) return;
+
+  const btn = document.getElementById("btn-actualizar-prospecto");
+  const btnText = document.getElementById("btn-edit-text");
+  const errorP = document.getElementById("editar-prospecto-error");
+  if (errorP) errorP.style.display = "none";
+
+  btn.disabled = true;
+  if (btnText) btnText.innerHTML = '<span class="loader"></span> Actualizando...';
+
+  try {
+    const p = prospectosBase.find((x) => String(x.id) === prospectoEditarId);
+    let fechaCierre = p?.fecha_cierre || null;
+    const estatus = document.getElementById("f-edit-estatus").value;
+    if (estatus === "Cerrado") {
+      fechaCierre = fechaCierre || fechaHoyLocal();
+    } else {
+      fechaCierre = null;
+    }
+
+    const valores = {
+      tipo: document.getElementById("f-edit-tipo").value,
+      estatus: estatus,
+      fecha: document.getElementById("f-edit-fecha").value || null,
+      fecha_cierre: fechaCierre,
+      notas: document.getElementById("f-edit-notas").value.trim(),
+    };
+
+    const { error } = await agendaTable().update(valores).eq("id", prospectoEditarId);
+    if (error) throw error;
+
+    toast("âœ“ Registro actualizado correctamente", "ok");
+    cerrarEditarProspecto();
+
+    // Actualizar secciones con los nuevos datos
+    if (typeof actualizarTodasLasSecciones === "function") {
+      await actualizarTodasLasSecciones({ mostrarNotificacion: false });
+    } else if (typeof cargarLista === "function") {
+      await cargarLista();
+    }
+  } catch (err) {
+    console.error("Error al actualizar prospecto:", err);
+    if (errorP) {
+      errorP.textContent = "Error al actualizar el registro: " + (err.message || "Error de conexiÃ³n");
+      errorP.style.display = "block";
+    }
+    toast("No se pudo actualizar el registro", "err");
+  } finally {
+    btn.disabled = false;
+    if (btnText) btnText.textContent = "Actualizar registro";
+  }
+}
+
+document.getElementById("modal-editar")?.addEventListener("click", (event) => {
+  if (event.target.id === "modal-editar") cerrarEditarProspecto();
+});
 // --- eliminar ------------------------------------------------------------
 async function eliminarProspecto(id) {
   const prospecto = prospectosBase.find((item) => String(item.id) === String(id));
   if (!prospecto) return;
   prospectoEliminarId = id;
   document.getElementById("mensaje-confirmar-eliminacion").textContent =
-    `¿Deseas eliminar a ${prospecto.nombre}? Esta acción no se puede deshacer.`;
+    `ï¿½Deseas eliminar a ${prospecto.nombre}? Esta acciï¿½n no se puede deshacer.`;
   document.getElementById("modal-confirmar-eliminacion").classList.add("active");
   document.body.classList.add("modal-open");
 }
@@ -208,7 +300,7 @@ async function confirmarEliminacion() {
     if (!error) {
       toast("Prospecto eliminado", "ok");
 
-      // El borrado invalida el caché del servidor: forzamos recarga real.
+      // El borrado invalida el cachï¿½ del servidor: forzamos recarga real.
       await cargarLista();
     } else toast("No se pudo eliminar", "err");
   } catch (e) {
@@ -227,14 +319,16 @@ function verNota(nombre, nota) {
     decodeURIComponent(nota);
 
   document.getElementById("modal-nota").classList.add("active");
-  document.querySelector(".app")?.classList.add("modal-shifted");
+  
 }
 
 function cerrarNota() {
   document.body.classList.remove("modal-open");
   document.getElementById("modal-nota").classList.remove("active");
-  document.querySelector(".app")?.classList.remove("modal-shifted");
+  
 }
+
+document.getElementById("modal-nueva-venta")?.addEventListener("click", (event) => { if (event.target.id === "modal-nueva-venta") cerrarNuevaVenta(); });
 
 document.getElementById("modal-nota").addEventListener("click", (event) => {
   if (event.target.id === "modal-nota") cerrarNota();
@@ -242,3 +336,8 @@ document.getElementById("modal-nota").addEventListener("click", (event) => {
 
 // --- Init ---------------------------------------------------------------------
 
+
+
+window.editarProspecto = editarProspecto;
+window.cerrarEditarProspecto = cerrarEditarProspecto;
+window.guardarEdicionProspecto = guardarEdicionProspecto;

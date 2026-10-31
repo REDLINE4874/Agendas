@@ -149,6 +149,11 @@ input, select, textarea {
   box-shadow: inset 0 1px 2px rgba(15, 23, 42, .04);
 }
 
+textarea,
+.input-container textarea {
+  min-height: 200px;
+}
+
 .input-container input::placeholder,
 .input-container textarea::placeholder,
 input::placeholder,
@@ -342,15 +347,14 @@ input[type="date"]::-webkit-clear-button { display: none; }
 .date-input-wrap input[type="date"] { background-image: none; }
 
 /* Modales: capa de fondo y panel claramente separados. */
-.modal,
-body.custom-background .modal {
+.modal, body.custom-background .modal {
   display: none;
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 4vw, 32px);
-  background: rgba(15, 23, 42, .56);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .modal.active { display: flex; }
@@ -382,7 +386,24 @@ body.custom-background .modal {
   font-weight: 700;
 }
 
-.modal-body { color: var(--text); font-family: var(--agenda-font-body); }
+.modal-body {
+  color: var(--text);
+  font-family: var(--agenda-font-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.modal-body .form-grid,
+.modal-body .modal-actions-grid,
+.modal-body .table-wrap,
+.modal-body table {
+  white-space: normal;
+}
+#modal-texto {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
 .app.modal-shifted { transform: none; filter: none; opacity: 1; }
 .modal-close {
   width: 36px;
@@ -431,7 +452,6 @@ body.dark {
 }
 
 body.dark .card,
-body.dark .modal,
 body.dark .confirm-modal,
 body.dark .modal-content {
   box-shadow: 0 20px 54px rgba(0, 0, 0, .34);
@@ -751,4 +771,59 @@ body.dark .current-user::before { background: #f8fafc; color: #111827; }
   .header { grid-template-columns: 62px minmax(0, 1fr); column-gap: 14px; }
   .header-icon, .header-logo { width: 62px; height: 52px; }
   .current-user { max-width: min(240px, 70vw); }
+}
+
+/* Campos de solo lectura (Cliente y Teléfono) con diseño acorde */
+.input-container input[readonly],
+.input-container input:read-only {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  cursor: default;
+  font-weight: 600;
+  padding-right: 38px;
+  user-select: text;
+  opacity: 0.95;
+}
+
+.input-container input[readonly]:focus,
+.input-container input:read-only:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--input-border);
+}
+
+body.dark .input-container input[readonly],
+body.dark .input-container input:read-only {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f5f7fa;
+}
+
+.readonly-badge-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.input-container:hover .readonly-badge-lock {
+  opacity: 0.85;
+}
+
+.modal-content .input-container label,
+.modal-content .custom-select-label {
+  background: var(--bg);
+}
+
+body.dark .modal-content .input-container label,
+body.dark .modal-content .custom-select-label {
+  background: #151a22;
 }

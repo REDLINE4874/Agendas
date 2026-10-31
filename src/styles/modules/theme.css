@@ -37,7 +37,7 @@
 
   body.dark .card,
   body.dark .mes-group,
-  body.dark .modal,
+  
   body.dark .confirm-modal {
     background: linear-gradient(180deg, rgba(21, 26, 34, 0.97), rgba(17, 21, 28, 0.98));
     border: 1px solid rgba(255, 255, 255, 0.10);
@@ -46,7 +46,7 @@
     -webkit-backdrop-filter: none;
   }
 
-  body.dark .modal,
+  
   body.dark .confirm-modal,
   body.dark .modal-content {
     background: linear-gradient(135deg, rgba(17, 21, 28, 0.98), rgba(11, 13, 16, 0.96));
