@@ -1,9 +1,14 @@
-﻿const hoy = new Date().toISOString().split("T")[0];
-document.getElementById("f-fecha").value = hoy;
-renderHoy();
-// La carga de datos se inicia desde site-auth.js únicamente después de
-// recuperar una sesión autenticada.
+const hoy = new Date().toISOString().split("T")[0];
+const inputFecha = document.getElementById("f-fecha");
+if (inputFecha) inputFecha.value = hoy;
+if (typeof renderHoy === "function") renderHoy();
 
-// El refresco de la vista se hace de forma manual o al guardar/editar
-// un prospecto, sin actualización automática cada minuto.
-
+// Si al cargar app.js ya existe una sesión autenticada recuperada,
+// asegurar que se actualicen todas las secciones.
+if (window.SUPABASE_AUTH_CLIENT?.auth) {
+  window.SUPABASE_AUTH_CLIENT.auth.getSession().then(({ data }) => {
+    if (data?.session?.user && typeof window.actualizarTodasLasSecciones === "function") {
+      window.actualizarTodasLasSecciones();
+    }
+  });
+}

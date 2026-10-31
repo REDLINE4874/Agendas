@@ -113,8 +113,19 @@ function updateSession(session) {
   siteAuthScreen.hidden = embeddedMode || (signedIn && !recoveryMode);
   window.bindSiteAuthButton(signedIn);
   mostrarUsuarioActual(session?.user);
-  if (!signedIn) showPanel("login");
-  if (signedIn && typeof window.cargarLista === "function") window.cargarLista();
+  if (!signedIn) {
+    showPanel("login");
+    if (typeof window.limpiarTodasLasSecciones === "function") {
+      window.limpiarTodasLasSecciones();
+    }
+  } else {
+    // Al iniciar sesión se deben de actualizar todas las secciones
+    if (typeof window.actualizarTodasLasSecciones === "function") {
+      window.actualizarTodasLasSecciones();
+    } else if (typeof window.cargarLista === "function") {
+      window.cargarLista();
+    }
+  }
 }
 
 function listenForHostSession() {
@@ -222,6 +233,9 @@ if (!siteAuthReady) {
   window.SUPABASE_AUTH_CLIENT.auth.onAuthStateChange((event, session) => {
     if (event === "PASSWORD_RECOVERY") { recoveryMode = true; showPanel("update"); }
     updateSession(session);
+    if (event === "SIGNED_IN" && typeof window.actualizarTodasLasSecciones === "function") {
+      window.actualizarTodasLasSecciones();
+    }
   });
   window.SUPABASE_AUTH_CLIENT.auth.getSession().then(({ data, error }) => {
     if (error) setStatus("No se pudo recuperar la sesión.", true);

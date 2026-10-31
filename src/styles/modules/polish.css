@@ -55,6 +55,40 @@ h1, h2, h3, h4,
   transform: translateY(-1px);
 }
 .agenda-auth-button .material-symbols-rounded { font-size: 20px; }
+
+.agenda-install-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.agenda-install-button:hover {
+  background: var(--bg-3);
+  transform: translateY(-1px);
+}
+.agenda-install-button .material-symbols-rounded { font-size: 20px; }
+@media (max-width: 640px) {
+  .agenda-install-button span:not(.material-symbols-rounded) {
+    display: none;
+  }
+  .agenda-install-button {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    padding: 0;
+    justify-content: center;
+  }
+}
 .tabs {
   position: relative;
   top: auto;

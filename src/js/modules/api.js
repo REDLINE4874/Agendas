@@ -1,4 +1,4 @@
-﻿
+
 // ─── Persistencia Supabase ───────────────────────────────────────────────────
 function agendaTable() {
   return window.SUPABASE_AUTH_CLIENT.schema("agendas").from("prospectos");
@@ -114,9 +114,8 @@ async function guardarProspecto() {
 
       limpiarForm();
 
-      // El guardado invalida el caché del servidor, así que forzamos
-      // una recarga real en vez de usar la versión "fresca" en memoria.
-      await cargarLista();
+      // El guardado actualiza todas las secciones para reflejar cambios
+      await actualizarTodasLasSecciones({ mostrarNotificacion: false });
     } else toast("No se pudo guardar el prospecto", "err");
   } catch (e) {
     toast("Error de conexión con Supabase", "err");
@@ -126,45 +125,190 @@ async function guardarProspecto() {
   }
 }
 
-// ─── Lista ───────────────────────────────────────────────────────────────────
-async function cargarLista() {
+// ─── Gestión de datos y actualización por secciones ───────────────────────────
+let promesaFetchProspectos = null;
+let ultimaCargaProspectos = 0;
+
+async function fetchProspectosBackend(forzar = false) {
+  const ahora = Date.now();
+  if (promesaFetchProspectos) {
+    return promesaFetchProspectos;
+  }
+  // Si los datos se obtuvieron hace menos de 1.5s y no se fuerza, reutilizar
+  if (!forzar && ahora - ultimaCargaProspectos < 1500 && prospectosBase.length > 0) {
+    return prospectosBase;
+  }
+
+  promesaFetchProspectos = (async () => {
+    try {
+      if (!window.SUPABASE_AUTH_CLIENT) return [];
+      const { data, error } = await window.SUPABASE_AUTH_CLIENT
+        .schema("agendas")
+        .rpc("list_visible_prospectos");
+      if (error) throw error;
+      prospectos = (data || []).map(mapProspecto);
+      prospectosBase = [...prospectos];
+      ultimaCargaProspectos = Date.now();
+      if (typeof actualizarSelectProspectos === "function") {
+        actualizarSelectProspectos();
+      }
+      return prospectosBase;
+    } finally {
+      promesaFetchProspectos = null;
+    }
+  })();
+
+  return promesaFetchProspectos;
+}
+
+// Actualiza en automático únicamente la sección específica seleccionada
+async function actualizarSeccion(id, opciones = {}) {
+  const { forzar = false } = opciones;
+
+  switch (id) {
+    case "hoy": {
+      // 1. Render inmediato con datos existentes en memoria
+      if (typeof renderHoy === "function") renderHoy();
+      // 2. Consulta y actualización en segundo plano de la sección hoy
+      try {
+        await fetchProspectosBackend(forzar);
+        if (typeof renderHoy === "function") renderHoy();
+      } catch (err) {
+        console.warn("Error al actualizar la sección hoy:", err);
+      }
+      break;
+    }
+
+    case "lista": {
+      // 1. Filtrado y render inmediato de mis prospectos
+      if (typeof filtrar === "function") filtrar();
+      // 2. Consulta y actualización de mis prospectos
+      try {
+        await fetchProspectosBackend(forzar);
+        if (typeof actualizarFiltroMes === "function") actualizarFiltroMes(prospectosBase);
+        if (typeof filtrar === "function") filtrar();
+      } catch (err) {
+        console.warn("Error al actualizar la sección mis prospectos:", err);
+      }
+      break;
+    }
+
+    case "compartidos": {
+      if (typeof renderCompartidos === "function") renderCompartidos();
+      try {
+        await fetchProspectosBackend(forzar);
+        if (typeof renderCompartidos === "function") renderCompartidos();
+      } catch (err) {
+        console.warn("Error al actualizar la sección compartidos:", err);
+      }
+      break;
+    }
+
+    case "reventa": {
+      if (typeof renderReventa === "function") renderReventa();
+      try {
+        await fetchProspectosBackend(forzar);
+        if (typeof renderReventa === "function") renderReventa();
+      } catch (err) {
+        console.warn("Error al actualizar la sección reventa:", err);
+      }
+      break;
+    }
+
+    case "general": {
+      // La agenda general solo requiere su propia consulta al servidor
+      if (typeof cargarAgendaGeneral === "function") {
+        try {
+          await cargarAgendaGeneral();
+        } catch (err) {
+          console.warn("Error al actualizar la agenda general:", err);
+        }
+      }
+      break;
+    }
+
+    case "nuevo": {
+      // Preparar fecha actual en el formulario si está vacía
+      const inputFecha = document.getElementById("f-fecha");
+      if (inputFecha && !inputFecha.value) {
+        inputFecha.value = fechaHoyLocal();
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
+}
+
+// Actualiza todas las secciones (llamado al iniciar sesión o refresh manual global)
+async function actualizarTodasLasSecciones(opciones = {}) {
+  const { mostrarNotificacion = false } = opciones;
   if (cargandoLista) return;
 
   cargandoLista = true;
-  mostrarCargaLista();
   setBotonesActualizacionEstado(true);
-  toast("Actualizando prospectos...", "ok");
+
+  if (mostrarNotificacion) {
+    toast("Actualizando todas las secciones...", "ok");
+  }
 
   try {
+    // 1. Obtener prospectos y agenda general en paralelo
+    const promesas = [fetchProspectosBackend(true)];
+    if (typeof cargarAgendaGeneral === "function") {
+      promesas.push(cargarAgendaGeneral());
+    }
+    await Promise.allSettled(promesas);
 
-    const { data, error } = await window.SUPABASE_AUTH_CLIENT.schema("agendas").rpc("list_visible_prospectos");
-    if (error) throw error;
-    prospectos = (data || []).map(mapProspecto);
-    prospectosBase = [...prospectos];
-    if (typeof cargarAgendaGeneral === "function") await cargarAgendaGeneral();
-    actualizarSelectProspectos();
-    actualizarFiltroMes(prospectosBase);
-    filtrar();
+    // 2. Actualizar todas las secciones de la interfaz
+    if (typeof actualizarSelectProspectos === "function") actualizarSelectProspectos();
+    if (typeof actualizarFiltroMes === "function") actualizarFiltroMes(prospectosBase);
+    if (typeof renderHoy === "function") renderHoy();
+    if (typeof filtrar === "function") filtrar();
     if (typeof renderCompartidos === "function") renderCompartidos();
-    renderHoy();
-    renderReventa();
-    toast("✓ Prospectos actualizados correctamente", "ok");
+    if (typeof renderReventa === "function") renderReventa();
 
+    const inputFecha = document.getElementById("f-fecha");
+    if (inputFecha && !inputFecha.value) {
+      inputFecha.value = fechaHoyLocal();
+    }
+
+    if (mostrarNotificacion) {
+      toast("✓ Todas las secciones actualizadas", "ok");
+    }
   } catch (e) {
-
-    console.error(e);
-
-    toast("No se pudo conectar con Supabase", "err");
-    renderTabla([]);
-    renderReventa();
-
+    console.error("Error al actualizar todas las secciones:", e);
+    if (mostrarNotificacion) {
+      toast("No se pudo conectar con Supabase", "err");
+    }
+    if (typeof renderTabla === "function") renderTabla([]);
+    if (typeof renderReventa === "function") renderReventa();
   } finally {
     cargandoLista = false;
     setBotonesActualizacionEstado(false);
   }
-
 }
 
-// Solo vuelve a pintar la vista sin consultar el backend; la recarga real
-// ocurre solo cuando el usuario fuerza la actualización o guarda un prospecto.
+function limpiarTodasLasSecciones() {
+  prospectos = [];
+  prospectosBase = [];
+  if (typeof renderHoy === "function") renderHoy();
+  if (typeof renderTabla === "function") renderTabla([]);
+  if (typeof renderCompartidos === "function") renderCompartidos();
+  if (typeof renderReventa === "function") renderReventa();
+  const generalList = document.getElementById("general-list");
+  if (generalList) {
+    generalList.innerHTML = '<div class="empty"><p>Inicia sesión para ver los clientes públicos</p></div>';
+  }
+}
 
+async function cargarLista() {
+  return actualizarTodasLasSecciones({ mostrarNotificacion: true });
+}
+
+window.fetchProspectosBackend = fetchProspectosBackend;
+window.actualizarSeccion = actualizarSeccion;
+window.actualizarTodasLasSecciones = actualizarTodasLasSecciones;
+window.limpiarTodasLasSecciones = limpiarTodasLasSecciones;
+window.cargarLista = cargarLista;
