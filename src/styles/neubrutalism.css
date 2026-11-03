@@ -9,6 +9,7 @@
   --nb-ink: #171717;
   --nb-shadow-color: #171717;
   --nb-control: var(--nb-white);
+  --nb-control-hover: #fffdf2;
   --nb-border: 2px solid var(--nb-ink);
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
   --nb-shadow-hover: 4px 4px 0 var(--nb-shadow-color);
@@ -41,6 +42,16 @@
   --input-focus-ring: var(--nb-blue);
   --agenda-focus: var(--nb-blue);
   --agenda-control-height: 48px;
+}
+
+::selection {
+  background: #f5e642;
+  color: #171717;
+}
+
+::-moz-selection {
+  background: #f5e642;
+  color: #171717;
 }
 
 body {
@@ -242,9 +253,9 @@ select:hover:not(:disabled),
 textarea:hover:not(:disabled),
 .custom-select:hover:not(:disabled) {
   border-color: var(--nb-ink);
-  background-color: #fffdf2;
-  box-shadow: 3px 3px 0 var(--nb-ink);
-  transform: translate(2px, 2px);
+  background-color: var(--nb-control-hover);
+  box-shadow: var(--nb-shadow-hover);
+  transform: translate(4px, 4px);
 }
 
 .custom-select:hover:not(:disabled) {
@@ -260,6 +271,20 @@ textarea:focus,
   outline: 3px solid var(--nb-blue);
   outline-offset: 2px;
   box-shadow: none;
+}
+
+input:focus:not([placeholder=" "])::placeholder,
+textarea:focus::placeholder {
+  color: var(--input-text, var(--nb-ink));
+  opacity: 1;
+}
+
+body.dark input:focus:not([placeholder=" "])::placeholder,
+body.dark textarea:focus::placeholder,
+body.custom-background input:focus:not([placeholder=" "])::placeholder,
+body.custom-background textarea:focus::placeholder {
+  color: var(--input-text, var(--nb-ink));
+  opacity: 1;
 }
 
 input[type="date"] {
@@ -349,8 +374,7 @@ input[type="date"] {
 .modal-close:hover:not(:disabled),
 .agenda-calendar__nav:hover:not(:disabled),
 .agenda-calendar__day:hover:not(:disabled),
-.agenda-calendar__text-btn:hover:not(:disabled),
-.date-picker-btn:hover:not(:disabled) {
+.agenda-calendar__text-btn:hover:not(:disabled) {
   border-color: var(--nb-ink);
   background-color: var(--nb-blue);
   color: var(--nb-ink);
@@ -406,8 +430,7 @@ input[type="date"] {
 .modal-close:active:not(:disabled),
 .tab:active:not(:disabled),
 .custom-select:active:not(:disabled),
-.custom-option:active:not(:disabled),
-.date-picker-btn:active:not(:disabled) {
+.custom-option:active:not(:disabled) {
   box-shadow: 0 0 0 transparent;
   transform: translate(8px, 8px);
 }
@@ -684,6 +707,7 @@ body.dark {
   --nb-ink: var(--nb-cream);
   --nb-shadow-color: #090909;
   --nb-control: #333;
+  --nb-control-hover: #414141;
   --nb-border: 2px solid var(--nb-ink);
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
   --nb-shadow-hover: 4px 4px 0 var(--nb-shadow-color);
@@ -1026,6 +1050,7 @@ body.custom-background-dark {
   --nb-ink: var(--text);
   --nb-yellow: var(--page-background, var(--nb-yellow));
   --nb-control: var(--input-bg);
+  --nb-control-hover: color-mix(in srgb, var(--nb-control) 90%, var(--nb-ink));
   --nb-shadow-color: #171717;
   --nb-border: 2px solid var(--nb-ink);
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
@@ -1041,6 +1066,7 @@ body.custom-background-dark {
 body.custom-background-dark {
   color-scheme: dark;
   --nb-shadow-color: #090909;
+  --nb-control-hover: color-mix(in srgb, var(--nb-control) 88%, #fff);
 }
 
 body.custom-background .card,
@@ -1112,6 +1138,18 @@ body.custom-background .input-container:has(select:valid) label,
 body.custom-background .custom-select-wrap.active .custom-select-label {
   background: var(--nb-control);
   color: var(--nb-ink);
+}
+
+body.dark input:hover:not(:disabled),
+body.dark select:hover:not(:disabled),
+body.dark textarea:hover:not(:disabled),
+body.custom-background input:hover:not(:disabled),
+body.custom-background select:hover:not(:disabled),
+body.custom-background textarea:hover:not(:disabled) {
+  border-color: var(--nb-ink);
+  background-color: var(--nb-control-hover);
+  box-shadow: var(--nb-shadow-hover);
+  transform: translate(4px, 4px);
 }
 
 body.custom-background .custom-option,
@@ -1195,6 +1233,114 @@ body.custom-background-dark .site-auth-logo {
   filter: brightness(0) invert(1);
 }
 
+body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body select,
+body textarea,
+body .custom-select {
+  border: var(--nb-border);
+  border-radius: var(--nb-radius);
+  box-shadow: var(--nb-shadow);
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body select,
+body textarea,
+body.custom-background input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body.custom-background select,
+body.custom-background textarea {
+  background-color: var(--nb-control);
+  color: var(--nb-ink);
+}
+
+body .input-container label,
+body .custom-select-label,
+body.dark .input-container label,
+body.dark .custom-select-label,
+body.custom-background .input-container label,
+body.custom-background .custom-select-label,
+body .input-container:focus-within label,
+body .input-container:has(input:not(:placeholder-shown)) label,
+body .input-container:has(textarea:not(:placeholder-shown)) label,
+body .input-container:has(select:valid) label,
+body .custom-select-wrap.active .custom-select-label,
+body.dark .input-container:focus-within label,
+body.dark .input-container:has(input:not(:placeholder-shown)) label,
+body.dark .input-container:has(textarea:not(:placeholder-shown)) label,
+body.dark .input-container:has(select:valid) label,
+body.dark .custom-select-wrap.active .custom-select-label,
+body.custom-background .input-container:focus-within label,
+body.custom-background .input-container:has(input:not(:placeholder-shown)) label,
+body.custom-background .input-container:has(textarea:not(:placeholder-shown)) label,
+body.custom-background .input-container:has(select:valid) label,
+body.custom-background .custom-select-wrap.active .custom-select-label {
+  border: 2px solid #171717;
+  border-radius: 4px;
+  background: #f5e642;
+  box-shadow: none;
+  color: #171717;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  padding: 3px 7px;
+}
+
+body input:not([placeholder=" "])::placeholder,
+body textarea::placeholder {
+  color: color-mix(in srgb, var(--nb-ink) 62%, var(--nb-control));
+  font-family: "Inter", "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+body .input-container input:not([placeholder=" "])::placeholder,
+body .input-container textarea::placeholder {
+  opacity: 1;
+}
+
+body input:focus:not([placeholder=" "])::placeholder,
+body textarea:focus::placeholder {
+  color: var(--nb-ink);
+  opacity: 1;
+}
+
+body input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body select:focus,
+body textarea:focus,
+body.dark input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body.dark select:focus,
+body.dark textarea:focus,
+body.custom-background input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+body.custom-background select:focus,
+body.custom-background textarea:focus {
+  box-shadow: var(--nb-shadow);
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]):hover:not(:disabled) {
+  border-color: var(--nb-ink);
+  background-color: var(--nb-control-hover);
+  box-shadow: var(--nb-shadow-hover);
+  transform: translate(4px, 4px);
+}
+
+.date-picker-btn,
+body.dark .date-picker-btn,
+body.custom-background .date-picker-btn {
+  border: var(--nb-border);
+  background: #f5e642;
+  color: #171717;
+  box-shadow: var(--nb-shadow);
+}
+
+.date-picker-btn:hover:not(:disabled),
+.date-picker-btn:active:not(:disabled) {
+  border-color: #171717;
+  background: #f5e642;
+  box-shadow: var(--nb-shadow);
+  color: #171717;
+  transform: translateY(-50%);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .btn:hover:not(:disabled),
   .site-auth-submit:hover:not(:disabled),
@@ -1215,8 +1361,14 @@ body.custom-background-dark .site-auth-logo {
   .modal-close:active:not(:disabled),
   .tab:active:not(:disabled),
   .custom-select:active:not(:disabled),
-  .custom-option:active:not(:disabled),
-  .date-picker-btn:active:not(:disabled) {
+  .custom-option:active:not(:disabled) {
+    box-shadow: 0 0 0 transparent;
+    transform: translate(8px, 8px);
+  }
+
+  body input:active:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  body select:active,
+  body textarea:active {
     box-shadow: 0 0 0 transparent;
     transform: translate(8px, 8px);
   }
