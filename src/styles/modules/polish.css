@@ -307,17 +307,7 @@ input:focus, select:focus, textarea:focus, .custom-select:focus-visible {
 @keyframes agenda-calendar-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
 .date-input-wrap::after {
-  content: "calendar_month";
-  position: absolute;
-  top: 50%;
-  right: 13px;
-  z-index: 1;
-  color: var(--text-muted);
-  font-family: "Material Symbols Rounded";
-  font-size: 19px;
-  line-height: 1;
-  pointer-events: none;
-  transform: translateY(-50%);
+  content: none;
 }
 
 input[type="date"] {

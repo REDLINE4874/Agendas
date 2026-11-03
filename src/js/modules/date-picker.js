@@ -20,9 +20,12 @@
     if (host.querySelector(".agenda-calendar")) return;
     const picker = document.createElement("div");
     picker.className = "agenda-calendar";
+    picker.id = `${input.id}-calendar`;
     picker.setAttribute("role", "dialog");
     picker.setAttribute("aria-label", "Calendario");
     picker.hidden = true;
+    button.setAttribute("aria-controls", picker.id);
+    button.setAttribute("aria-expanded", "false");
     host.appendChild(picker);
     picker.addEventListener("click", (event) => event.stopPropagation());
 
@@ -32,6 +35,7 @@
     const close = () => {
       picker.hidden = true;
       host.classList.remove("calendar-open");
+      button.setAttribute("aria-expanded", "false");
       if (active === close) active = null;
     };
 
@@ -110,12 +114,17 @@
       render();
       picker.hidden = false;
       host.classList.add("calendar-open");
+      button.setAttribute("aria-expanded", "true");
       active = close;
     };
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
+      if (active === close) {
+        close();
+        return;
+      }
       open();
     });
     input.addEventListener("click", (event) => {

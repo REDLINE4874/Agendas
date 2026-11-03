@@ -24,11 +24,11 @@ class ThemeBackgroundPicker extends HTMLElement {
           border-radius: 6px;
           background: var(--bg, #fff);
           cursor: pointer;
-          box-shadow: 8px 8px 0 var(--nb-shadow-color, #171717);
+          box-shadow: var(--nb-component-shadow, var(--nb-push-shadow, 4px 4px 0 var(--nb-shadow-color, #171717)));
           transition: transform .16s ease, box-shadow .16s ease;
         }
-        .picker:hover { transform: translate(4px, 4px); box-shadow: 4px 4px 0 var(--nb-shadow-color, #171717); }
-        .picker:active { transform: translate(8px, 8px); box-shadow: 0 0 0 transparent; }
+        .picker:hover { transform: translate(2px, 2px); box-shadow: var(--nb-component-shadow-hover, var(--nb-push-shadow-hover, 2px 2px 0 var(--nb-shadow-color, #171717))); }
+        .picker:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
         .picker:focus-visible {
           outline: 3px solid var(--input-focus-ring, rgba(17, 17, 17, .16));
           outline-offset: 2px;
