@@ -542,7 +542,32 @@ tr:hover td {
 }
 
 .empty svg {
+  box-sizing: border-box;
+  width: 52px;
+  height: 52px;
+  padding: 9px;
+  display: block;
+  margin: 0 auto 16px;
+  border: var(--nb-border);
+  border-radius: 4px;
+  background: var(--nb-blue);
   stroke: var(--nb-ink);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.empty .empty-icon--clock circle {
+  fill: #f5e642;
+}
+
+.empty .empty-icon--check circle {
+  fill: var(--nb-green);
+}
+
+.empty .empty-icon--add circle {
+  fill: var(--nb-pink);
 }
 
 .modal,

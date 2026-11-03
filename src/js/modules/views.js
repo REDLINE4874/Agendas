@@ -61,7 +61,7 @@ function renderHoy() {
   if (!deHoy.length) {
     w.innerHTML = `
       <div class="empty">
-        <svg viewBox="0 0 24 24">
+        <svg class="empty-icon empty-icon--check" aria-hidden="true" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="9"/>
           <path d="M9 12l2 2 4-4"/>
         </svg>
@@ -190,7 +190,7 @@ function renderTabla(rows, targetId = "tabla-wrap", options = {}) {
 
     w.innerHTML = `
       <div class="empty">
-        <svg viewBox="0 0 24 24">
+        <svg class="empty-icon empty-icon--add" aria-hidden="true" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="9"/>
           <path d="M8 12h8M12 8v8"/>
         </svg>
@@ -265,5 +265,4 @@ function esc(s) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
-
 
