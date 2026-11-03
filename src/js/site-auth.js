@@ -13,7 +13,7 @@ siteAuthScreen.id = "siteAuthScreen";
 siteAuthScreen.setAttribute("aria-labelledby", "siteAuthTitle");
 siteAuthScreen.innerHTML = `
   <div class="site-auth-card">
-    <img class="site-auth-logo" src="assets/icons/talent.svg" alt="Agenda de prospectos" />
+    <span class="site-auth-logo" role="img" aria-label="Agenda de prospectos"></span>
     <h1 id="siteAuthTitle">Iniciar sesión</h1>
     <p class="site-auth-page-name">AGENDAS</p>
     <div id="siteAuthLoginPanel">

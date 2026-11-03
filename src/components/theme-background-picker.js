@@ -161,7 +161,7 @@ class ThemeBackgroundPicker extends HTMLElement {
     const surface = this._darken(color, .14);
     const surfaceAlt = this._darken(color, .22);
     const inputSurface = this._darken(color, .1);
-    const isDarkSurface = this._luminance(surface) < .52;
+    const isDarkSurface = this._luminance(surface) < .179;
 
     root.style.setProperty("--page-background", color);
     root.style.setProperty("--bg-2", color);

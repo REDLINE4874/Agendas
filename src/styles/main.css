@@ -6,7 +6,7 @@
 @import url("modules/tables.css");
 @import url("modules/config.css");
 @import url("modules/feedback.css");
-@import url("modules/theme.css");
+@import url("modules/theme.css?v=21");
 @import url("modules/responsive.css");
 @import url("modules/modal.css");
 @import url("modules/custom-background.css");

@@ -37,12 +37,11 @@
   /* ===== Encabezado ===== */
   .header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2rem; min-height: 72px; }
   .header-icon { width: 58px; height: 58px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
-  .header-logo { display: block; margin-left: 7rem; height: 58px; object-fit: contain; filter: brightness(0) contrast(1) saturate(0) invert(0); transition: filter .25s ease; }
+  .header-logo { display: block; margin-left: 7rem; height: 58px; background-color: currentColor; mask: url("../../../assets/icons/talent.svg") center / contain no-repeat; -webkit-mask: url("../../../assets/icons/talent.svg") center / contain no-repeat; transition: background-color .25s ease; }
   .header-text { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-width: 0; z-index: 0; }
   .header h1 { font-size: 18px; font-weight: 600; }
   .header p { font-size: 13px; color: var(--text-muted); }
   .theme-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; z-index: 1; }
-  body.dark .header-logo { filter: brightness(0) invert(1); }
 
   /* ===== Pestañas ===== */
   .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; scrollbar-width: none; }
@@ -58,4 +57,3 @@
 
   /* ===== Tarjeta ===== */
   .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
-

@@ -667,7 +667,6 @@ tr:hover td {
 .site-auth-logo {
   width: min(190px, 100%);
   margin-bottom: 28px;
-  filter: brightness(0) contrast(1) saturate(0) invert(0);
 }
 
 .site-auth-card h1 {
@@ -730,12 +729,12 @@ tr:hover td {
 
 body.dark {
   color-scheme: dark;
-  --nb-white: #292929;
+  --nb-white: #363636;
   --nb-ink: var(--nb-cream);
-  --nb-shadow-color: #fff;
+  --nb-shadow-color: #171717;
   --nb-control: #333;
   --nb-control-hover: #414141;
-  --nb-border: 2px solid var(--nb-ink);
+  --nb-border: 2px solid #171717;
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
   --nb-shadow-hover: 4px 4px 0 var(--nb-shadow-color);
   --nb-push-shadow: 4px 4px 0 var(--nb-shadow-color);
@@ -745,9 +744,9 @@ body.dark {
   --text: var(--nb-ink);
   --text-muted: #e4dfd5;
   --bg: var(--nb-white);
-  --bg-2: #202020;
-  --bg-3: var(--nb-cream);
-  --border: var(--nb-ink);
+  --bg-2: #292929;
+  --bg-3: #414141;
+  --border: #171717;
   --blue: var(--nb-blue);
   --blue-light: #91b9ff;
   --blue-dark: var(--nb-ink);
@@ -758,11 +757,10 @@ body.dark {
   --red-light: var(--nb-pink);
   --red-dark: var(--nb-ink);
   --input-bg: var(--nb-control);
-  --input-border: var(--nb-ink);
+  --input-border: #171717;
   --input-text: var(--nb-ink);
   --input-focus-ring: var(--nb-blue);
   --shadow: var(--nb-shadow);
-  background: #171717;
   color: var(--nb-ink);
 }
 
@@ -802,14 +800,6 @@ body.dark .confirm-modal p {
 
 body.dark .site-auth-status.is-error {
   color: var(--nb-pink);
-}
-
-body.dark .header-logo {
-  filter: brightness(0) invert(1);
-}
-
-body.dark .site-auth-logo {
-  filter: brightness(0) contrast(1) saturate(0) invert(0);
 }
 
 body.dark .tab {
@@ -1134,6 +1124,13 @@ body.custom-background .btn-primary:hover:not(:disabled) {
   color: var(--nb-ink);
 }
 
+body.custom-background #btn-guardar,
+body.custom-background #btn-guardar:hover:not(:disabled) {
+  border-color: #171717;
+  background: #f5e642;
+  color: #171717;
+}
+
 body.custom-background .btn-danger,
 body.custom-background .btn-danger:hover:not(:disabled) {
   background: var(--nb-pink);
@@ -1263,19 +1260,6 @@ body.custom-background .agenda-calendar__day.is-selected {
 body.custom-background-dark .current-user,
 body.custom-background-dark .theme-control {
   color: var(--nb-ink);
-}
-
-body.custom-background .header-logo,
-body.custom-background .site-auth-logo {
-  filter: brightness(0) contrast(1) saturate(0) invert(0);
-}
-
-body.custom-background-dark .header-logo {
-  filter: brightness(0) invert(1);
-}
-
-body.custom-background-dark .site-auth-logo {
-  filter: brightness(0) invert(1);
 }
 
 body .header,

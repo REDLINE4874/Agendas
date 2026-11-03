@@ -29,9 +29,7 @@
 
     --shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
 
-    background:
-      radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 28%),
-      linear-gradient(135deg, #12161d 0%, #0f1216 55%, #0b0d10 100%);
+    background: #292929;
     color: var(--text);
   }
 
