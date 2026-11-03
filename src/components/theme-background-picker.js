@@ -20,14 +20,15 @@ class ThemeBackgroundPicker extends HTMLElement {
           width: 34px;
           height: 34px;
           padding: 0;
-          border: 1px solid rgba(148, 163, 184, .35);
-          border-radius: 999px;
+          border: 2px solid var(--nb-ink, #171717);
+          border-radius: 6px;
           background: var(--bg, #fff);
           cursor: pointer;
-          box-shadow: 0 3px 10px rgba(15, 23, 42, .12);
-          transition: transform .2s ease, border-color .2s ease;
+          box-shadow: 8px 8px 0 var(--nb-shadow-color, #171717);
+          transition: transform .16s ease, box-shadow .16s ease;
         }
-        .picker:hover { transform: translateY(-1px); border-color: var(--accent-color, #111); }
+        .picker:hover { transform: translate(4px, 4px); box-shadow: 4px 4px 0 var(--nb-shadow-color, #171717); }
+        .picker:active { transform: translate(8px, 8px); box-shadow: 0 0 0 transparent; }
         .picker:focus-visible {
           outline: 3px solid var(--input-focus-ring, rgba(17, 17, 17, .16));
           outline-offset: 2px;
@@ -39,10 +40,9 @@ class ThemeBackgroundPicker extends HTMLElement {
         .swatch {
           width: 16px;
           height: 16px;
-          border-radius: 5px;
+          border-radius: 3px;
           background: var(--page-background, #f2f2f2);
-          border: 1px solid rgba(100, 116, 139, .45);
-          box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7), 0 1px 3px rgba(0, 0, 0, .2);
+          border: 2px solid var(--nb-ink, #171717);
         }
         input {
           position: absolute;

@@ -88,17 +88,25 @@ class ThemeToggle extends HTMLElement {
           position:relative;
           width:var(--w);
           height:var(--h);
-          border-radius:999px;
-          border:none;
+          border:2px solid #171717;
+          border-radius:6px;
           cursor:pointer;
           padding:0;
           overflow:hidden;
-          background:linear-gradient(135deg, #8ec9f0, #f7d9a0);
-          transition:background 1s ease;
-          box-shadow:inset 0 2px 6px rgba(0,0,0,.15);
+          background:#91b9ff;
+          transition:transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+          box-shadow:8px 8px 0 var(--nb-shadow-color, #171717);
         }
         .switch.dark{
-          background:linear-gradient(135deg, #0b1030, #1b1e4a);
+          background:#a4e5b8;
+        }
+        .switch:hover{
+          transform:translate(4px, 4px);
+          box-shadow:4px 4px 0 var(--nb-shadow-color, #171717);
+        }
+        .switch:active{
+          transform:translate(8px, 8px);
+          box-shadow:0 0 0 transparent;
         }
         .switch:focus-visible{
           outline:3px solid #6ea8fe;
@@ -146,15 +154,16 @@ class ThemeToggle extends HTMLElement {
           left:var(--pad);
           width:var(--knob);
           height:var(--knob);
-          border-radius:50%;
-          background:#ffb648;
-          box-shadow:0 3px 8px rgba(0,0,0,.25);
+          border:2px solid #171717;
+          border-radius:4px;
+          background:#f5e642;
+          box-shadow:none;
           transform:translateX(0);
           transition:transform .3s cubic-bezier(.68,-0.4,.27,1.4), background .3s ease;
         }
         .switch.dark .knob{
           transform:translateX(var(--tx));
-          background:#e8ecff;
+          background:#ff91a4;
         }
         .knob .crater{
           position:absolute;

@@ -308,8 +308,7 @@ input[type="date"]::-webkit-clear-button { display: none; }
 .date-input-wrap input[type="date"] { background-image: none; }
 
 /* Modales: capa de fondo y panel claramente separados. */
-.modal,
-body.custom-background .modal {
+.modal {
   display: none;
   align-items: center;
   justify-content: center;
