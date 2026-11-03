@@ -50,7 +50,7 @@
     <script src="src/js/modules/views.js?v=8" defer></script>
     <script src="src/js/modules/actions.js?v=11" defer></script>
     <script src="src/js/app.js?v=8" defer></script>
-    <script src="src/components/theme-toggle.js?v=7" defer></script>
+    <script src="src/components/theme-toggle.js?v=8" defer></script>
     <script src="src/components/theme-background-picker.js?v=8" defer></script>
     <script src="src/js/pwa.js" defer></script>
   </head>
@@ -65,23 +65,22 @@
           <p>Tarjetas de crédito</p>
         </div>
         <div class="theme-actions" role="group" aria-label="Opciones de apariencia">
-          <button
-            class="agenda-install-button"
-            id="pwa-install-btn"
-            type="button"
-            aria-label="Instalar app"
-            title="Instalar como app de Chrome"
-            style="display: none;"
-          >
-            <span class="material-symbols-rounded" aria-hidden="true">install_desktop</span>
-            <span>Instalar</span>
-          </button>
-          <span class="current-user" id="current-user" aria-live="polite"></span>
-          <button class="agenda-auth-button" id="authButton" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
-            <span class="material-symbols-rounded" aria-hidden="true">logout</span>
-            <span class="sr-only">Cerrar sesión</span>
-          </button>
-          
+          <div class="theme-control" id="pwa-install-control" hidden>
+            <span class="theme-control__label">Instalar app</span>
+            <button
+              class="agenda-install-button"
+              id="pwa-install-btn"
+              type="button"
+              aria-label="Instalar app"
+              title="Instalar como app de Chrome"
+            >
+              <span class="material-symbols-rounded" aria-hidden="true">install_desktop</span>
+              <span>Instalar</span>
+            </button>
+          </div>
+          <div class="theme-control theme-control--user">
+            <span class="current-user" id="current-user" aria-live="polite"></span>
+          </div>
           <div class="theme-control">
             <span class="theme-control__label">Color de fondo</span>
             <theme-background-picker></theme-background-picker>
@@ -89,6 +88,13 @@
           <div class="theme-control">
             <span class="theme-control__label">Modo oscuro</span>
             <theme-toggle dark-class="dark" size="30"></theme-toggle>
+          </div>
+          <div class="theme-control theme-control--logout">
+            <span class="theme-control__label">Cerrar sesión</span>
+            <button class="agenda-auth-button" id="authButton" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
+              <span class="material-symbols-rounded" aria-hidden="true">logout</span>
+              <span class="sr-only">Cerrar sesión</span>
+            </button>
           </div>
         </div>
       </div>

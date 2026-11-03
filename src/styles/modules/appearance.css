@@ -45,8 +45,7 @@ body.dark .theme-actions {
     padding: 6px 8px;
   }
 
-  .theme-actions__title,
-  .theme-control__label {
+  .theme-actions__title {
     display: none;
   }
 }

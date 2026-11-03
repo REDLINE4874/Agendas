@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agenda-pwa-v9';
+const CACHE_NAME = 'agenda-pwa-v11';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -19,7 +19,7 @@ const STATIC_ASSETS = [
   './src/js/modules/views.js?v=8',
   './src/js/modules/actions.js?v=11',
   './src/js/app.js?v=8',
-  './src/components/theme-toggle.js?v=7',
+  './src/components/theme-toggle.js?v=8',
   './src/components/theme-background-picker.js?v=8',
   './src/js/pwa.js',
   './assets/icons/talent.svg',

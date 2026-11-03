@@ -57,134 +57,134 @@ class ThemeToggle extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host{
-          display:inline-block;
-
-          /* Tamaño "md" (por defecto) */
-          --w:52px;
-          --h:28px;
-          --pad:3px;
-          --knob:22px;
-          --tx:24px; /* distancia que recorre la perilla al activar modo oscuro */
+        :host {
+          display: inline-flex;
+          vertical-align: middle;
+          --w: 52px;
+          --h: 28px;
+          --pad: 3px;
+          --knob: 22px;
+          --tx: 24px;
         }
 
-        :host([size="sm"]){
-          --w:38px;
-          --h:20px;
-          --pad:2px;
-          --knob:16px;
-          --tx:18px;
+        :host([size="sm"]) {
+          --w: 38px;
+          --h: 20px;
+          --pad: 2px;
+          --knob: 16px;
+          --tx: 18px;
         }
 
-        :host([size="lg"]){
-          --w:64px;
-          --h:34px;
-          --pad:4px;
-          --knob:26px;
-          --tx:30px;
+        :host([size="lg"]) {
+          --w: 64px;
+          --h: 34px;
+          --pad: 4px;
+          --knob: 26px;
+          --tx: 30px;
         }
 
-        .switch{
-          position:relative;
-          width:var(--w);
-          height:var(--h);
-          border:2px solid #171717;
-          border-radius:6px;
-          cursor:pointer;
-          padding:0;
-          overflow:hidden;
-          background:#91b9ff;
-          transition:transform .16s ease, box-shadow .16s ease, background-color .16s ease;
-          box-shadow:var(--nb-component-shadow, var(--nb-push-shadow, 4px 4px 0 var(--nb-shadow-color, #171717)));
-        }
-        .switch.dark{
-          background:#a4e5b8;
-        }
-        .switch:hover{
-          transform:translate(2px, 2px);
-          box-shadow:var(--nb-component-shadow-hover, var(--nb-push-shadow-hover, 2px 2px 0 var(--nb-shadow-color, #171717)));
-        }
-        .switch:active{
-          transform:translate(4px, 4px);
-          box-shadow:0 0 0 transparent;
-        }
-        .switch:focus-visible{
-          outline:3px solid #6ea8fe;
-          outline-offset:3px;
+        .switch {
+          box-sizing: border-box;
+          position: relative;
+          display: block;
+          width: var(--w);
+          height: var(--h);
+          padding: 0;
+          overflow: hidden;
+          border: 2px solid #34445c;
+          border-radius: 999px;
+          background: #dce8f8;
+          cursor: pointer;
+          transition: background-color .25s ease, border-color .25s ease, transform .2s ease;
+          -webkit-tap-highlight-color: transparent;
         }
 
-        /* Decoraciones posicionadas en % para escalar junto con el tamaño */
-        .stars{
-          position:absolute;
-          inset:0;
-          opacity:0;
-          transition:opacity .3s ease;
+        .switch.dark {
+          border-color: #c5d0e7;
+          background: #27344e;
         }
-        .switch.dark .stars{ opacity:1; }
-        .stars span{
-          position:absolute;
-          width:2px;
-          height:2px;
-          background:#fff;
-          border-radius:50%;
-        }
-        .stars span:nth-child(1){ top:21%; left:15%; }
-        .stars span:nth-child(2){ top:43%; left:27%; width:1.5px; height:1.5px; }
-        .stars span:nth-child(3){ top:64%; left:17%; }
-        .stars span:nth-child(4){ top:29%; left:35%; width:1.5px; height:1.5px; }
 
-        .clouds{
-          position:absolute;
-          inset:0;
-          opacity:1;
-          transition:opacity .8s ease;
+        .switch:hover {
+          transform: scale(1.05);
         }
-        .switch.dark .clouds{ opacity:0; }
-        .clouds span{
-          position:absolute;
-          background:rgba(255,255,255,.85);
-          border-radius:50%;
-        }
-        .clouds span:nth-child(1){ width:17%; height:18%; top:18%; left:17%; }
-        .clouds span:nth-child(2){ width:12%; height:14%; top:61%; left:23%; }
 
-        .knob{
-          position:absolute;
-          top:var(--pad);
-          left:var(--pad);
-          width:var(--knob);
-          height:var(--knob);
-          border:2px solid #171717;
-          border-radius:4px;
-          background:#f5e642;
-          box-shadow:none;
-          transform:translateX(0);
-          transition:transform .3s cubic-bezier(.68,-0.4,.27,1.4), background .3s ease;
+        .switch:active {
+          transform: scale(.96);
         }
-        .switch.dark .knob{
-          transform:translateX(var(--tx));
-          background:#ff91a4;
+
+        .switch:focus-visible {
+          outline: 3px solid #3975d5;
+          outline-offset: 3px;
         }
-        .knob .crater{
-          position:absolute;
-          background:#c7cdf0;
-          border-radius:50%;
-          opacity:0;
-          transition:opacity .4s ease .3s;
+
+        .knob {
+          position: absolute;
+          top: 50%;
+          left: var(--pad);
+          display: grid;
+          width: var(--knob);
+          height: var(--knob);
+          place-items: center;
+          border: 1.5px solid #34445c;
+          border-radius: 50%;
+          background: #f5e642;
+          color: #29364a;
+          transform: translateY(-50%);
+          transition: transform .32s cubic-bezier(.2, .8, .2, 1), background-color .25s ease, color .25s ease;
         }
-        .switch.dark .knob .crater{ opacity:1; }
-        .knob .crater.c1{ width:23%; height:23%; top:18%; left:23%; }
-        .knob .crater.c2{ width:14%; height:14%; top:50%; left:50%; }
-        .knob .crater.c3{ width:11%; height:11%; top:27%; left:64%; }
+
+        .switch.dark .knob {
+          border-color: #f5dce7;
+          background: #ff91a4;
+          color: #342238;
+          transform: translateX(calc(var(--tx) - 4px)) translateY(-50%);
+        }
+
+        .knob svg {
+          position: absolute;
+          width: 62%;
+          height: 62%;
+          fill: none;
+          stroke: currentColor;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-width: 1.8;
+          transition: opacity .16s ease, transform .25s ease;
+        }
+
+        .icon-moon {
+          opacity: 0;
+          transform: rotate(-35deg) scale(.7);
+        }
+
+        .switch.dark .icon-sun {
+          opacity: 0;
+          transform: rotate(35deg) scale(.7);
+        }
+
+        .switch.dark .icon-moon {
+          opacity: 1;
+          transform: rotate(0) scale(1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .switch,
+          .knob,
+          .knob svg {
+            transition: none;
+          }
+        }
       </style>
 
       <button class="switch" part="switch" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro">
-        <span class="clouds"><span></span><span></span></span>
-        <span class="stars"><span></span><span></span><span></span><span></span></span>
-        <span class="knob">
-          <span class="crater c1"></span>
-          <span class="crater c2"></span>
-          <span class="crater c3"></span>
+        <span class="knob" aria-hidden="true">
+          <svg class="icon-sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24">
+            <path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"></path>
+          </svg>
         </span>
       </button>
     `;

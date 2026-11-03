@@ -1311,7 +1311,7 @@ body.custom-background .theme-actions {
   flex-wrap: wrap;
   gap: 10px;
   padding: 10px;
-  border: var(--nb-border);
+  border: 0;
   border-radius: var(--nb-radius);
   background: var(--nb-white);
   box-shadow: none;
@@ -1353,16 +1353,31 @@ body.custom-background .agenda-auth-button {
 }
 
 body .theme-control {
-  display: flex;
+  display: grid;
+  grid-template-rows: 15px 44px;
+  justify-items: center;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   color: var(--nb-ink);
   font-size: 12px;
   font-weight: 700;
 }
 
+body .theme-control[hidden] {
+  display: none;
+}
+
+body .theme-control--logout {
+  order: 1;
+}
+
+body .theme-control--user .current-user {
+  grid-row: 2;
+}
+
 body .theme-control__label {
   line-height: 1.2;
+  text-align: center;
 }
 
 body .date-input-wrap::after {

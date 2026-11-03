@@ -17,11 +17,12 @@
   // 2. Control de instalación (beforeinstallprompt)
   let deferredPrompt = null;
   const installBtn = document.getElementById('pwa-install-btn');
+  const installControl = document.getElementById('pwa-install-control');
 
   // Si la aplicación ya está abierta como app independiente (standalone), ocultar botón
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  if (isStandalone && installBtn) {
-    installBtn.style.display = 'none';
+  if (isStandalone && installControl) {
+    installControl.hidden = true;
   }
 
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -29,8 +30,8 @@
     e.preventDefault();
     deferredPrompt = e;
 
-    if (installBtn && !isStandalone) {
-      installBtn.style.display = 'inline-flex';
+    if (installControl && !isStandalone) {
+      installControl.hidden = false;
     }
   });
 
@@ -46,15 +47,17 @@
       const { outcome } = await deferredPrompt.userChoice;
       console.log('[PWA] Elección del usuario:', outcome);
       deferredPrompt = null;
-      installBtn.style.display = 'none';
+      if (installControl) {
+        installControl.hidden = true;
+      }
     });
   }
 
   window.addEventListener('appinstalled', () => {
     console.log('[PWA] Agenda de prospectos instalada como Chrome App');
     deferredPrompt = null;
-    if (installBtn) {
-      installBtn.style.display = 'none';
+    if (installControl) {
+      installControl.hidden = true;
     }
   });
 })();
