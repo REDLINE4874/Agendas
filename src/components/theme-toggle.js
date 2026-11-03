@@ -90,31 +90,55 @@ class ThemeToggle extends HTMLElement {
           width: var(--w);
           height: var(--h);
           padding: 0;
-          overflow: hidden;
-          border: 2px solid #34445c;
-          border-radius: 999px;
-          background: #dce8f8;
+          overflow: visible;
+          border: 3px solid #171717;
+          border-radius: 8px;
+          background: #91b9ff;
+          box-shadow: 4px 4px 0 #171717;
           cursor: pointer;
-          transition: background-color .25s ease, border-color .25s ease, transform .2s ease;
+          transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .switch.dark {
-          border-color: #c5d0e7;
-          background: #27344e;
+          background: #26324b;
         }
 
         .switch:hover {
-          transform: scale(1.05);
+          box-shadow: 5px 5px 0 #171717;
+          transform: translate(-1px, -1px);
         }
 
         .switch:active {
-          transform: scale(.96);
+          box-shadow: 1px 1px 0 #171717;
+          transform: translate(3px, 3px);
         }
 
         .switch:focus-visible {
-          outline: 3px solid #3975d5;
-          outline-offset: 3px;
+          outline: 3px solid #171717;
+          outline-offset: 6px;
+        }
+
+        .switch.dark:focus-visible {
+          outline-color: #f5e642;
+        }
+
+        .switch::before {
+          position: absolute;
+          top: 7px;
+          right: 9px;
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: #f5e642;
+          box-shadow: -7px 5px 0 -1px #fff, 5px -5px 0 -1px #fff;
+          content: "";
+          opacity: 0;
+          transition: opacity .2s ease;
+        }
+
+        .switch.dark::before {
+          opacity: 1;
         }
 
         .knob {
@@ -122,21 +146,21 @@ class ThemeToggle extends HTMLElement {
           top: 50%;
           left: var(--pad);
           display: grid;
+          z-index: 1;
           width: var(--knob);
           height: var(--knob);
           place-items: center;
-          border: 1.5px solid #34445c;
-          border-radius: 50%;
+          border: 2px solid #171717;
+          border-radius: 6px;
           background: #f5e642;
-          color: #29364a;
+          color: #171717;
           transform: translateY(-50%);
-          transition: transform .32s cubic-bezier(.2, .8, .2, 1), background-color .25s ease, color .25s ease;
+          transition: transform .28s cubic-bezier(.2, .8, .2, 1), background-color .2s ease, color .2s ease;
         }
 
         .switch.dark .knob {
-          border-color: #f5dce7;
-          background: #ff91a4;
-          color: #342238;
+          background: #e7d8ff;
+          color: #26324b;
           transform: translateX(calc(var(--tx) - 4px)) translateY(-50%);
         }
 
@@ -144,11 +168,8 @@ class ThemeToggle extends HTMLElement {
           position: absolute;
           width: 62%;
           height: 62%;
-          fill: none;
-          stroke: currentColor;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-          stroke-width: 1.8;
+          fill: currentColor;
+          stroke: none;
           transition: opacity .16s ease, transform .25s ease;
         }
 
@@ -169,6 +190,7 @@ class ThemeToggle extends HTMLElement {
 
         @media (prefers-reduced-motion: reduce) {
           .switch,
+          .switch::before,
           .knob,
           .knob svg {
             transition: none;
@@ -179,11 +201,11 @@ class ThemeToggle extends HTMLElement {
       <button class="switch" part="switch" role="switch" aria-checked="false" aria-label="Cambiar entre modo claro y oscuro">
         <span class="knob" aria-hidden="true">
           <svg class="icon-sun" viewBox="0 0 24 24">
+            <path d="M11 1h2v4h-2zm0 18h2v4h-2zM1 11h4v2H1zm18 0h4v2h-4zM4.22 5.64l1.42-1.42 2.83 2.83-1.42 1.42zm11.31 11.31 1.42-1.42 2.83 2.83-1.42 1.42zM18.36 4.22l1.42 1.42-2.83 2.83-1.42-1.42zM7.05 15.54l1.42 1.42-2.83 2.83-1.42-1.42z"></path>
             <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
           </svg>
           <svg class="icon-moon" viewBox="0 0 24 24">
-            <path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"></path>
+            <path d="M20.8 15.1A8.9 8.9 0 0 1 8.9 3.2a9.3 9.3 0 1 0 11.9 11.9Z"></path>
           </svg>
         </span>
       </button>

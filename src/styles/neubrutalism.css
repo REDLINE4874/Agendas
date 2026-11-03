@@ -145,7 +145,7 @@ body {
   border-radius: 4px;
   background: transparent;
   color: var(--nb-ink);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
 }
@@ -1304,8 +1304,8 @@ body .header p {
 body .theme-actions,
 body.dark .theme-actions,
 body.custom-background .theme-actions {
-  --nb-component-shadow: none;
-  --nb-component-shadow-hover: none;
+  --nb-component-shadow: 4px 4px 0 #171717;
+  --nb-component-shadow-hover: 2px 2px 0 #171717;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1317,10 +1317,9 @@ body.custom-background .theme-actions {
   box-shadow: none;
 }
 
-body .theme-actions *,
-body.dark .theme-actions *,
-body.custom-background .theme-actions * {
-  box-shadow: none;
+body .theme-actions:has(theme-background-picker[palette-open]) {
+  position: relative;
+  z-index: 60;
 }
 
 body .current-user {
@@ -1331,12 +1330,14 @@ body .current-user {
   color: #171717;
   font-size: 12px;
   font-weight: 700;
+  box-shadow: 4px 4px 0 #171717;
 }
 
 body.dark .current-user,
 body.custom-background .current-user {
   background: var(--nb-green);
   color: #171717;
+  box-shadow: 4px 4px 0 #171717;
 }
 
 body .agenda-auth-button,
@@ -1349,15 +1350,48 @@ body.custom-background .agenda-auth-button {
   border-radius: 4px;
   background: var(--nb-pink);
   color: #171717;
-  box-shadow: none;
+  box-shadow: 4px 4px 0 #171717;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+
+body .agenda-auth-button:hover:not(:disabled) {
+  border-color: #171717;
+  background: #ff91a4;
+  box-shadow: 2px 2px 0 #171717;
+  transform: translate(2px, 2px);
+}
+
+body .agenda-auth-button:active:not(:disabled) {
+  box-shadow: 0 0 0 #171717;
+  transform: translate(4px, 4px);
+}
+
+body .agenda-install-button {
+  border: var(--nb-border);
+  border-radius: 8px;
+  background: var(--nb-blue);
+  color: #171717;
+  box-shadow: 4px 4px 0 #171717;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+body .agenda-install-button:hover:not(:disabled) {
+  border-color: #171717;
+  background: var(--nb-yellow);
+  box-shadow: 2px 2px 0 #171717;
+  transform: translate(2px, 2px);
+}
+
+body .agenda-install-button:active:not(:disabled) {
+  box-shadow: 0 0 0 #171717;
+  transform: translate(4px, 4px);
 }
 
 body .theme-control {
-  display: grid;
-  grid-template-rows: 15px 44px;
-  justify-items: center;
+  display: flex;
+  min-height: 44px;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
   color: var(--nb-ink);
   font-size: 12px;
   font-weight: 700;
@@ -1369,15 +1403,6 @@ body .theme-control[hidden] {
 
 body .theme-control--logout {
   order: 1;
-}
-
-body .theme-control--user .current-user {
-  grid-row: 2;
-}
-
-body .theme-control__label {
-  line-height: 1.2;
-  text-align: center;
 }
 
 body .date-input-wrap::after {

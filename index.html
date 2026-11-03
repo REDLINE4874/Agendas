@@ -26,7 +26,7 @@
 
     <link rel="stylesheet" href="src/styles/main.css?v=21" />
     <link rel="stylesheet" href="src/styles/site-auth.css?v=3" />
-    <link rel="stylesheet" href="src/styles/neubrutalism.css?v=21" />
+    <link rel="stylesheet" href="src/styles/neubrutalism.css?v=23" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
@@ -50,8 +50,8 @@
     <script src="src/js/modules/views.js?v=8" defer></script>
     <script src="src/js/modules/actions.js?v=11" defer></script>
     <script src="src/js/app.js?v=8" defer></script>
-    <script src="src/components/theme-toggle.js?v=8" defer></script>
-    <script src="src/components/theme-background-picker.js?v=8" defer></script>
+    <script src="src/components/theme-toggle.js?v=10" defer></script>
+    <script src="src/components/theme-background-picker.js?v=12" defer></script>
     <script src="src/js/pwa.js" defer></script>
   </head>
   <body class="site-auth-pending agendas-ecosystem">
@@ -66,7 +66,6 @@
         </div>
         <div class="theme-actions" role="group" aria-label="Opciones de apariencia">
           <div class="theme-control" id="pwa-install-control" hidden>
-            <span class="theme-control__label">Instalar app</span>
             <button
               class="agenda-install-button"
               id="pwa-install-btn"
@@ -82,15 +81,12 @@
             <span class="current-user" id="current-user" aria-live="polite"></span>
           </div>
           <div class="theme-control">
-            <span class="theme-control__label">Color de fondo</span>
             <theme-background-picker></theme-background-picker>
           </div>
           <div class="theme-control">
-            <span class="theme-control__label">Modo oscuro</span>
-            <theme-toggle dark-class="dark" size="30"></theme-toggle>
+            <theme-toggle dark-class="dark" size="38"></theme-toggle>
           </div>
           <div class="theme-control theme-control--logout">
-            <span class="theme-control__label">Cerrar sesión</span>
             <button class="agenda-auth-button" id="authButton" type="button" aria-label="Cerrar sesión" title="Cerrar sesión">
               <span class="material-symbols-rounded" aria-hidden="true">logout</span>
               <span class="sr-only">Cerrar sesión</span>
@@ -101,29 +97,25 @@
 
       <nav class="tabs" aria-label="Navegación principal">
         <button class="tab" onclick="cambiarTab('hoy', this)">
-          <span class="material-symbols-rounded icono-20">calendar_clock</span
-          >Seguimiento hoy
+          Seguimiento hoy
           <span id="badge-hoy" class="tab-badge" style="display: none">0</span>
         </button>
         <button class="tab active" id="tab-nuevo" onclick="cambiarTab('nuevo', this)">
-          <span class="material-symbols-rounded icono-20">calendar_add_on</span>
           <span>Nuevo prospecto</span>
         </button>
         <button class="tab" id="tab-lista" onclick="cambiarTab('lista', this)">
-          <span class="material-symbols-rounded icono-20">event_note</span>Mis prospectos
+          Mis prospectos
         </button>
         <button class="tab" id="tab-compartidos" onclick="cambiarTab('compartidos', this)">
-          <span class="material-symbols-rounded icono-20">group</span>Compartidos conmigo
+          Compartidos conmigo
         </button>
 
         <button class="tab" id="tab-reventa" onclick="cambiarTab('reventa', this)">
-          <span class="material-symbols-rounded icono-20">autorenew</span>
           Reventa disponible
           <span id="badge-reventa" class="tab-badge" style="display: none">0</span>
         </button>
 
         <button class="tab" onclick="cambiarTab('general', this)">
-          <span class="material-symbols-rounded icono-20">public</span>
           Agenda general
         </button>
       </nav>
