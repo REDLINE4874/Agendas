@@ -434,8 +434,8 @@ input[type="date"]::-webkit-clear-button { display: none; }
 .tabs { border-radius: 14px; }
 .tab, .btn, th, td { font-family: var(--agenda-font-body); }
 .tab { font-weight: 600; }
-th { font-size: 11px; letter-spacing: .055em; }
-td { font-size: 13px; }
+th { font-size: 15px; letter-spacing: .055em; }
+td { font-size: 14px; }
 
 body.dark {
   --agenda-focus: rgba(255, 255, 255, .18);

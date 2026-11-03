@@ -21,8 +21,8 @@
     overscroll-behavior: contain;
   }
   table { width: 100%; min-width: 700px; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td { padding: 10px 15px 10px 15px; border-bottom: 1px solid var(--bg-2); vertical-align: middle; font-weight: 600; }
+  th { text-align: left; padding: 8px 12px; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 10px 15px 10px 15px; border-bottom: 1px solid var(--bg-2); vertical-align: middle; font-size: 14px; font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--bg-2); }
   .td-nombre { font-weight: 600; }
@@ -52,7 +52,7 @@
     contain: layout paint;
   }
   .mes-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: var(--bg-2); border-bottom: 1px solid var(--border); }
-  .mes-header h3 { font-size: 14px; font-weight: 700; text-transform: capitalize; color: var(--text); }
+  .mes-header h3 { font-size: 16px; font-weight: 700; text-transform: capitalize; color: var(--text); }
   .mes-header span { font-size: 12px; color: var(--text-muted); }
   .mes-group table { min-width: 700px; }
   .mes-group:last-child { margin-bottom: 0; }

@@ -47,7 +47,7 @@
     .form-actions .btn { width: 100%; justify-content: center; }
     .modal-actions { flex-direction: column-reverse; }
     .modal-actions .btn { width: 100%; justify-content: center; }
-    td, th { padding: 8px 10px; font-size: 12px; }
+    td, th { padding: 8px 10px; }
     #toast { bottom: 1rem; right: 1rem; left: 1rem; text-align: center; }
   }
 
