@@ -1,4 +1,4 @@
-﻿// ─── Tabs ────────────────────────────────────────────────────────────────────
+// ─── Tabs ────────────────────────────────────────────────────────────────────
 function cambiarTab(id, btn) {
   document
     .querySelectorAll(".tab")
@@ -6,15 +6,21 @@ function cambiarTab(id, btn) {
   document
     .querySelectorAll(".panel")
     .forEach((p) => p.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("panel-" + id).classList.add("active");
-  if (id === "lista" || id === "compartidos" || id === "hoy" || id === "reventa") {
-    renderHoy();
-    if (id === "lista") renderTabla(prospectos);
-    if (id === "compartidos") renderCompartidos();
-    if (id === "reventa") renderReventa();
+
+  if (btn) {
+    btn.classList.add("active");
+  } else {
+    const targetBtn = document.getElementById("tab-" + id) || document.querySelector(`.tab[onclick*="'${id}'"]`);
+    if (targetBtn) targetBtn.classList.add("active");
   }
-  if (id === "general") cargarAgendaGeneral();
+
+  const panel = document.getElementById("panel-" + id);
+  if (panel) panel.classList.add("active");
+
+  // Al seleccionar una sección en específico, se actualiza en automático solo esa sección
+  if (typeof actualizarSeccion === "function") {
+    actualizarSeccion(id);
+  }
 }
 
 // ─── Formulario ──────────────────────────────────────────────────────────────
@@ -43,3 +49,6 @@ function cancelarEdicion() {
   toast("Edición cancelada; no se guardaron los cambios.", "ok");
 }
 
+window.cambiarTab = cambiarTab;
+window.limpiarForm = limpiarForm;
+window.cancelarEdicion = cancelarEdicion;

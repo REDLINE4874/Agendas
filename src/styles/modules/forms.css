@@ -241,7 +241,7 @@
     border-color: rgba(17, 17, 17, 0.18);
     transform: translateX(2px);
   }
-  textarea { min-height: 100px; height: auto; padding-top: 12px; resize: vertical; line-height: 1.5; }
+  textarea { min-height: 200px; height: auto; padding-top: 12px; resize: vertical; line-height: 1.5; }
   input::placeholder, textarea::placeholder {
     color: var(--text-muted);
     opacity: 1;

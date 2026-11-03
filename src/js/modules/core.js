@@ -1,5 +1,6 @@
-// El listado solo se actualiza por acción explícita del usuario o al
-// guardar/editar un prospecto; no se recarga en segundo plano.
+// Gestión de estado de prospectos y secciones.
+// Al seleccionar una sección en específico se actualiza en automático únicamente esa sección.
+// Al iniciar sesión se actualizan todas las secciones.
 
 let prospectos = [];
 let prospectosBase = [];
