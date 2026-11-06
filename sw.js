@@ -1,4 +1,4 @@
-const CACHE_NAME = 'agenda-pwa-v16';
+const CACHE_NAME = 'agenda-pwa-v17';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -23,12 +23,7 @@ const STATIC_ASSETS = [
   './src/components/theme-background-picker.js?v=12',
   './src/js/pwa.js',
   './assets/icons/talent.svg',
-  './assets/icons/agenda-light.svg',
-  './assets/icons/agenda-dark.svg',
-  './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png',
-  './assets/icons/icon-maskable-192.png',
-  './assets/icons/icon-maskable-512.png'
+  './assets/icons/logoApp.svg',
 ];
 
 // Instalar el Service Worker y almacenar en caché los recursos estáticos iniciales
