@@ -5,10 +5,11 @@
   --nb-blue: #91b9ff;
   --nb-green: #a4e5b8;
   --nb-cream: #f5f0e6;
-  --nb-white: #fff;
+  --nb-white: hsl(0 0% 93%);
+  --nb-button-background: hsl(0 0% 76%);
   --nb-ink: #171717;
   --nb-shadow-color: #171717;
-  --nb-control: var(--nb-white);
+  --nb-control: hsl(0 0% 85%);
   --nb-control-hover: #fffdf2;
   --nb-border: 2px solid var(--nb-ink);
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
@@ -38,7 +39,7 @@
   --radius: var(--nb-radius);
   --radius-lg: var(--nb-radius);
   --shadow: var(--nb-shadow);
-  --input-bg: var(--nb-white);
+  --input-bg: var(--nb-control);
   --input-border: var(--nb-ink);
   --input-text: var(--nb-ink);
   --input-focus-ring: var(--nb-blue);
@@ -143,7 +144,7 @@ body {
   padding: 9px 12px;
   border: 2px solid transparent;
   border-radius: 4px;
-  background: transparent;
+  background: var(--nb-button-background);
   color: var(--nb-ink);
   font-size: 15px;
   font-weight: 700;
@@ -171,7 +172,7 @@ body {
 
 body.dark .site-auth-link {
   border-color: var(--nb-ink);
-  background: var(--nb-white);
+  background: var(--nb-button-background);
   color: var(--nb-ink);
   box-shadow: var(--nb-push-shadow);
 }
@@ -223,7 +224,7 @@ textarea,
   min-height: 48px;
   border: var(--nb-border);
   border-radius: 4px;
-  background-color: var(--nb-white);
+  background-color: var(--nb-control);
   color: var(--nb-ink);
   font-family: "Inter", "Segoe UI", sans-serif;
   font-size: 16px;
@@ -363,7 +364,7 @@ input[type="date"] {
 .btn {
   min-height: 44px;
   padding: 10px 18px;
-  background: var(--nb-white);
+  background: var(--nb-button-background);
   font-size: 14px;
 }
 
@@ -468,7 +469,7 @@ input[type="date"] {
 .copy-phone-row {
   min-width: 10px;
   min-height: 10px;
-  background: var(--nb-white);
+  background: var(--nb-button-background);
 }
 
 .badge {
@@ -721,7 +722,7 @@ tr:hover td {
   padding: 9px 14px;
   border: var(--nb-border);
   border-radius: 4px;
-  background: var(--nb-white);
+  background: var(--nb-button-background);
   color: var(--nb-ink);
   font-weight: 700;
   text-decoration: none;
@@ -731,9 +732,10 @@ tr:hover td {
 body.dark {
   color-scheme: dark;
   --nb-white: #363636;
+  --nb-button-background: #252525;
   --nb-ink: var(--nb-cream);
   --nb-shadow-color: #171717;
-  --nb-control: #333;
+  --nb-control: #2d2d2d;
   --nb-control-hover: #414141;
   --nb-border: 2px solid #171717;
   --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
@@ -921,7 +923,7 @@ body.dark .site-auth-status:not(.is-error) {
 
 body.dark .btn {
   border-color: var(--nb-ink);
-  background: var(--nb-white);
+  background: var(--nb-button-background);
   color: var(--nb-ink);
 }
 
@@ -1035,7 +1037,7 @@ body.dark .btn-icon,
 body.dark .copy-phone-row,
 body.dark .modal-close {
   border-color: var(--nb-ink);
-  background: var(--nb-white);
+  background: var(--nb-button-background);
   color: var(--nb-ink);
   box-shadow: var(--nb-shadow);
 }
@@ -1076,17 +1078,17 @@ body.custom-background,
 body.custom-background-dark {
   --nb-white: var(--bg);
   --nb-ink: var(--text);
-  --nb-yellow: var(--page-background, var(--nb-yellow));
+  --nb-yellow: var(--custom-control-background, var(--page-background, var(--nb-yellow)));
   --nb-control: var(--input-bg);
-  --nb-control-hover: color-mix(in srgb, var(--nb-control) 90%, var(--nb-ink));
+  --nb-control-hover: var(--custom-control-hover, color-mix(in srgb, var(--nb-control) 90%, var(--nb-ink)));
   --nb-shadow-color: #171717;
-  --nb-border: 2px solid var(--nb-ink);
-  --nb-shadow: 8px 8px 0 var(--nb-shadow-color);
+  --nb-border: 0;
+  --nb-shadow: 6px 6px 0 var(--nb-shadow-color);
   --nb-shadow-hover: 4px 4px 0 var(--nb-shadow-color);
   --nb-push-shadow: 4px 4px 0 var(--nb-shadow-color);
   --nb-push-shadow-hover: 2px 2px 0 var(--nb-shadow-color);
-  --border: var(--nb-ink);
-  --input-border: var(--nb-ink);
+  --border: transparent;
+  --input-border: transparent;
   --input-text: var(--nb-ink);
   --shadow: var(--nb-shadow);
   background: var(--page-background, var(--nb-cream));
@@ -1095,8 +1097,8 @@ body.custom-background-dark {
 
 body.custom-background-dark {
   color-scheme: dark;
-  --nb-shadow-color: #fff;
-  --nb-control-hover: color-mix(in srgb, var(--nb-control) 88%, #fff);
+  --nb-shadow-color: #171717;
+  --nb-control-hover: var(--custom-control-hover, color-mix(in srgb, var(--nb-control) 88%, #fff));
 }
 
 body.custom-background .card,
@@ -1105,7 +1107,7 @@ body.custom-background .modal-content,
 body.custom-background .confirm-modal,
 body.custom-background .theme-actions,
 body.custom-background .tabs {
-  border-color: var(--nb-ink);
+  border: 0;
   background: var(--nb-white);
   color: var(--nb-ink);
   box-shadow: var(--nb-shadow);
@@ -1113,8 +1115,8 @@ body.custom-background .tabs {
 
 body.custom-background .btn,
 body.custom-background .agenda-auth-button {
-  border-color: var(--nb-ink);
-  background: var(--nb-white);
+  border: 0;
+  background: var(--custom-control-background, var(--nb-button-background, var(--nb-white)));
   color: var(--nb-ink);
   box-shadow: var(--nb-push-shadow);
 }
@@ -1157,7 +1159,7 @@ body.custom-background .tab.active {
 body.custom-background .mes-header,
 body.custom-background .modal-header,
 body.custom-background th {
-  border-color: var(--nb-ink);
+  border: 0;
   background: var(--nb-yellow);
   color: var(--nb-ink);
 }
@@ -1167,7 +1169,7 @@ body.custom-background select,
 body.custom-background textarea,
 body.custom-background .custom-select,
 body.custom-background .custom-select__menu {
-  border-color: var(--nb-ink);
+  border: 0;
   background: var(--nb-control);
   color: var(--nb-ink);
 }
@@ -1203,9 +1205,9 @@ body.custom-background .card .empty {
 
 body.custom-background .custom-option:hover,
 body.custom-background .custom-option.is-selected {
-  border-color: var(--nb-ink);
-  background: var(--nb-blue);
-  color: #171717;
+  border: 0;
+  background: var(--custom-control-background, var(--nb-blue));
+  color: var(--custom-control-text, #171717);
 }
 
 body.custom-background .modal-body {
@@ -1214,7 +1216,7 @@ body.custom-background .modal-body {
 }
 
 body.custom-background .agenda-calendar {
-  border-color: var(--nb-ink);
+  border: 0;
   background: var(--nb-white);
   color: var(--nb-ink);
   box-shadow: var(--nb-push-shadow);
@@ -1233,8 +1235,8 @@ body.custom-background-dark .header p {
 }
 
 body.custom-background-dark tr:hover td {
-  background: #3b5277;
-  color: #f5f0e6;
+  background: var(--custom-control-background);
+  color: var(--custom-control-text);
 }
 
 body.custom-background-dark .agenda-calendar__day.is-selected {
@@ -1427,7 +1429,7 @@ body.custom-background input:not([type="checkbox"]):not([type="radio"]):not([typ
 body.custom-background select,
 body.custom-background textarea {
   background-color: var(--nb-control);
-  color: var(--nb-ink);
+  color: var(--input-text, var(--nb-ink));
 }
 
 body .input-container label,
@@ -1476,10 +1478,20 @@ body .input-container textarea::placeholder {
   opacity: 1;
 }
 
+body.custom-background input:not([placeholder=" "])::placeholder,
+body.custom-background textarea::placeholder {
+  color: color-mix(in srgb, var(--input-text, var(--nb-ink)) 62%, var(--input-bg));
+}
+
 body input:focus:not([placeholder=" "])::placeholder,
 body textarea:focus::placeholder {
   color: var(--nb-ink);
   opacity: 1;
+}
+
+body.custom-background input:focus:not([placeholder=" "])::placeholder,
+body.custom-background textarea:focus::placeholder {
+  color: var(--input-text, var(--nb-ink));
 }
 
 body input:focus:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
@@ -1691,6 +1703,197 @@ body.custom-background .date-picker-btn {
   }
 }
 
+body,
+body.dark,
+body.custom-background,
+body.custom-background-dark {
+  --nb-shadow-color: #171717;
+  --nb-shadow: 6px 6px 0 #171717;
+  --nb-shadow-hover: 4px 4px 0 #171717;
+  --nb-push-shadow: 4px 4px 0 #171717;
+  --nb-push-shadow-hover: 2px 2px 0 #171717;
+  --shadow: var(--nb-shadow);
+  --shadow-nav: var(--nb-shadow);
+  --border: transparent;
+  --input-border: transparent;
+  --nb-border: 0;
+}
+
+body :is(
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .theme-actions,
+  .tabs,
+  .agenda-calendar,
+  .site-auth-card
+) {
+  border: 0;
+  box-shadow: var(--nb-shadow);
+}
+
+body.dark :is(
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .theme-actions,
+  .tabs,
+  .agenda-calendar,
+  .site-auth-card
+) {
+  border: 0;
+  box-shadow: var(--nb-shadow);
+}
+
+body.custom-background :is(
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .theme-actions,
+  .tabs,
+  .agenda-calendar,
+  .site-auth-card
+) {
+  --text: var(--custom-panel-text);
+  --text-muted: var(--custom-panel-text);
+  --nb-ink: var(--custom-panel-text);
+  background: var(--custom-panel-background, var(--bg));
+  color: var(--custom-panel-text, var(--text));
+}
+
+body :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .site-auth-submit,
+  .site-auth-link,
+  .tab,
+  .custom-select,
+  .custom-option,
+  .date-picker-btn
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow);
+}
+
+body.dark :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .site-auth-submit,
+  .site-auth-link,
+  .tab,
+  .custom-select,
+  .custom-option,
+  .date-picker-btn
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow);
+}
+
+body :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  select,
+  textarea
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow);
+}
+
+body.dark :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  select,
+  textarea
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow);
+}
+
+body.custom-background :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .site-auth-submit,
+  .site-auth-link,
+  .tab,
+  .custom-select,
+  .custom-option,
+  .date-picker-btn
+) {
+  background: var(--custom-control-background, var(--nb-button-background, var(--nb-white)));
+  color: var(--custom-control-text, var(--nb-ink));
+}
+
+body.custom-background :is(
+  .mes-header,
+  .modal-header,
+  th,
+  .tab.active,
+  .btn-primary,
+  .btn-danger,
+  .date-picker-btn
+) {
+  border: 0;
+  background: var(--custom-control-background, var(--nb-yellow));
+  color: var(--custom-control-text, var(--nb-ink));
+}
+
+body.custom-background :is(
+  .input-container label,
+  .custom-select-label,
+  .input-container:focus-within label,
+  .input-container:has(input:not(:placeholder-shown)) label,
+  .input-container:has(textarea:not(:placeholder-shown)) label,
+  .input-container:has(select:valid) label,
+  .custom-select-wrap.active .custom-select-label
+) {
+  border: 0;
+  background: var(--custom-control-background, var(--nb-control));
+  box-shadow: none;
+  color: var(--custom-control-text, var(--nb-ink));
+}
+
+body :is(
+  .btn:hover:not(:disabled),
+  .agenda-auth-button:hover:not(:disabled),
+  .agenda-install-button:hover:not(:disabled),
+  .site-auth-submit:hover:not(:disabled),
+  .site-auth-link:hover:not(:disabled),
+  .tab:hover:not(:disabled),
+  .custom-select:hover:not(:disabled),
+  input:hover:not(:disabled),
+  select:hover:not(:disabled),
+  textarea:hover:not(:disabled)
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow-hover);
+}
+
+body.dark :is(
+  .btn:hover:not(:disabled),
+  .agenda-auth-button:hover:not(:disabled),
+  .agenda-install-button:hover:not(:disabled),
+  .site-auth-submit:hover:not(:disabled),
+  .site-auth-link:hover:not(:disabled),
+  .tab:hover:not(:disabled),
+  .custom-select:hover:not(:disabled),
+  input:hover:not(:disabled),
+  select:hover:not(:disabled),
+  textarea:hover:not(:disabled)
+) {
+  border: 0;
+  box-shadow: var(--nb-push-shadow-hover);
+}
+
+body .theme-actions,
+body.dark .theme-actions,
+body.custom-background .theme-actions {
+  box-shadow: none;
+}
+
 @media (pointer: coarse) {
   .btn,
   .tab,
@@ -1726,5 +1929,151 @@ body.custom-background .date-picker-btn {
 
   :where(button, input, select, textarea, a, theme-toggle, theme-background-picker):focus-visible {
     outline: 2px solid Highlight;
+  }
+}
+
+.tabs .tab-icon--bottom,
+.tabs .tab-label--mobile {
+  display: none;
+}
+
+@media (max-width: 999px) {
+  .app {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body .tabs,
+  body.dark .tabs,
+  body.custom-background .tabs,
+  body.custom-background-dark .tabs {
+    position: fixed;
+    top: auto;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2px;
+    width: min(760px, calc(100% - 24px));
+    margin: 0;
+    padding: 6px;
+    overflow: visible;
+    border: 0;
+    border-radius: 24px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .28);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transform: translateX(-50%);
+  }
+
+  body.custom-background .tabs {
+    background: color-mix(in srgb, var(--custom-panel-background, var(--bg)) 92%, transparent);
+  }
+
+  body .tabs .tab {
+    position: relative;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    max-width: none;
+    min-height: 60px;
+    margin: 0;
+    padding: 6px 2px;
+    border: 0;
+    border-radius: 17px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted, var(--text));
+    text-align: center;
+    white-space: normal;
+    transform: none;
+  }
+
+  body.dark .tabs .tab,
+  body.custom-background .tabs .tab {
+    box-shadow: none;
+  }
+
+  body .tabs .tab.active,
+  body.dark .tabs .tab.active,
+  body.custom-background .tabs .tab.active {
+    border: 0;
+    background: var(--custom-control-background, color-mix(in srgb, var(--nb-yellow) 22%, var(--bg)));
+    box-shadow: none;
+    color: var(--custom-control-text, var(--text));
+  }
+
+  body .tabs .tab:hover:not(:disabled) {
+    border: 0;
+    background: color-mix(in srgb, var(--bg-3) 68%, transparent);
+    color: var(--text);
+    transform: none;
+  }
+
+  body .tabs .tab.active:hover:not(:disabled) {
+    background: var(--custom-control-background, color-mix(in srgb, var(--nb-yellow) 30%, var(--bg)));
+    color: var(--custom-control-text, var(--text));
+  }
+
+  body .tabs .tab:active:not(:disabled) {
+    box-shadow: none;
+    transform: scale(.96);
+  }
+
+  .tabs .tab-icon--bottom {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .tabs .tab-label--desktop {
+    display: none;
+  }
+
+  .tabs .tab-label--mobile {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: clamp(9px, 1.15vw, 11px);
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tabs .tab-badge {
+    position: absolute;
+    top: 2px;
+    left: calc(50% + 4px);
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 99px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 360px) {
+  body .tabs {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    width: calc(100% - 16px);
+    padding: 4px;
+  }
+
+  body .tabs .tab {
+    min-height: 56px;
+    padding-inline: 1px;
+  }
+
+  .tabs .tab-label--mobile {
+    font-size: 8px;
   }
 }

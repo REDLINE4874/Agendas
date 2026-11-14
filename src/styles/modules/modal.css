@@ -170,6 +170,23 @@ body.dark .modal-close:hover {
   white-space: normal;
 }
 
+#modal-compartir .modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#modal-compartir .modal-body > p,
+#modal-compartir .modal-body > .form-actions,
+#modal-compartir .share-access-card {
+  margin: 0;
+}
+
+#modal-compartir .modal-body > .form-actions {
+  border: 0;
+  padding: 0;
+}
+
 /* Respeto estricto de saltos de línea para notas y textos largos */
 #modal-texto,
 .confirm-modal p {

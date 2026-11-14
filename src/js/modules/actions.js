@@ -1,4 +1,4 @@
-// --- Probar conexi�n ----------------------------------------------------------
+// --- Probar conexión ----------------------------------------------------------
 let prospectoNuevaVentaId = null;
 let botonOrigenNuevaVenta = null;
 let accionesProspectoId = null;
@@ -68,7 +68,7 @@ function fechaLocalInput(date = new Date()) {
 function abrirNuevaVenta(idCodificado) {
   const id = decodeURIComponent(idCodificado);
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
-  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontr� un cliente cerrado", "err");
+  if (!prospecto || prospecto.estatus !== "Cerrado") return toast("No se encontró un cliente cerrado", "err");
   prospectoNuevaVentaId = id;
   botonOrigenNuevaVenta = document.activeElement;
   document.getElementById("nueva-venta-cliente").textContent = `Cliente: ${prospecto.nombre}`;
@@ -121,15 +121,15 @@ async function verHistorialVentas(idCodificado) {
   const prospecto = prospectosBase.find((item) => String(item.id) === id);
   if (!prospecto) return;
   const content = document.getElementById("modal-texto");
-  document.getElementById("titulo-nota").textContent = `Historial de ventas � ${prospecto.nombre}`;
+  document.getElementById("titulo-nota").textContent = `Historial de ventas — ${prospecto.nombre}`;
   content.textContent = "Cargando historial...";
   document.getElementById("modal-nota").classList.add("active");
   document.body.classList.add("modal-open");
   try {
     const historial = await obtenerHistorialVentas(id);
     content.innerHTML = historial.length
-      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "�"}</td></tr>`).join("")}</tbody></table></div>`
-      : "Todav�a no hay ventas registradas para este cliente.";
+      ? `<div class="table-wrap"><table><thead><tr><th>Fecha de cierre</th><th>Producto</th><th>Notas</th></tr></thead><tbody>${historial.map((venta) => `<tr><td>${esc(venta.fecha)}</td><td>${esc(venta.producto)}</td><td>${esc(venta.notas) || "—"}</td></tr>`).join("")}</tbody></table></div>`
+      : "Todavía no hay ventas registradas para este cliente.";
   } catch (exception) { content.textContent = "No se pudo cargar el historial."; }
 }
 
@@ -137,7 +137,7 @@ async function probar() {
   try {
     const { count, error } = await agendaTable().select("id", { count: "exact", head: true });
     if (error) throw error;
-    toast(`? Conexi�n exitosa � ${count || 0} registros encontrados`, "ok");
+    toast(`✓ Conexión exitosa — ${count || 0} registros encontrados`, "ok");
   } catch (e) {
     toast("No se pudo conectar con Supabase. Revisa el schema agendas.", "err");
   }
@@ -276,7 +276,7 @@ async function eliminarProspecto(id) {
   if (!prospecto) return;
   prospectoEliminarId = id;
   document.getElementById("mensaje-confirmar-eliminacion").textContent =
-    `�Deseas eliminar a ${prospecto.nombre}? Esta acci�n no se puede deshacer.`;
+    `¿Deseas eliminar a ${prospecto.nombre}? Esta acción no se puede deshacer.`;
   document.getElementById("modal-confirmar-eliminacion").classList.add("active");
   document.body.classList.add("modal-open");
 }
@@ -298,7 +298,7 @@ async function confirmarEliminacion() {
     if (!error) {
       toast("Prospecto eliminado", "ok");
 
-      // El borrado invalida el cach� del servidor: forzamos recarga real.
+      // El borrado invalida el caché del servidor: forzamos recarga real.
       await cargarLista();
     } else toast("No se pudo eliminar", "err");
   } catch (e) {

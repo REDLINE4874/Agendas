@@ -156,9 +156,10 @@ function renderReventa() {
     contenedor.innerHTML = '<div class="empty"><p>Aún no hay clientes disponibles para reventa</p><small>Se muestran prospectos cerrados al cumplir 3 meses y 5 días desde el cierre.</small></div>';
     return;
   }
-  contenedor.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Producto</th><th>Fecha de cierre</th><th>Disponible desde</th><th>Acciones</th></tr></thead><tbody>${elegibles.map(({ prospecto: p, disponibleDesde }) => `<tr>
+  contenedor.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Producto</th><th>Fecha de cierre</th><th>Disponible desde</th><th>Notas</th><th>Acciones</th></tr></thead><tbody>${elegibles.map(({ prospecto: p, disponibleDesde }) => `<tr>
     <td class="td-nombre">${esc(p.nombre)}</td><td class="phone-cell"><span>${esc(p.tel)}</span><button type="button" class="copy-phone-row" data-phone="${esc(p.tel)}" onclick="copiarTelefono(this.dataset.phone)"><span class="material-symbols-rounded">content_copy</span></button></td>
     <td>${esc(p.tipo) || "—"}</td><td>${esc(p.fecha_cierre) || esc(p.registro) || "—"}</td><td>${disponibleDesde.toLocaleDateString("es-MX")}</td>
+    <td>${p.notas ? `<button class="btn btn-sm" type="button" title="Ver notas" aria-label="Ver notas de ${esc(p.nombre)}" data-note-title="${esc(p.nombre)}" data-note="${esc(p.notas)}" onclick="verNota(encodeURIComponent(this.dataset.noteTitle), encodeURIComponent(this.dataset.note))"><span class="material-symbols-rounded icono-20">note_stack</span></button>` : "—"}</td>
     <td class="acciones-cell"><div class="acciones"><button class="btn btn-sm" title="Registrar nueva venta" onclick="abrirNuevaVenta('${encodeURIComponent(String(p.id))}')"><span class="material-symbols-rounded icono-20">add_shopping_cart</span></button><button class="btn btn-sm" title="Historial de ventas" onclick="verHistorialVentas('${encodeURIComponent(String(p.id))}')"><span class="material-symbols-rounded icono-20">history</span></button></div></td>
   </tr>`).join("")}</tbody></table></div>`;
 }
