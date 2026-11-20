@@ -65,6 +65,17 @@ class ThemeToggle extends HTMLElement {
           --pad: 3px;
           --knob: 22px;
           --tx: 24px;
+          --switch-border: 3px solid #171717;
+          --switch-shadow: 4px 4px 0 #171717;
+          --switch-shadow-hover: 5px 5px 0 #171717;
+          --switch-shadow-active: 1px 1px 0 #171717;
+          --knob-border: 2px solid #171717;
+          --switch-light-background: #91b9ff;
+          --switch-dark-background: #26324b;
+          --knob-light-background: #f5e642;
+          --knob-light-color: #171717;
+          --knob-dark-background: #e7d8ff;
+          --knob-dark-color: #26324b;
         }
 
         :host([size="sm"]) {
@@ -91,26 +102,26 @@ class ThemeToggle extends HTMLElement {
           height: var(--h);
           padding: 0;
           overflow: visible;
-          border: 3px solid #171717;
+          border: var(--switch-border);
           border-radius: 8px;
-          background: #91b9ff;
-          box-shadow: 4px 4px 0 #171717;
+          background: var(--switch-light-background);
+          box-shadow: var(--switch-shadow);
           cursor: pointer;
           transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .switch.dark {
-          background: #26324b;
+          background: var(--switch-dark-background);
         }
 
         .switch:hover {
-          box-shadow: 5px 5px 0 #171717;
+          box-shadow: var(--switch-shadow-hover);
           transform: translate(-1px, -1px);
         }
 
         .switch:active {
-          box-shadow: 1px 1px 0 #171717;
+          box-shadow: var(--switch-shadow-active);
           transform: translate(3px, 3px);
         }
 
@@ -150,17 +161,17 @@ class ThemeToggle extends HTMLElement {
           width: var(--knob);
           height: var(--knob);
           place-items: center;
-          border: 2px solid #171717;
+          border: var(--knob-border);
           border-radius: 6px;
-          background: #f5e642;
-          color: #171717;
+          background: var(--knob-light-background);
+          color: var(--knob-light-color);
           transform: translateY(-50%);
           transition: transform .28s cubic-bezier(.2, .8, .2, 1), background-color .2s ease, color .2s ease;
         }
 
         .switch.dark .knob {
-          background: #e7d8ff;
-          color: #26324b;
+          background: var(--knob-dark-background);
+          color: var(--knob-dark-color);
           transform: translateX(calc(var(--tx) - 4px)) translateY(-50%);
         }
 

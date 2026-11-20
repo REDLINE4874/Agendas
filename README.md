@@ -12,6 +12,7 @@ Aplicación web estática para registrar y dar seguimiento a prospectos de tarje
 - Agenda general: publicar prospectos para consulta de todos los usuarios.
 - Copiar teléfonos desde la agenda.
 - Cambiar entre tema claro y oscuro.
+- Elegir entre estilo brutalista y suave desde el menú **Personalización**.
 - Elegir un color de fondo; esta acción activa el modo claro automáticamente.
 
 ## Estructura del proyecto
@@ -27,7 +28,9 @@ Agendas/
 └── src/
     ├── components/
     │   ├── theme-toggle.js       # Componente Web para el tema claro/oscuro
-    │   └── theme-background-picker.js  # Selector de color de fondo
+    │   ├── theme-background-picker.js  # Selector de color de fondo
+    │   ├── visual-style-toggle.js      # Selector de estilo brutalista/suave
+    │   └── personalization-menu.js     # Menú de apariencia
     ├── js/
     │   ├── supabase-config.js    # Credenciales públicas de Supabase (anon key)
     │   ├── site-auth.js          # Autenticación con Supabase Auth
@@ -45,6 +48,7 @@ Agendas/
     │       └── actions.js        # Acciones sobre prospectos (editar, eliminar, ventas)
     └── styles/
         ├── main.css              # Entrada principal de estilos (@import)
+        ├── visual-style.css       # Menú de apariencia y estilo suave
         └── modules/
             ├── base.css          # Variables CSS y estilos base
             ├── appearance.css    # Panel de apariencia (tema y fondo)
@@ -62,6 +66,10 @@ Agendas/
 ```
 
 La lógica JavaScript está separada en módulos dentro de `src/js/modules/`. Los estilos están organizados en `src/styles/modules/` y se cargan desde `src/styles/main.css` mediante `@import`.
+
+El menú **Personalización** agrupa el estilo visual y el selector de fondo. La elección entre los estilos brutalista y suave se guarda localmente en el navegador; el modo suave elimina bordes y reduce las sombras de tarjetas, controles y paneles flotantes.
+
+Un fondo personalizado solo se restaura al volver a abrir la app si se guardó en **Mis colores guardados**. Los colores temporales y la acción **Restablecer** no dejan un fondo personalizado activo en la siguiente visita.
 
 ## Uso local
 

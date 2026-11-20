@@ -17,7 +17,17 @@ class ThemeBackgroundPicker extends HTMLElement {
   connectedCallback() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host { position: relative; display: inline-flex; }
+        :host {
+          position: relative;
+          display: inline-flex;
+          --picker-shadow: 3px 3px 0 #171717;
+          --picker-shadow-hover: 2px 2px 0 #171717;
+          --picker-shadow-active: 0 0 0 #171717;
+          --picker-popover-shadow: 6px 6px 0 #171717;
+          --picker-control-shadow: 2px 2px 0 #171717;
+          --picker-small-shadow: 0 1px 4px #0008;
+          --picker-swatch-shadow: 0 0 0 2px var(--bg, #fff), 0 0 0 3px #171717;
+        }
         .picker {
           display: inline-grid;
           width: 34px;
@@ -27,12 +37,12 @@ class ThemeBackgroundPicker extends HTMLElement {
           border: 0;
           border-radius: 50%;
           background: var(--bg, hsl(0 0% 93%));
-          box-shadow: 3px 3px 0 #171717;
+          box-shadow: var(--picker-shadow);
           cursor: pointer;
           transition: transform .16s ease, box-shadow .16s ease;
         }
-        .picker:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #171717; }
-        .picker:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #171717; }
+        .picker:hover { transform: translate(1px, 1px); box-shadow: var(--picker-shadow-hover); }
+        .picker:active { transform: translate(3px, 3px); box-shadow: var(--picker-shadow-active); }
         .picker:focus-visible { outline: 3px solid var(--custom-accent-text, #171717); outline-offset: 3px; }
         .swatch {
           width: 17px;
@@ -40,7 +50,7 @@ class ThemeBackgroundPicker extends HTMLElement {
           border: 0;
           border-radius: 50%;
           background: var(--selected-color, hsl(0 0% 93%));
-          box-shadow: 0 0 0 2px var(--bg, #fff), 0 0 0 3px #171717;
+          box-shadow: var(--picker-swatch-shadow);
         }
         .popover {
           position: absolute;
@@ -54,7 +64,7 @@ class ThemeBackgroundPicker extends HTMLElement {
           border-radius: 12px;
           background: var(--custom-panel-background, var(--bg, hsl(0 0% 93%)));
           color: var(--text, #171717);
-          box-shadow: 6px 6px 0 #171717;
+          box-shadow: var(--picker-popover-shadow);
           font: 13px "Inter", "Segoe UI", sans-serif;
         }
         .popover[hidden], .saved-section[hidden], .color-editor[hidden] { display: none; }
@@ -69,7 +79,7 @@ class ThemeBackgroundPicker extends HTMLElement {
           padding: 0;
           border: 0;
           border-radius: 50%;
-          box-shadow: 2px 2px 0 #171717;
+          box-shadow: var(--picker-control-shadow);
           cursor: pointer;
         }
         .saved-option[aria-pressed="true"] { outline: 2px solid var(--custom-accent-text, #171717); outline-offset: 2px; }
@@ -109,7 +119,7 @@ class ThemeBackgroundPicker extends HTMLElement {
           border-radius: 7px;
           background: var(--custom-control-background, var(--input-bg, #fff));
           color: var(--custom-control-text, var(--text, #171717));
-          box-shadow: 2px 2px 0 #171717;
+          box-shadow: var(--picker-control-shadow);
           font: 600 11px "Inter", "Segoe UI", sans-serif;
           text-align: center;
         }
@@ -117,7 +127,7 @@ class ThemeBackgroundPicker extends HTMLElement {
         .reset { margin-left: auto; padding: 5px 0; border: 0; background: transparent; color: var(--custom-accent-text, var(--text, #171717)); font: 600 11px "Inter", "Segoe UI", sans-serif; cursor: pointer; }
         .color-editor { display: grid; gap: 11px; margin-top: 12px; padding: 11px; border: 0; border-radius: 9px; background: var(--custom-panel-alt-background, var(--bg-3, var(--bg))); }
         .color-result { display: flex; align-items: center; gap: 10px; }
-        .result-preview { width: 42px; height: 42px; flex: none; border-radius: 9px; box-shadow: 3px 3px 0 #171717; }
+        .result-preview { width: 42px; height: 42px; flex: none; border-radius: 9px; box-shadow: var(--picker-shadow); }
         .result-details { display: grid; gap: 3px; }
         .result-label { color: var(--text-muted, #56636b); font: 600 10px "Inter", "Segoe UI", sans-serif; }
         .result-hex { color: var(--text, #171717); font: 700 12px "Inter", "Segoe UI", sans-serif; }
@@ -125,9 +135,9 @@ class ThemeBackgroundPicker extends HTMLElement {
         .hsl-field { display: grid; grid-template-columns: 14px minmax(0, 1fr) 44px; align-items: center; gap: 7px; color: var(--text-muted, #56636b); font: 700 10px "Inter", "Segoe UI", sans-serif; }
         .hsl-slider { --slider-track: hsl(0 0% 70%); --slider-thumb-color: hsl(200 21% 20%); width: 100%; min-width: 0; height: 24px; margin: 0; padding: 0; appearance: none; border: 0; background: transparent; cursor: pointer; touch-action: pan-y; }
         .hsl-slider::-webkit-slider-runnable-track { height: 6px; border-radius: 99px; background: var(--slider-track); }
-        .hsl-slider::-webkit-slider-thumb { width: 16px; height: 16px; margin-top: -5px; appearance: none; border: 2px solid #fff; border-radius: 50%; background: var(--slider-thumb-color); box-shadow: 0 1px 4px #0008; }
+        .hsl-slider::-webkit-slider-thumb { width: 16px; height: 16px; margin-top: -5px; appearance: none; border: 2px solid #fff; border-radius: 50%; background: var(--slider-thumb-color); box-shadow: var(--picker-small-shadow); }
         .hsl-slider::-moz-range-track { height: 6px; border: 0; border-radius: 99px; background: var(--slider-track); }
-        .hsl-slider::-moz-range-thumb { width: 12px; height: 12px; border: 2px solid #fff; border-radius: 50%; background: var(--slider-thumb-color); box-shadow: 0 1px 4px #0008; }
+        .hsl-slider::-moz-range-thumb { width: 12px; height: 12px; border: 2px solid #fff; border-radius: 50%; background: var(--slider-thumb-color); box-shadow: var(--picker-small-shadow); }
         .hsl-input { width: 44px; height: 28px; }
         .save-color {
           width: 100%;
@@ -137,7 +147,7 @@ class ThemeBackgroundPicker extends HTMLElement {
           border-radius: 7px;
           background: var(--custom-control-background, var(--bg, #fff));
           color: var(--custom-control-text, var(--text, #171717));
-          box-shadow: 3px 3px 0 #171717;
+          box-shadow: var(--picker-shadow);
           font: 600 12px "Inter", "Segoe UI", sans-serif;
           cursor: pointer;
         }
@@ -157,6 +167,12 @@ class ThemeBackgroundPicker extends HTMLElement {
             overflow-y: auto;
             overscroll-behavior: contain;
           }
+        }
+        :host([embedded]) .popover {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 0;
+          max-height: min(65vh, 420px);
         }
         @media (prefers-reduced-motion: reduce) { .picker { transition: none; } }
       </style>
@@ -231,7 +247,21 @@ class ThemeBackgroundPicker extends HTMLElement {
       if (isValid) this._applySelectedColor(color);
     });
     this.shadowRoot.querySelector(".reset").addEventListener("click", () => {
-      this._applySelectedColor("#F2F2F2");
+      const themeToggle = document.querySelector("theme-toggle");
+      if (typeof themeToggle?.setTheme === "function") {
+        themeToggle.setTheme("light");
+      } else {
+        document.body.classList.remove("dark");
+        try {
+          localStorage.setItem("theme", "light");
+        } catch (error) {
+          console.error("No se pudo guardar el tema claro al restablecer el fondo.", error);
+        }
+      }
+      this._saveColor("");
+      this._clearCustomBackground();
+      this._lastAppliedColor = this._normalizeColor("#f2f2f2");
+      this._syncColorControls(this._lastAppliedColor);
       this._setOpen(false);
       this.trigger.focus();
     });
@@ -239,6 +269,7 @@ class ThemeBackgroundPicker extends HTMLElement {
       if (this.savedColors.includes(this._lastAppliedColor)) return;
       this.savedColors.push(this._lastAppliedColor);
       this._saveSavedColors();
+      this._saveColor(this._lastAppliedColor);
       this._renderSavedColors();
     });
 
@@ -341,6 +372,7 @@ class ThemeBackgroundPicker extends HTMLElement {
       remove.addEventListener("click", () => {
         this.savedColors.splice(index, 1);
         this._saveSavedColors();
+        if (color === this._lastAppliedColor) this._saveColor("");
         this._renderSavedColors();
       });
       item.append(option, remove);
@@ -380,10 +412,14 @@ class ThemeBackgroundPicker extends HTMLElement {
   _applySelectedColor(color) {
     if (!/^#[0-9a-f]{6}$/i.test(color)) return;
     const normalizedColor = this._normalizeColor(color);
-    if (normalizedColor === this._lastAppliedColor) return;
+    const isSavedColor = this.savedColors.includes(normalizedColor);
+    if (normalizedColor === this._lastAppliedColor) {
+      this._saveColor(isSavedColor ? normalizedColor : "");
+      return;
+    }
     this._lastAppliedColor = normalizedColor;
-    this._syncColorControls(normalizedColor);
-    this._applyColor(normalizedColor, true);
+    this._applyColor(normalizedColor, isSavedColor);
+    if (!isSavedColor) this._saveColor("");
   }
 
   _normalizeColor(value) {
@@ -395,12 +431,20 @@ class ThemeBackgroundPicker extends HTMLElement {
   _getSavedColor() {
     try {
       const profile = JSON.parse(localStorage.getItem(ThemeBackgroundPicker.PROFILE_STORAGE_KEY) || "{}");
-      if (profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY]) return profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY];
-      const legacyColor = localStorage.getItem("background-color");
-      if (legacyColor) {
-        this._saveColor(legacyColor);
-        return legacyColor;
+      const profileColor = profile[ThemeBackgroundPicker.BACKGROUND_PROFILE_KEY];
+      if (typeof profileColor === "string" && /^#[0-9a-f]{6}$/i.test(profileColor)) {
+        const normalizedColor = this._normalizeColor(profileColor);
+        if (this.savedColors.includes(normalizedColor)) return normalizedColor;
       }
+      const legacyColor = localStorage.getItem("background-color");
+      if (typeof legacyColor === "string" && /^#[0-9a-f]{6}$/i.test(legacyColor)) {
+        const normalizedLegacyColor = this._normalizeColor(legacyColor);
+        if (this.savedColors.includes(normalizedLegacyColor)) {
+          this._saveColor(normalizedLegacyColor);
+          return normalizedLegacyColor;
+        }
+      }
+      this._saveColor("");
     } catch (error) {
       // El selector sigue funcionando aunque el almacenamiento no esté disponible.
     }

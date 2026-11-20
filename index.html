@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="src/styles/main.css?v=22" />
     <link rel="stylesheet" href="src/styles/site-auth.css?v=3" />
     <link rel="stylesheet" href="src/styles/neubrutalism.css?v=27" />
+    <link rel="stylesheet" href="src/styles/visual-style.css?v=3" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
@@ -41,8 +42,10 @@
     <script src="src/js/modules/views.js?v=9" defer></script>
     <script src="src/js/modules/actions.js?v=12" defer></script>
     <script src="src/js/app.js?v=8" defer></script>
-    <script src="src/components/theme-toggle.js?v=10" defer></script>
-    <script src="src/components/theme-background-picker.js?v=12" defer></script>
+    <script src="src/components/theme-toggle.js?v=11" defer></script>
+    <script src="src/components/theme-background-picker.js?v=14" defer></script>
+    <script src="src/components/visual-style-toggle.js?v=1" defer></script>
+    <script src="src/components/personalization-menu.js?v=1" defer></script>
     <script src="src/js/pwa.js" defer></script>
   </head>
   <body class="site-auth-pending agendas-ecosystem">
@@ -72,7 +75,35 @@
             <span class="current-user" id="current-user" aria-live="polite"></span>
           </div>
           <div class="theme-control">
-            <theme-background-picker></theme-background-picker>
+            <div class="personalization-menu" id="personalizationMenu">
+              <button
+                class="personalization-menu__trigger"
+                id="personalizationToggle"
+                type="button"
+                aria-label="Personalización"
+                title="Personalización"
+                aria-expanded="false"
+                aria-controls="personalizationPanel"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 6h7m4 0h5M4 12h3m4 0h9M4 18h10m4 0h2"></path>
+                  <circle cx="13" cy="6" r="2"></circle>
+                  <circle cx="9" cy="12" r="2"></circle>
+                  <circle cx="16" cy="18" r="2"></circle>
+                </svg>
+              </button>
+              <section class="personalization-menu__panel" id="personalizationPanel" aria-label="Personalización" hidden>
+                <h2 class="personalization-menu__title">Personalización</h2>
+                <div class="personalization-menu__setting">
+                  <span>Estilo visual</span>
+                  <button class="visual-style-toggle" id="visualStyleToggle" type="button" aria-pressed="false"></button>
+                </div>
+                <div class="personalization-menu__setting">
+                  <span>Fondo</span>
+                  <theme-background-picker embedded></theme-background-picker>
+                </div>
+              </section>
+            </div>
           </div>
           <div class="theme-control">
             <theme-toggle dark-class="dark" size="38"></theme-toggle>

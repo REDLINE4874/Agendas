@@ -1,0 +1,211 @@
+.personalization-menu {
+  position: relative;
+}
+
+body .theme-actions:has(#personalizationToggle[aria-expanded="true"]) {
+  position: relative;
+  z-index: 1100;
+}
+
+.personalization-menu__trigger {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  place-items: center;
+  border: 2px solid var(--nb-ink);
+  border-radius: var(--nb-radius);
+  background: var(--nb-yellow);
+  color: var(--nb-ink);
+  box-shadow: 4px 4px 0 var(--nb-ink);
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+
+.personalization-menu__trigger svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #171717;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.personalization-menu__trigger:hover,
+.personalization-menu__trigger[aria-expanded="true"] {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--nb-ink);
+}
+
+.personalization-menu__trigger:focus-visible,
+.visual-style-toggle:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.personalization-menu__panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 220;
+  display: grid;
+  width: min(270px, calc(100vw - 24px));
+  gap: 14px;
+  padding: 16px;
+  border: 2px solid var(--nb-ink);
+  border-radius: var(--nb-radius);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 6px 6px 0 var(--nb-ink);
+}
+
+.personalization-menu__panel[hidden] {
+  display: none;
+}
+
+.personalization-menu__title {
+  color: var(--text);
+  font: 700 15px "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+.personalization-menu__setting {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.visual-style-toggle {
+  min-width: 90px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 2px solid var(--nb-ink);
+  border-radius: var(--nb-radius);
+  background: var(--nb-blue);
+  color: var(--nb-ink);
+  box-shadow: 3px 3px 0 var(--nb-ink);
+  cursor: pointer;
+  font: 700 12px "Inter", "Segoe UI", sans-serif;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+
+.visual-style-toggle:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--nb-ink);
+}
+
+html[data-visual-style="soft"] .personalization-menu__panel,
+html[data-visual-style="soft"] .personalization-menu__trigger,
+html[data-visual-style="soft"] .visual-style-toggle {
+  border: 0 !important;
+  box-shadow: var(--agenda-soft-shadow) !important;
+}
+
+html[data-visual-style="soft"] theme-background-picker {
+  --picker-shadow: var(--agenda-soft-shadow);
+  --picker-shadow-hover: var(--agenda-soft-shadow-hover);
+  --picker-shadow-active: 0 2px 5px rgba(0, 0, 0, .12);
+  --picker-popover-shadow: var(--agenda-soft-shadow);
+  --picker-control-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+  --picker-small-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+  --picker-swatch-shadow: 0 0 0 2px var(--bg, #fff);
+}
+
+html[data-visual-style="soft"] theme-toggle {
+  --switch-border: 0;
+  --switch-shadow: var(--agenda-soft-shadow);
+  --switch-shadow-hover: var(--agenda-soft-shadow-hover);
+  --switch-shadow-active: 0 2px 5px rgba(0, 0, 0, .12);
+  --knob-border: 0;
+  --switch-light-background: var(--bg-2);
+  --switch-dark-background: var(--bg-2);
+  --knob-light-background: var(--bg);
+  --knob-light-color: var(--text);
+  --knob-dark-background: var(--bg);
+  --knob-dark-color: var(--text);
+}
+
+@media (max-width: 700px) {
+  .personalization-menu__panel {
+    position: fixed;
+    top: calc(78px + env(safe-area-inset-top, 0px));
+    right: 12px;
+    overflow: visible;
+  }
+}
+
+html[data-visual-style="soft"] {
+  --agenda-soft-shadow: 0 8px 22px rgba(0, 0, 0, .12);
+  --agenda-soft-shadow-hover: 0 12px 28px rgba(0, 0, 0, .16);
+}
+
+html[data-visual-style="soft"] body.dark,
+html[data-visual-style="soft"] body.custom-background-dark {
+  --agenda-soft-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+  --agenda-soft-shadow-hover: 0 14px 30px rgba(0, 0, 0, .38);
+}
+
+html[data-visual-style="soft"] *,
+html[data-visual-style="soft"] *::before,
+html[data-visual-style="soft"] *::after {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-visual-style="soft"] :is(
+  .theme-actions,
+  .tabs,
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .custom-select__menu,
+  .agenda-calendar,
+  .copy-phone-row,
+  .site-auth-card,
+  .empty,
+  .loading-state,
+  #toast,
+  .personalization-menu__panel
+) {
+  box-shadow: var(--agenda-soft-shadow) !important;
+}
+
+html[data-visual-style="soft"] :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .custom-select,
+  .date-picker-btn,
+  .site-auth-submit,
+  .visual-style-toggle
+) {
+  box-shadow: 0 2px 7px rgba(0, 0, 0, .12) !important;
+}
+
+html[data-visual-style="soft"] :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  select,
+  textarea
+) {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .08) !important;
+}
+
+html[data-visual-style="soft"] .btn:hover:not(:disabled),
+html[data-visual-style="soft"] .visual-style-toggle:hover {
+  box-shadow: var(--agenda-soft-shadow-hover) !important;
+}
+
+html[data-visual-style="soft"] .tab.active {
+  box-shadow: inset 0 -3px 0 var(--blue) !important;
+}
+
+html[data-visual-style="soft"] :focus-visible {
+  outline: 2px solid var(--blue) !important;
+  outline-offset: 2px;
+}
