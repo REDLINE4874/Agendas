@@ -67,7 +67,9 @@ Agendas/
 
 La lógica JavaScript está separada en módulos dentro de `src/js/modules/`. Los estilos están organizados en `src/styles/modules/` y se cargan desde `src/styles/main.css` mediante `@import`.
 
-El menú **Personalización** agrupa el estilo visual y el selector de fondo. La elección entre los estilos brutalista y suave se guarda localmente en el navegador; el modo suave elimina bordes y reduce las sombras de tarjetas, controles y paneles flotantes.
+El menú **Personalización** agrupa el estilo visual y el selector de fondo. La elección entre los estilos brutalista y suave se guarda localmente en el navegador; el modo suave usa una paleta neutra en claro y retoma los colores del brutalismo en oscuro, manteniendo contornos finos, esquinas redondeadas y sombras sutiles, sin efectos de desplazamiento.
+
+Con un fondo personalizado en modo suave, los botones, selectores y opciones comparten la superficie y el texto de alto contraste de los campos.
 
 Un fondo personalizado solo se restaura al volver a abrir la app si se guardó en **Mis colores guardados**. Los colores temporales y la acción **Restablecer** no dejan un fondo personalizado activo en la siguiente visita.
 

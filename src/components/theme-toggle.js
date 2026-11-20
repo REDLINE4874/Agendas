@@ -69,6 +69,8 @@ class ThemeToggle extends HTMLElement {
           --switch-shadow: 4px 4px 0 #171717;
           --switch-shadow-hover: 5px 5px 0 #171717;
           --switch-shadow-active: 1px 1px 0 #171717;
+          --switch-hover-transform: translate(-1px, -1px);
+          --switch-active-transform: translate(3px, 3px);
           --knob-border: 2px solid #171717;
           --switch-light-background: #91b9ff;
           --switch-dark-background: #26324b;
@@ -117,12 +119,12 @@ class ThemeToggle extends HTMLElement {
 
         .switch:hover {
           box-shadow: var(--switch-shadow-hover);
-          transform: translate(-1px, -1px);
+          transform: var(--switch-hover-transform);
         }
 
         .switch:active {
           box-shadow: var(--switch-shadow-active);
-          transform: translate(3px, 3px);
+          transform: var(--switch-active-transform);
         }
 
         .switch:focus-visible {

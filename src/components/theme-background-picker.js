@@ -23,6 +23,8 @@ class ThemeBackgroundPicker extends HTMLElement {
           --picker-shadow: 3px 3px 0 #171717;
           --picker-shadow-hover: 2px 2px 0 #171717;
           --picker-shadow-active: 0 0 0 #171717;
+          --picker-hover-transform: translate(1px, 1px);
+          --picker-active-transform: translate(3px, 3px);
           --picker-popover-shadow: 6px 6px 0 #171717;
           --picker-control-shadow: 2px 2px 0 #171717;
           --picker-small-shadow: 0 1px 4px #0008;
@@ -41,8 +43,8 @@ class ThemeBackgroundPicker extends HTMLElement {
           cursor: pointer;
           transition: transform .16s ease, box-shadow .16s ease;
         }
-        .picker:hover { transform: translate(1px, 1px); box-shadow: var(--picker-shadow-hover); }
-        .picker:active { transform: translate(3px, 3px); box-shadow: var(--picker-shadow-active); }
+        .picker:hover { transform: var(--picker-hover-transform); box-shadow: var(--picker-shadow-hover); }
+        .picker:active { transform: var(--picker-active-transform); box-shadow: var(--picker-shadow-active); }
         .picker:focus-visible { outline: 3px solid var(--custom-accent-text, #171717); outline-offset: 3px; }
         .swatch {
           width: 17px;

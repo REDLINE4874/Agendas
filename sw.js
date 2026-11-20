@@ -1,11 +1,11 @@
-const CACHE_NAME = 'agenda-pwa-v26';
+const CACHE_NAME = 'agenda-pwa-v29';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './src/styles/main.css?v=22',
   './src/styles/neubrutalism.css?v=27',
-  './src/styles/visual-style.css?v=3',
+  './src/styles/visual-style.css?v=7',
   './src/styles/site-auth.css?v=3',
   './src/js/supabase-config.js?v=2',
   './src/js/site-auth.js?v=8',
@@ -20,8 +20,8 @@ const STATIC_ASSETS = [
   './src/js/modules/views.js?v=9',
   './src/js/modules/actions.js?v=12',
   './src/js/app.js?v=8',
-  './src/components/theme-toggle.js?v=11',
-  './src/components/theme-background-picker.js?v=14',
+  './src/components/theme-toggle.js?v=12',
+  './src/components/theme-background-picker.js?v=15',
   './src/components/visual-style-toggle.js?v=1',
   './src/components/personalization-menu.js?v=1',
   './src/js/pwa.js',

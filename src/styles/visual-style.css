@@ -117,10 +117,127 @@ body .theme-actions:has(#personalizationToggle[aria-expanded="true"]) {
   box-shadow: 2px 2px 0 var(--nb-ink);
 }
 
+html[data-visual-style="soft"] {
+  --accent-color: #111111;
+  --accent-color-dark: #f5f7fa;
+  --blue: var(--accent-color);
+  --blue-light: #f3f3f3;
+  --blue-dark: var(--accent-color);
+  --green-light: #f4f9f4;
+  --green-dark: #2f6b3d;
+  --amber-light: #f5f5f5;
+  --amber-dark: #4a4a4a;
+  --red-light: #fcebeb;
+  --red-dark: #791f1f;
+  --red: #b81c1c;
+  --border: #e6e9f0;
+  --text: #101828;
+  --text-muted: #69707e;
+  --bg: #ffffff;
+  --bg-2: #f2f2f2;
+  --bg-3: #f5f5f5;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, .07);
+  --input-bg: #ffffff;
+  --input-border: #e0e3ea;
+  --input-text: #101828;
+  --input-focus-ring: rgba(17, 17, 17, .12);
+  --agenda-soft-border: color-mix(in srgb, var(--text) 14%, transparent);
+  --agenda-soft-input-border: color-mix(in srgb, var(--input-text) 18%, transparent);
+
+  --nb-yellow: var(--bg-3) !important;
+  --nb-pink: var(--red-light) !important;
+  --nb-blue: var(--blue-light) !important;
+  --nb-green: var(--green-light) !important;
+  --nb-cream: var(--bg-2) !important;
+  --nb-white: var(--bg) !important;
+  --nb-button-background: var(--bg) !important;
+  --nb-ink: var(--text) !important;
+  --nb-shadow-color: rgba(16, 24, 40, .08) !important;
+  --nb-control: var(--input-bg) !important;
+  --nb-control-hover: var(--bg-3) !important;
+  --nb-border: 1px solid var(--agenda-soft-border) !important;
+  --nb-shadow: var(--shadow) !important;
+  --nb-shadow-hover: 0 4px 16px rgba(0, 0, 0, .1) !important;
+  --nb-push-shadow: 0 2px 7px rgba(0, 0, 0, .12) !important;
+  --nb-push-shadow-hover: 0 4px 12px rgba(0, 0, 0, .14) !important;
+  --nb-radius: var(--radius) !important;
+}
+
+html[data-visual-style="soft"] body.dark {
+  --accent-color: #f5f0e6;
+  --accent-color-dark: #f5f0e6;
+  --blue: #91b9ff;
+  --blue-light: #91b9ff;
+  --blue-dark: #f5f0e6;
+  --green-light: #a4e5b8;
+  --green-dark: #f5f0e6;
+  --amber-light: #f5e642;
+  --amber-dark: #f5f0e6;
+  --red-light: #ff91a4;
+  --red-dark: #f5f0e6;
+  --red: #ff91a4;
+  --border: rgba(255, 255, 255, .12);
+  --text: #f5f0e6;
+  --text-muted: #e4dfd5;
+  --bg: #363636;
+  --bg-2: #292929;
+  --bg-3: #414141;
+  --shadow: 0 16px 36px rgba(0, 0, 0, .4);
+  --input-bg: #2d2d2d;
+  --input-border: rgba(255, 255, 255, .14);
+  --input-text: #f5f0e6;
+  --input-focus-ring: rgba(145, 185, 255, .35);
+  --agenda-soft-border: color-mix(in srgb, var(--text) 14%, transparent);
+  --agenda-soft-input-border: color-mix(in srgb, var(--input-text) 18%, transparent);
+
+  --nb-yellow: #f5e642 !important;
+  --nb-pink: #ff91a4 !important;
+  --nb-blue: #91b9ff !important;
+  --nb-green: #a4e5b8 !important;
+  --nb-cream: #f5f0e6 !important;
+  --nb-white: #363636 !important;
+  --nb-button-background: #252525 !important;
+  --nb-ink: #f5f0e6 !important;
+  --nb-shadow-color: rgba(0, 0, 0, .3) !important;
+  --nb-control: #2d2d2d !important;
+  --nb-control-hover: #414141 !important;
+  --nb-border: 1px solid var(--agenda-soft-border) !important;
+  --nb-shadow: var(--shadow) !important;
+  --nb-shadow-hover: 0 18px 42px rgba(0, 0, 0, .45) !important;
+  --nb-push-shadow: 0 2px 7px rgba(0, 0, 0, .3) !important;
+  --nb-push-shadow-hover: 0 4px 12px rgba(0, 0, 0, .38) !important;
+}
+
+html[data-visual-style="soft"] body {
+  --border: var(--agenda-soft-border) !important;
+  --input-border: var(--agenda-soft-input-border) !important;
+  --nb-shadow-color: rgba(16, 24, 40, .08) !important;
+  --nb-shadow: var(--agenda-soft-shadow) !important;
+  --nb-shadow-hover: var(--agenda-soft-shadow-hover) !important;
+  --nb-push-shadow: 0 2px 7px rgba(0, 0, 0, .12) !important;
+  --nb-push-shadow-hover: 0 4px 12px rgba(0, 0, 0, .14) !important;
+  --nb-border: 1px solid var(--agenda-soft-border) !important;
+  --shadow: var(--agenda-soft-shadow) !important;
+  --shadow-nav: var(--agenda-soft-shadow) !important;
+}
+
+html[data-visual-style="soft"] body.dark {
+  --nb-shadow-color: rgba(0, 0, 0, .3) !important;
+  --nb-shadow: var(--agenda-soft-shadow) !important;
+  --nb-shadow-hover: var(--agenda-soft-shadow-hover) !important;
+  --nb-push-shadow: 0 2px 7px rgba(0, 0, 0, .3) !important;
+  --nb-push-shadow-hover: 0 4px 12px rgba(0, 0, 0, .38) !important;
+  --shadow: var(--agenda-soft-shadow) !important;
+  --shadow-nav: var(--agenda-soft-shadow) !important;
+}
+
 html[data-visual-style="soft"] .personalization-menu__panel,
 html[data-visual-style="soft"] .personalization-menu__trigger,
 html[data-visual-style="soft"] .visual-style-toggle {
-  border: 0 !important;
+  border: 1px solid var(--agenda-soft-border) !important;
+  border-radius: var(--radius) !important;
   box-shadow: var(--agenda-soft-shadow) !important;
 }
 
@@ -128,6 +245,8 @@ html[data-visual-style="soft"] theme-background-picker {
   --picker-shadow: var(--agenda-soft-shadow);
   --picker-shadow-hover: var(--agenda-soft-shadow-hover);
   --picker-shadow-active: 0 2px 5px rgba(0, 0, 0, .12);
+  --picker-hover-transform: none;
+  --picker-active-transform: none;
   --picker-popover-shadow: var(--agenda-soft-shadow);
   --picker-control-shadow: 0 2px 6px rgba(0, 0, 0, .1);
   --picker-small-shadow: 0 1px 3px rgba(0, 0, 0, .12);
@@ -139,6 +258,8 @@ html[data-visual-style="soft"] theme-toggle {
   --switch-shadow: var(--agenda-soft-shadow);
   --switch-shadow-hover: var(--agenda-soft-shadow-hover);
   --switch-shadow-active: 0 2px 5px rgba(0, 0, 0, .12);
+  --switch-hover-transform: none;
+  --switch-active-transform: none;
   --knob-border: 0;
   --switch-light-background: var(--bg-2);
   --switch-dark-background: var(--bg-2);
@@ -171,7 +292,6 @@ html[data-visual-style="soft"] body.custom-background-dark {
 html[data-visual-style="soft"] *,
 html[data-visual-style="soft"] *::before,
 html[data-visual-style="soft"] *::after {
-  border: 0 !important;
   box-shadow: none !important;
 }
 
@@ -191,6 +311,8 @@ html[data-visual-style="soft"] :is(
   #toast,
   .personalization-menu__panel
 ) {
+  border: 1px solid var(--agenda-soft-border) !important;
+  border-radius: var(--radius-lg) !important;
   box-shadow: var(--agenda-soft-shadow) !important;
 }
 
@@ -203,6 +325,8 @@ html[data-visual-style="soft"] :is(
   .site-auth-submit,
   .visual-style-toggle
 ) {
+  border: 1px solid var(--agenda-soft-border) !important;
+  border-radius: var(--radius) !important;
   box-shadow: 0 2px 7px rgba(0, 0, 0, .12) !important;
 }
 
@@ -211,19 +335,295 @@ html[data-visual-style="soft"] :is(
   select,
   textarea
 ) {
+  border: 1px solid var(--agenda-soft-input-border) !important;
+  border-radius: var(--radius) !important;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, .08) !important;
+}
+
+html[data-visual-style="soft"] :is(
+  .personalization-menu__panel,
+  .personalization-menu__trigger,
+  .visual-style-toggle,
+  .theme-actions,
+  .tabs,
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .custom-select__menu,
+  .agenda-calendar,
+  .copy-phone-row,
+  .site-auth-card,
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .custom-select,
+  .date-picker-btn,
+  .site-auth-submit,
+  .btn-icon,
+  .modal-close,
+  .agenda-calendar__nav,
+  .agenda-calendar__day,
+  .agenda-calendar__text-btn,
+  .tab,
+  .badge,
+  .tab-badge,
+  .empty svg,
+  .site-auth-page-name,
+  #toast
+) {
+  border-radius: var(--radius) !important;
+}
+
+html[data-visual-style="soft"] :is(
+  .btn,
+  .site-auth-submit,
+  .site-auth-link,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .btn-icon,
+  .copy-phone-row,
+  .modal-close,
+  .personalization-menu__trigger,
+  .agenda-calendar__nav,
+  .agenda-calendar__day,
+  .agenda-calendar__text-btn,
+  .custom-select,
+  .custom-option,
+  .tab
+):is(:hover, :active, :focus-visible) {
+  transform: none !important;
+}
+
+html[data-visual-style="soft"] :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]),
+  select,
+  textarea,
+  .custom-select
+):hover:not(:disabled) {
+  transform: none !important;
+  border-color: var(--input-border) !important;
+}
+
+html[data-visual-style="soft"] .header h1,
+html[data-visual-style="soft"] .site-auth-card h1 {
+  letter-spacing: normal;
+}
+
+html[data-visual-style="soft"] .header p,
+html[data-visual-style="soft"] .site-auth-page-name {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+html[data-visual-style="soft"] .tab {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+html[data-visual-style="soft"] .tab.active {
+  border-color: transparent;
+  background: var(--bg-3);
+  color: var(--text);
+  box-shadow: inset 0 -3px 0 var(--blue) !important;
+}
+
+html[data-visual-style="soft"] .tab:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--bg-3);
+  color: var(--text);
+  box-shadow: none;
+}
+
+html[data-visual-style="soft"] .empty .empty-icon--clock circle {
+  fill: var(--nb-yellow);
+}
+
+html[data-visual-style="soft"] body :is(.input-container label, .custom-select-label) {
+  border: 0 !important;
+  border-radius: var(--radius) !important;
+  background: var(--bg) !important;
+  box-shadow: none !important;
+  color: var(--text) !important;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+html[data-visual-style="soft"] body .date-picker-btn {
+  border: 1px solid var(--agenda-soft-border) !important;
+  background: var(--bg-3) !important;
+  color: var(--text) !important;
+}
+
+html[data-visual-style="soft"] body .current-user {
+  border: 1px solid var(--agenda-soft-border) !important;
+  background: var(--bg-3) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+html[data-visual-style="soft"] body.custom-background {
+  --custom-control-background: var(--input-bg) !important;
+  --custom-control-hover: color-mix(in srgb, var(--input-bg) 90%, var(--input-text)) !important;
+  --custom-control-text: var(--input-text) !important;
+}
+
+html[data-visual-style="soft"] body.custom-background :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .site-auth-submit,
+  .site-auth-link,
+  .custom-select,
+  .date-picker-btn,
+  .btn-icon,
+  .copy-phone-row,
+  .modal-close,
+  .tab.active
+) {
+  background: var(--custom-control-background) !important;
+  color: var(--custom-control-text) !important;
+}
+
+html[data-visual-style="soft"] body.custom-background .custom-select__menu {
+  background: var(--custom-control-background) !important;
+  color: var(--custom-control-text) !important;
+}
+
+html[data-visual-style="soft"] body.custom-background :is(
+  .custom-select__value,
+  .custom-select__arrow,
+  .custom-option
+) {
+  color: var(--custom-control-text) !important;
+}
+
+html[data-visual-style="soft"] body.custom-background .custom-option.is-selected {
+  background: var(--custom-control-background) !important;
+}
+
+html[data-visual-style="soft"] body.custom-background :is(
+  .btn,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .site-auth-submit,
+  .site-auth-link,
+  .custom-select,
+  .date-picker-btn,
+  .btn-icon,
+  .copy-phone-row,
+  .modal-close,
+  .tab.active,
+  .custom-option:hover,
+  .custom-option.is-selected
+):is(:hover, :active, :focus-visible) {
+  background: var(--custom-control-hover) !important;
+  color: var(--custom-control-text) !important;
+}
+
+html[data-visual-style="soft"] .date-picker-btn {
+  transform: translateY(-50%);
+  transition: transform .16s ease, background-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+html[data-visual-style="soft"] .date-picker-btn:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+}
+
+html[data-visual-style="soft"] .date-picker-btn:active:not(:disabled) {
+  transform: translateY(-50%) scale(.96);
+}
+
+html[data-visual-style="soft"] body.dark .date-picker-btn {
+  background: var(--nb-yellow) !important;
+  color: #171717 !important;
+}
+
+html[data-visual-style="soft"] body.dark .current-user {
+  background: var(--nb-green) !important;
+}
+
+html[data-visual-style="soft"] body.dark .visual-style-toggle,
+html[data-visual-style="soft"] body.dark .personalization-menu__trigger {
+  color: #171717;
+}
+
+html[data-visual-style="soft"] body.dark .visual-style-toggle {
+  background: var(--nb-blue);
+}
+
+html[data-visual-style="soft"] body.dark .personalization-menu__trigger {
+  background: var(--nb-yellow);
+}
+
+html[data-visual-style="soft"] body.dark .btn-primary,
+html[data-visual-style="soft"] body.dark .site-auth-submit {
+  background: var(--nb-yellow) !important;
+  color: #171717 !important;
+}
+
+html[data-visual-style="soft"] body.dark .btn-danger {
+  background: var(--nb-pink) !important;
+  color: #171717 !important;
+}
+
+html[data-visual-style="soft"] body.dark .tab.active {
+  background: var(--nb-yellow);
+  color: #171717;
+  box-shadow: none !important;
+}
+
+html[data-visual-style="soft"] body.dark .tab:hover:not(:disabled) {
+  background: var(--nb-blue);
+  color: #171717;
+}
+
+html[data-visual-style="soft"] body.dark .mes-header {
+  background: var(--nb-yellow);
+}
+
+html[data-visual-style="soft"] .personalization-menu__trigger svg {
+  stroke: currentColor;
+}
+
+html[data-visual-style="soft"] body.dark .tab-badge,
+html[data-visual-style="soft"] body.dark .badge,
+html[data-visual-style="soft"] body.dark .site-auth-page-name,
+html[data-visual-style="soft"] body.dark .mes-header h3,
+html[data-visual-style="soft"] body.dark .mes-header span,
+html[data-visual-style="soft"] body.dark th,
+html[data-visual-style="soft"] body.dark .current-user {
+  color: #171717 !important;
+}
+
+html[data-visual-style="soft"] body.dark tr:hover td {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+html[data-visual-style="soft"] body.dark theme-toggle {
+  --switch-light-background: var(--nb-blue);
+  --switch-dark-background: var(--nb-blue);
+  --knob-light-background: var(--nb-yellow);
+  --knob-light-color: #171717;
+  --knob-dark-background: var(--nb-pink);
+  --knob-dark-color: #171717;
 }
 
 html[data-visual-style="soft"] .btn:hover:not(:disabled),
 html[data-visual-style="soft"] .visual-style-toggle:hover {
-  box-shadow: var(--agenda-soft-shadow-hover) !important;
-}
-
-html[data-visual-style="soft"] .tab.active {
-  box-shadow: inset 0 -3px 0 var(--blue) !important;
+  box-shadow: var(--nb-push-shadow-hover) !important;
 }
 
 html[data-visual-style="soft"] :focus-visible {
   outline: 2px solid var(--blue) !important;
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-visual-style="soft"] .date-picker-btn {
+    transition: none;
+  }
 }
