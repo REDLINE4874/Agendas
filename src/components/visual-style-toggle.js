@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = "agenda-visual-style";
+  const NEW_BADGE_EXPIRES_AT = Date.parse("2026-11-27T05:22:41.483Z");
   const root = document.documentElement;
   let initialStyle = "brutalist";
 
@@ -11,7 +12,13 @@
 
   root.dataset.visualStyle = initialStyle;
 
+  function initializeNewBadge() {
+    const badge = document.querySelector(".personalization-menu__new-badge");
+    if (badge) badge.hidden = Date.now() >= NEW_BADGE_EXPIRES_AT;
+  }
+
   function initializeToggle() {
+    initializeNewBadge();
     const button = document.getElementById("visualStyleToggle");
     if (!button) return;
 

@@ -80,6 +80,24 @@ body .theme-actions:has(#personalizationToggle[aria-expanded="true"]) {
   font-weight: 600;
 }
 
+.personalization-menu__setting-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.personalization-menu__new-badge {
+  border: 0;
+  border-radius: 999px;
+  padding: 2px 6px;
+  background: #d6003f;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
 .visual-style-toggle {
   min-width: 90px;
   min-height: 34px;
