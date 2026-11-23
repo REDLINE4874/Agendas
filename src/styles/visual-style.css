@@ -236,7 +236,6 @@ html[data-visual-style="soft"] body.dark {
 html[data-visual-style="soft"] .personalization-menu__panel,
 html[data-visual-style="soft"] .personalization-menu__trigger,
 html[data-visual-style="soft"] .visual-style-toggle {
-  border: 1px solid var(--agenda-soft-border) !important;
   border-radius: var(--radius) !important;
   box-shadow: var(--agenda-soft-shadow) !important;
 }
@@ -279,14 +278,40 @@ html[data-visual-style="soft"] theme-toggle {
 }
 
 html[data-visual-style="soft"] {
-  --agenda-soft-shadow: 0 8px 22px rgba(0, 0, 0, .12);
-  --agenda-soft-shadow-hover: 0 12px 28px rgba(0, 0, 0, .16);
+  --agenda-soft-shadow:
+    0 2px 6px rgba(15, 23, 42, .04),
+    0 10px 26px rgba(15, 23, 42, .07),
+    0 28px 64px rgba(15, 23, 42, .08);
+  --agenda-soft-shadow-hover:
+    0 4px 10px rgba(15, 23, 42, .05),
+    0 18px 42px rgba(15, 23, 42, .09),
+    0 40px 88px rgba(15, 23, 42, .12);
+  --agenda-soft-control-shadow:
+    0 2px 5px rgba(15, 23, 42, .04),
+    0 8px 20px rgba(15, 23, 42, .09);
+  --agenda-soft-control-shadow-hover:
+    0 4px 9px rgba(15, 23, 42, .05),
+    0 14px 32px rgba(15, 23, 42, .11),
+    0 28px 58px rgba(15, 23, 42, .10);
 }
 
 html[data-visual-style="soft"] body.dark,
 html[data-visual-style="soft"] body.custom-background-dark {
-  --agenda-soft-shadow: 0 10px 24px rgba(0, 0, 0, .3);
-  --agenda-soft-shadow-hover: 0 14px 30px rgba(0, 0, 0, .38);
+  --agenda-soft-shadow:
+    0 2px 6px rgba(0, 0, 0, .24),
+    0 12px 30px rgba(0, 0, 0, .22),
+    0 32px 72px rgba(0, 0, 0, .28);
+  --agenda-soft-shadow-hover:
+    0 4px 10px rgba(0, 0, 0, .26),
+    0 20px 46px rgba(0, 0, 0, .30),
+    0 44px 96px rgba(0, 0, 0, .36);
+  --agenda-soft-control-shadow:
+    0 2px 5px rgba(0, 0, 0, .26),
+    0 10px 24px rgba(0, 0, 0, .24);
+  --agenda-soft-control-shadow-hover:
+    0 4px 9px rgba(0, 0, 0, .28),
+    0 16px 36px rgba(0, 0, 0, .32),
+    0 32px 68px rgba(0, 0, 0, .34);
 }
 
 html[data-visual-style="soft"] *,
@@ -311,7 +336,6 @@ html[data-visual-style="soft"] :is(
   #toast,
   .personalization-menu__panel
 ) {
-  border: 1px solid var(--agenda-soft-border) !important;
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--agenda-soft-shadow) !important;
 }
@@ -325,9 +349,8 @@ html[data-visual-style="soft"] :is(
   .site-auth-submit,
   .visual-style-toggle
 ) {
-  border: 1px solid var(--agenda-soft-border) !important;
   border-radius: var(--radius) !important;
-  box-shadow: 0 2px 7px rgba(0, 0, 0, .12) !important;
+  box-shadow: var(--agenda-soft-control-shadow) !important;
 }
 
 html[data-visual-style="soft"] :is(
@@ -335,7 +358,6 @@ html[data-visual-style="soft"] :is(
   select,
   textarea
 ) {
-  border: 1px solid var(--agenda-soft-input-border) !important;
   border-radius: var(--radius) !important;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, .08) !important;
 }
@@ -452,13 +474,11 @@ html[data-visual-style="soft"] body :is(.input-container label, .custom-select-l
 }
 
 html[data-visual-style="soft"] body .date-picker-btn {
-  border: 1px solid var(--agenda-soft-border) !important;
   background: var(--bg-3) !important;
   color: var(--text) !important;
 }
 
 html[data-visual-style="soft"] body .current-user {
-  border: 1px solid var(--agenda-soft-border) !important;
   background: var(--bg-3) !important;
   color: var(--text) !important;
   box-shadow: none !important;
@@ -575,6 +595,11 @@ html[data-visual-style="soft"] body.dark .tab.active {
   box-shadow: none !important;
 }
 
+html[data-visual-style="soft"] body.dark .tab.active .tab-badge {
+  background: var(--nb-pink) !important;
+  color: #171717 !important;
+}
+
 html[data-visual-style="soft"] body.dark .tab:hover:not(:disabled) {
   background: var(--nb-blue);
   color: #171717;
@@ -613,8 +638,40 @@ html[data-visual-style="soft"] body.dark theme-toggle {
 }
 
 html[data-visual-style="soft"] .btn:hover:not(:disabled),
-html[data-visual-style="soft"] .visual-style-toggle:hover {
-  box-shadow: var(--nb-push-shadow-hover) !important;
+html[data-visual-style="soft"] .visual-style-toggle:hover,
+html[data-visual-style="soft"] .personalization-menu__trigger:hover,
+html[data-visual-style="soft"] .agenda-auth-button:hover:not(:disabled),
+html[data-visual-style="soft"] .agenda-install-button:hover:not(:disabled),
+html[data-visual-style="soft"] .site-auth-submit:hover:not(:disabled),
+html[data-visual-style="soft"] .site-auth-link:hover:not(:disabled),
+html[data-visual-style="soft"] .custom-select:hover:not(:disabled),
+html[data-visual-style="soft"] .date-picker-btn:hover:not(:disabled),
+html[data-visual-style="soft"] .btn-icon:hover:not(:disabled),
+html[data-visual-style="soft"] .copy-phone-row:hover:not(:disabled),
+html[data-visual-style="soft"] .modal-close:hover:not(:disabled),
+html[data-visual-style="soft"] .agenda-calendar__nav:hover:not(:disabled),
+html[data-visual-style="soft"] .agenda-calendar__day:hover:not(:disabled),
+html[data-visual-style="soft"] .agenda-calendar__text-btn:hover:not(:disabled) {
+  box-shadow: var(--agenda-soft-control-shadow-hover) !important;
+}
+
+html[data-visual-style="soft"] :is(
+  .theme-actions,
+  .tabs,
+  .card,
+  .mes-group,
+  .modal-content,
+  .confirm-modal,
+  .custom-select__menu,
+  .agenda-calendar,
+  .copy-phone-row,
+  .site-auth-card,
+  .empty,
+  .loading-state,
+  #toast,
+  .personalization-menu__panel
+):hover {
+  box-shadow: var(--agenda-soft-shadow-hover) !important;
 }
 
 html[data-visual-style="soft"] :focus-visible {
@@ -622,8 +679,80 @@ html[data-visual-style="soft"] :focus-visible {
   outline-offset: 2px;
 }
 
+html:not([data-visual-style="soft"]) body {
+  --nb-shadow:
+    0 2px 6px rgba(23, 23, 23, .06),
+    0 12px 30px rgba(23, 23, 23, .12),
+    0 28px 64px rgba(23, 23, 23, .14);
+  --nb-shadow-hover:
+    0 4px 10px rgba(23, 23, 23, .08),
+    0 20px 46px rgba(23, 23, 23, .16),
+    0 40px 88px rgba(23, 23, 23, .20);
+  --nb-push-shadow:
+    0 2px 5px rgba(23, 23, 23, .06),
+    0 8px 20px rgba(23, 23, 23, .12),
+    0 18px 40px rgba(23, 23, 23, .16);
+  --nb-push-shadow-hover:
+    0 4px 9px rgba(23, 23, 23, .08),
+    0 14px 32px rgba(23, 23, 23, .16),
+    0 28px 60px rgba(23, 23, 23, .20);
+}
+
+html:not([data-visual-style="soft"]) body.dark {
+  --nb-shadow:
+    0 2px 6px rgba(0, 0, 0, .18),
+    0 12px 30px rgba(0, 0, 0, .26),
+    0 28px 64px rgba(0, 0, 0, .32);
+  --nb-shadow-hover:
+    0 4px 10px rgba(0, 0, 0, .22),
+    0 20px 46px rgba(0, 0, 0, .32),
+    0 40px 88px rgba(0, 0, 0, .40);
+  --nb-push-shadow:
+    0 2px 5px rgba(0, 0, 0, .18),
+    0 8px 20px rgba(0, 0, 0, .28),
+    0 18px 40px rgba(0, 0, 0, .34);
+  --nb-push-shadow-hover:
+    0 4px 9px rgba(0, 0, 0, .22),
+    0 14px 32px rgba(0, 0, 0, .34),
+    0 28px 60px rgba(0, 0, 0, .42);
+}
+
+html:not([data-visual-style="soft"]) body :is(
+  .current-user,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .personalization-menu__trigger,
+  .visual-style-toggle
+) {
+  box-shadow: var(--nb-push-shadow) !important;
+}
+
+html:not([data-visual-style="soft"]) body :is(
+  .current-user,
+  .agenda-auth-button,
+  .agenda-install-button,
+  .personalization-menu__trigger,
+  .visual-style-toggle
+):is(:hover, :focus-visible) {
+  box-shadow: var(--nb-push-shadow-hover) !important;
+}
+
+html:not([data-visual-style="soft"]) body .personalization-menu__panel {
+  box-shadow: var(--nb-shadow) !important;
+}
+
+html:not([data-visual-style="soft"]) body .personalization-menu__panel:hover {
+  box-shadow: var(--nb-shadow-hover) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html[data-visual-style="soft"] .date-picker-btn {
     transition: none;
   }
+}
+
+*,
+*::before,
+*::after {
+  border: none !important;
 }
